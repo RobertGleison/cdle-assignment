@@ -6,3 +6,4 @@ terraform_infra/.terraform.lock.hcl
 terraform_infra/terraform.tfstate.backup
 terraform_infra/terraform.tfstate
 terraform_infra/terraform.tfvars
+logs/*
