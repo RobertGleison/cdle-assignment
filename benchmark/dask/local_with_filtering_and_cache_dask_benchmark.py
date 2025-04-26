@@ -1,5 +1,6 @@
 from dask.distributed import Client
 from benchmark import benchmark
+import dask
 from distributed import wait
 import dask.dataframe as dd
 import pandas as pd
@@ -56,4 +57,4 @@ other.columns = pd.Index([e[0]+'_' + e[1] for e in other.columns.tolist()])
 benchmark(join_count, dask_filtered, benchmarks=dask_benchmarks, name='filtered join count', other=other)
 benchmark(join_data, dask_filtered, benchmarks=dask_benchmarks, name='filtered join', other=other)
 
-client.restart()
+client.close()
