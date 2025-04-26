@@ -3,7 +3,7 @@ import functools
 import datetime
 import os
 
-def timer(log_file="general.log"):
+def timer(log_file="logs/general.log"):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
@@ -31,7 +31,7 @@ def timer(log_file="general.log"):
     # Handle both @time_decorator and @time_decorator() syntax
     if callable(log_file):
         func = log_file
-        log_file = "general.log"
+        log_file = "logs/general.log"
         return decorator(func)
     return decorator
 
