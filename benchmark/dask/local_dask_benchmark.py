@@ -21,16 +21,12 @@ from benchmark.dask.tasks import (
     join_data,
 )
 
-
 client = Client()
 dask_data = dd.read_parquet('/dbfs/FileStore/ks_taxi_parquet', index='index')
 dask_benchmarks = {
     'duration': [],  # in seconds
     'task': [],
 }
-
-other = groupby_statistics(dask_data)
-other.columns = pd.Index([e[0]+'_' + e[1] for e in other.columns.tolist()])
 
 benchmark(read_file_parquet, df=None, benchmarks=dask_benchmarks, name='read file')
 benchmark(count, df=dask_data, benchmarks=dask_benchmarks, name='count')
@@ -45,5 +41,10 @@ benchmark(value_counts, df=dask_data, benchmarks=dask_benchmarks, name='value co
 benchmark(mean_of_complicated_arithmetic_operation, df=dask_data, benchmarks=dask_benchmarks, name='mean of complex arithmetic ops')
 benchmark(complicated_arithmetic_operation, df=dask_data, benchmarks=dask_benchmarks, name='complex arithmetic ops')
 benchmark(groupby_statistics, df=dask_data, benchmarks=dask_benchmarks, name='groupby statistics')
+
+other = groupby_statistics(dask_data)
+other.columns = pd.Index([e[0]+'_' + e[1] for e in other.columns.tolist()])
 benchmark(join_count, dask_data, benchmarks=dask_benchmarks, name='join count', other=other)
 benchmark(join_data, dask_data, benchmarks=dask_benchmarks, name='join', other=other)
+
+client.restart()
