@@ -3,8 +3,8 @@ import numpy as np
 import pyspark.pandas as ks
 
 
-def read_file_parquet(df, **kwargs):
-    return ks.read_parquet(kwargs.get("path"))
+def read_file_parquet(df=None):
+    return ks.read_parquet("/home/robert/Desktop/cdle-assignment/datasets/taxis_2009-01.parquet")
 
 def count(df=None):
     return len(df)

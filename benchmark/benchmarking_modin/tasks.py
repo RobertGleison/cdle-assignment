@@ -1,8 +1,8 @@
 import modin.pandas as mpd  # Importação do Modin
 import numpy as np
 
-def read_file_parquet(df=None):
-    return mpd.read_parquet('/dbfs/FileStore/ks_taxi_parquet', index='index')
+def read_file_parquet(df, **kwargs):
+    return mpd.read_parquet("/home/robert/Desktop/cdle-assignment/datasets/taxis_2009-01.parquet")
 
 def count(df=None):
     return len(df)
@@ -11,51 +11,51 @@ def count_index_length(df=None):
     return len(df.index)
 
 def mean(df):
-    return df.fare_amt.mean()
+    return df.Fare_Amt.mean()
 
 def standard_deviation(df):
-    return df.fare_amt.std()
+    return df.Fare_Amt.std()
 
 def mean_of_sum(df):
-    return (df.fare_amt + df.tip_amt).mean()
+    return (df.Fare_Amt + df.Tip_Amt).mean()
 
 def sum_columns(df):
-    return (df.fare_amt + df.tip_amt)
+    return (df.Fare_Amt + df.Tip_Amt)
 
 def mean_of_product(df):
-    return (df.fare_amt * df.tip_amt).mean()
+    return (df.Fare_Amt * df.Tip_Amt).mean()
 
 def product_columns(df):
-    return (df.fare_amt * df.tip_amt)
+    return (df.Fare_Amt * df.Tip_Amt)
 
 def value_counts(df):
-    return df.fare_amt.value_counts()
+    return df.Fare_Amt.value_counts()
 
 def mean_of_complicated_arithmetic_operation(df):
-    theta_1 = df.start_lon
-    phi_1 = df.start_lat
-    theta_2 = df.end_lon
-    phi_2 = df.end_lat
+    theta_1 = df.Start_Lon
+    phi_1 = df.Start_Lat
+    theta_2 = df.End_Lon
+    phi_2 = df.End_Lat
     temp = (np.sin((theta_2-theta_1)/2*np.pi/180)**2
            + np.cos(theta_1*np.pi/180)*np.cos(theta_2*np.pi/180) * np.sin((phi_2-phi_1)/2*np.pi/180)**2)
     ret = 2 * np.arctan2(np.sqrt(temp), np.sqrt(1-temp))
     return ret.mean()
 
 def complicated_arithmetic_operation(df):
-    theta_1 = df.start_lon
-    phi_1 = df.start_lat
-    theta_2 = df.end_lon
-    phi_2 = df.end_lat
+    theta_1 = df.Start_Lon
+    phi_1 = df.Start_Lat
+    theta_2 = df.End_Lon
+    phi_2 = df.End_Lat
     temp = (np.sin((theta_2-theta_1)/2*np.pi/180)**2
            + np.cos(theta_1*np.pi/180)*np.cos(theta_2*np.pi/180) * np.sin((phi_2-phi_1)/2*np.pi/180)**2)
     ret = 2 * np.arctan2(np.sqrt(temp), np.sqrt(1-temp))
     return ret
 
 def groupby_statistics(df):
-    return df.groupby(by='passenger_count').agg(
+    return df.groupby(by='Passenger_Count').agg(
       {
-        'fare_amt': ['mean', 'std'],
-        'tip_amt': ['mean', 'std']
+        'Fare_Amt': ['mean', 'std'],
+        'Tip_Amt': ['mean', 'std']
       }
     )
 

@@ -1,8 +1,9 @@
-from benchmark import benchmark
+from benchmark_setup import benchmark
 import pandas as pd
 import numpy as np
+from distributed import Client, LocalCluster
 import modin.pandas as mpd
-from bencharking_modin.tasks import (
+from benchmarking_modin.tasks import (
     read_file_parquet,
     count,
     count_index_length,
@@ -19,13 +20,26 @@ from bencharking_modin.tasks import (
     join_count,
     join_data,
 )
+import os
+
+
+os.environ["MODIN_MEMORY"] = "10000000000"  # 10GB
+os.environ["MODIN_ENGINE"] = "dask"
 
 class Benchmark:
     def __init__(self):
         self.benchmarks_results = None
 
     def run_benchmark(self, file_path):
-        modin_data = mpd.read_parquet('/dbfs/FileStore/ks_taxi_parquet', index='index')
+        # Create a local cluster with just one worker
+        cluster = LocalCluster(
+            n_workers=1,  # Just one worker
+            threads_per_worker=4,  # Adjust based on your available CPU cores
+            memory_limit="10GB"  # 10GB for the single worker
+        )
+        client = Client(cluster)
+
+        modin_data = mpd.read_parquet("/home/robert/Desktop/cdle-assignment/datasets/taxis_2009-01.parquet")
 
         modin_benchmarks = {
             'duration': [],  # in seconds
