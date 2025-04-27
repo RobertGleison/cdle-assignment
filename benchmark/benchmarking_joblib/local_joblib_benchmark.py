@@ -1,4 +1,4 @@
-from benchmark import benchmark
+from benchmark_setup import benchmark
 import pandas as pd
 import numpy as np
 from benchmark.benchmarking_joblib.tasks import (
@@ -24,7 +24,8 @@ class Benchmark:
         self.benchmarks_results = None
 
     def run_benchmark(self, file_path):
-        joblib_data = read_file_parquet().compute()
+        joblib_data = read_file_parquet("/home/robert/Desktop/cdle-assignment/datasets/taxis_2009-01.parquet")
+        joblib_data = joblib_data.compute()
 
         joblib_benchmarks = {
             'duration': [],  # in seconds
@@ -45,7 +46,7 @@ class Benchmark:
         benchmark(complicated_arithmetic_operation, df=joblib_data, benchmarks=joblib_benchmarks, name='complex arithmetic ops')
         benchmark(groupby_statistics, df=joblib_data, benchmarks=joblib_benchmarks, name='groupby statistics')
 
-        other = groupby_statistics(joblib_data).compute()
+        other = groupby_statistics(joblib_data)
         other.columns = pd.Index([e[0]+'_' + e[1] for e in other.columns.tolist()])
         benchmark(join_count, joblib_data, benchmarks=joblib_benchmarks, name='join count', other=other)
         benchmark(join_data, joblib_data, benchmarks=joblib_benchmarks, name='join', other=other)
