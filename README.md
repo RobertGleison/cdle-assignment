@@ -5,9 +5,12 @@ Setup: (temp readme)
 ```
 make setup
 ```
-This command will create a virtual env and install the dependencies with no conflicts. 
+This command will create a virtual env and install the dependencies with no conflicts.
 Important to say that this virtual env uses python 3.12, so ensure you have this version of python in your machine
 
 
 
 The terraform_infra folder is for create a VM in GCP
+
+
+poetry run python benchmark results.py
