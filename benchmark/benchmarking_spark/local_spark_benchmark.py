@@ -21,8 +21,8 @@ from benchmark.benchmarking_spark.tasks import (  # assuming you renamed your ta
 
 
 class LocalSparkBenchmark:
-    def __init__(self):
-        self.benchmarks_results = None
+    def __init__(self, file_path):
+        self.benchmarks_results = self.run_benchmark(file_path)
         self.client = SparkSession.builder.getOrCreate()
 
     def run_benchmark(self, file_path: str) -> None:

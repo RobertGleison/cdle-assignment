@@ -21,8 +21,8 @@ from benchmark.benchmarking_rapids.tasks import (
 
 
 class LocalRapidsBenchmark:
-    def __init__(self):
-        self.benchmarks_results = None
+    def __init__(self, file_path):
+        self.benchmarks_results = self.run_benchmark(file_path)
 
     def run_benchmark(self, file_path: str) -> None:
         rapids_data = cudf.read_parquet(file_path)

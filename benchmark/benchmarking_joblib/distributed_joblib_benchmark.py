@@ -23,8 +23,8 @@ from benchmarking_modin.tasks import (
 memory = Memory('joblib_cache', verbose=0)
 
 class LocalJoblibBenchmark:
-    def __init__(self):
-        self.benchmarks_results = None
+    def __init__(self, file_path):
+        self.benchmarks_results = self.run_benchmark(file_path)
 
     def run_benchmark(self, file_path: str) -> None:
         joblib_data = pd.read_parquet(file_path)

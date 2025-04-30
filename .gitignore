@@ -1,5 +1,6 @@
 .venv/
-datasets/
+datasets/*.parquet
+datasets/*.csv
 benchmark/poetry.lock
 terraform_infra/.terraform/
 terraform_infra/.terraform.lock.hcl

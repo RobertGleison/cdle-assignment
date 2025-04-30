@@ -23,8 +23,8 @@ from benchmark.koalas.tasks import (
 
 
 class LocalKoalasBenchmark:
-    def __init__(self):
-        self.benchmarks_results = None
+    def __init__(self, file_path):
+        self.benchmarks_results = self.run_benchmark(file_path)
         self.client = SparkSession.builder.getOrCreate()
 
 
