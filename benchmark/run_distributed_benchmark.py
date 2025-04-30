@@ -9,30 +9,31 @@ from datetime import datetime
 import pandas as pd
 
 if __name__ == "__main__":
-    local_dask_benchmarks = get_results(LocalDaskBenchmark().benchmarks_results)
+    
+    local_joblib_benchmarks = get_results(LocalJoblibBenchmark().benchmarks_results)
     local_koalas_benchmarks = get_results(LocalKoalasBenchmark().benchmarks_results)
     local_rapids_benchmarks = get_results(LocalRapidsBenchmark().benchmarks_results)
     local_modin_benchmarks = get_results(LocalModinBenchmark().benchmarks_results)
     local_spark_benchmarks = get_results(LocalSparkBenchmark().benchmarks_results)
-    local_joblib_benchmarks = get_results(LocalJoblibBenchmark().benchmarks_results)
+    local_dask_benchmarks = get_results(LocalDaskBenchmark().benchmarks_results)
 
     df = pd.concat(
         [
-        local_dask_benchmarks.duration,
+        local_joblib_benchmarks.duration,
         local_koalas_benchmarks.duration,
         local_rapids_benchmarks.duration,
         local_modin_benchmarks.duration,
         local_spark_benchmarks.duration,
-        local_joblib_benchmarks.duration,
+        local_dask_benchmarks.duration,
         ],
         axis=1,
-        keys=['dask',
+        keys=['joblib',
               'koalas',
               'rapids',
               'modin',
               'spark',
-              'joblib',
-              ]
+              'dask'
+            ]
         )
 
     filename = 'distributed_benchmark_' + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv"
