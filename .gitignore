@@ -9,3 +9,5 @@ terraform_infra/terraform.tfvars
 logs/*
 .idea
 .vscode
+__pycache__/
+poetry.lock
