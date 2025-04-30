@@ -71,4 +71,3 @@ class Benchmark:
 
         self.benchmarks_results = dask_benchmarks
         client.close()
-

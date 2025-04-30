@@ -1,9 +1,8 @@
-import pandas as pd
-import numpy as np
 import dask.dataframe as dd
+import numpy as np
 
 def read_file_parquet(df=None, **kwargs):
-    return dd.read_parquet(kwargs.get("path"), index_col = 'index')
+    return dd.read_parquet(kwargs.get("path"))
 
 def count(df=None):
     return len(df)
