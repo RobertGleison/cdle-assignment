@@ -1,4 +1,3 @@
-from benchmarking_joblib.distributed_joblib_benchmark import DistributedJoblibBenchmark
 from benchmarking_koalas.distributed_koalas_benchmark import DistributedKoalasBenchmark
 from benchmarking_rapids.distributed_rapids_benchmark import DistributedRapidsBenchmark
 from benchmarking_modin.distributed_modin_benchmark import DistributedModinBenchmark
@@ -13,7 +12,7 @@ if __name__ == "__main__":
     # https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page to donwload the datasets
     input_path = "datasets/taxis_2009_02_03.parquet"
 
-    distributed_joblib_benchmarks = get_results(DistributedJoblibBenchmark(input_path).benchmarks_results)
+    # Joblib have no support for distributed systems
     distributed_rapids_benchmarks = get_results(DistributedRapidsBenchmark(input_path).benchmarks_results)
     distributed_koalas_benchmarks = get_results(DistributedKoalasBenchmark(input_path).benchmarks_results)
     distributed_modin_benchmarks = get_results(DistributedModinBenchmark(input_path).benchmarks_results)
@@ -22,7 +21,6 @@ if __name__ == "__main__":
 
     df = pd.concat(
         [
-        distributed_joblib_benchmarks.duration,
         distributed_rapids_benchmarks.duration,
         distributed_koalas_benchmarks.duration,
         distributed_modin_benchmarks.duration,
@@ -30,8 +28,7 @@ if __name__ == "__main__":
         distributed_dask_benchmarks.duration
         ],
         axis=1,
-        keys=['joblib',
-              'rapids',
+        keys=['rapids',
               'koalas',
               'modin',
               'spark',

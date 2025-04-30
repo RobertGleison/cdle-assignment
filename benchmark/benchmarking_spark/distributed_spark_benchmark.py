@@ -20,7 +20,7 @@ from benchmark.benchmarking_spark.tasks import (  # assuming you renamed your ta
 )
 
 
-class LocalSparkBenchmark:
+class DistributedSparkBenchmark:
     def __init__(self, file_path):
         self.benchmarks_results = self.run_benchmark(file_path)
         self.client = SparkSession.builder.getOrCreate()
@@ -34,17 +34,17 @@ class LocalSparkBenchmark:
             'task': [],
         }
 
-        # Normal local running
-        spark_benchmarks = self.un_common_benchmarks(spark_data, 'spark local', spark_benchmarks, file_path)
+        # Normal distributed running
+        spark_benchmarks = self.un_common_benchmarks(spark_data, 'spark distributed', spark_benchmarks, file_path)
 
-        # Filtered local running
+        # Filtered distributed running
         filtered_data = spark_data.filter((col("Tip_Amt") >= 1) & (col("Tip_Amt") <= 5))
-        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'spark local filtered', spark_benchmarks, file_path)
+        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'spark distributed filtered', spark_benchmarks, file_path)
 
         # Filtered with cache running
         filtered_data.cache()
         print(f'Enforce caching: {filtered_data.count()} rows of filtered data')
-        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'spark local filtered cache', spark_benchmarks, file_path)
+        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'spark distributed filtered cache', spark_benchmarks, file_path)
 
         self.benchmarks_results = spark_benchmarks
 

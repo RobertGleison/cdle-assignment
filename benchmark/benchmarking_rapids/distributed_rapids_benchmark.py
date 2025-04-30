@@ -20,7 +20,7 @@ from benchmark.benchmarking_rapids.tasks import (
 )
 
 
-class LocalRapidsBenchmark:
+class DistributedRapidsBenchmark:
     def __init__(self, file_path):
         self.benchmarks_results = self.run_benchmark(file_path)
 
@@ -32,17 +32,17 @@ class LocalRapidsBenchmark:
             'task': [],
         }
 
-        # Normal local running
-        rapids_benchmarks = self.un_common_benchmarks(rapids_data, 'rapids local', rapids_benchmarks, file_path)
+        # Normal distributed running
+        rapids_benchmarks = self.un_common_benchmarks(rapids_data, 'rapids distributed', rapids_benchmarks, file_path)
 
-        # Filtered local running
+        # Filtered distributed running
         filtered_data = rapids_data[(rapids_data.Tip_Amt >= 1) & (rapids_data.Tip_Amt <= 5)]
-        rapids_benchmarks = self.run_common_benchmarks(filtered_data, 'rapids local filtered', rapids_benchmarks, file_path)
+        rapids_benchmarks = self.run_common_benchmarks(filtered_data, 'rapids distributed filtered', rapids_benchmarks, file_path)
 
         # Filtered with "cache" running (cuDF loads all into GPU already)
         cached_data = filtered_data.copy(deep=False)
         print(f'Enforce caching: {len(cached_data)} rows of filtered data')
-        rapids_benchmarks = self.run_common_benchmarks(cached_data, 'rapids local filtered cache', rapids_benchmarks, file_path)
+        rapids_benchmarks = self.run_common_benchmarks(cached_data, 'rapids distributed filtered cache', rapids_benchmarks, file_path)
 
         self.benchmarks_results = rapids_benchmarks
 

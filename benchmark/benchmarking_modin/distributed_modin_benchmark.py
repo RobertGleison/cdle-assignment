@@ -23,15 +23,10 @@ from benchmarking_modin.tasks import (
 
 modin_cfg.Engine.put("dask")
 
-class LocalModinBenchmark:
+class DistributedModinBenchmark:
     def __init__(self, file_path):
         self.benchmarks_results = self.run_benchmark(file_path)
-        self.client = Client(
-            n_workers=4,
-            threads_per_worker=2,
-            memory_limit='2.5GB',
-            processes=True
-            )
+        self.client = Client('127.0.0.1:8786')
 
 
     def run_benchmark(self, file_path: str) -> None:
@@ -43,17 +38,17 @@ class LocalModinBenchmark:
             'task': [],
         }
 
-        # Normal local running
-        modin_benchmarks = self.un_common_benchmarks(modin_data, 'modin local', modin_benchmarks, file_path)
+        # Normal distributed running
+        modin_benchmarks = self.un_common_benchmarks(modin_data, 'modin distributed', modin_benchmarks, file_path)
 
-        # Filtered local running
+        # Filtered distributed running
         expr_filter = (modin_data.Tip_Amt >= 1) & (modin_data.Tip_Amt <= 5)
         filtered_modin_data = modin_data[expr_filter]
-        modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'modin local filtered', modin_benchmarks, file_path)
+        modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'modin distributed filtered', modin_benchmarks, file_path)
 
         # Filtered with cache runnning
         filtered_modin_data = filtered_modin_data.copy() # Uses copy instead of persist cause modin is not a dask object
-        modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'modin local filtered cache', modin_benchmarks, file_path)
+        modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'modin distributed filtered cache', modin_benchmarks, file_path)
 
         self.benchmarks_results = modin_benchmarks
         client.close()
