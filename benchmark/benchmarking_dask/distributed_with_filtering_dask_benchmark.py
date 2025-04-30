@@ -29,7 +29,12 @@ class Benchmark:
 
     def run_benchmark(self, file_path):
         dask_data = dd.read_parquet(file_path, index_col = 'index')
-        client = Client(memory_limit='10GB')
+        client = Client('127.0.0.1:8786')
+
+        client_info_dict = client.scheduler_info()
+        worker_hosts = set(
+            [client_info_dict["workers"][worker_id]['host'] for worker_id in client_info_dict["workers"].keys()])
+        print(f'Worker hosts: {worker_hosts}')
 
         dask_benchmarks = {
             'duration': [],

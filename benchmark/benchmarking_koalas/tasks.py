@@ -1,10 +1,9 @@
-import pandas as pd
-import numpy as np
 import pyspark.pandas as ks
+import numpy as np
 
 
-def read_file_parquet(df=None):
-    return ks.read_parquet("/home/robert/Desktop/cdle-assignment/datasets/taxis_2009-01.parquet")
+def read_file_parquet(df=None, **kwargs):
+    return ks.read_parquet(kwargs.get("path"))
 
 def count(df=None):
     return len(df)

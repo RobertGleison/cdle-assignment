@@ -4,55 +4,73 @@ import pyspark.pandas as ks
 import pandas as pd
 import numpy as np
 from benchmark.koalas.tasks import (
-    read_file_parquet,
-    count,
+    mean_of_complicated_arithmetic_operation,
+    complicated_arithmetic_operation,
     count_index_length,
-    mean,
+    groupby_statistics,
     standard_deviation,
-    mean_of_sum,
-    sum_columns,
+    read_file_parquet,
     mean_of_product,
     product_columns,
     value_counts,
-    mean_of_complicated_arithmetic_operation,
-    complicated_arithmetic_operation,
-    groupby_statistics,
+    mean_of_sum,
+    sum_columns,
     join_count,
     join_data,
+    count,
+    mean,
 )
 
 
-class Benchmark:
+class LocalkoalasBenchmark:
     def __init__(self):
         self.benchmarks_results = None
+        self.client = SparkSession.builder.getOrCreate()
 
-    def run_benchmark(self, file_path):
-        session = SparkSession.builder.getOrCreate()
+
+    def run_benchmark(self, file_path: str) -> None:
         koalas_data = ks.read_parquet(file_path)
+        client = self.client
+
         koalas_benchmarks = {
             'duration': [],
             'task': [],
         }
 
-        benchmark(read_file_parquet, df=None, benchmarks=koalas_benchmarks, name='koalas local read file', path = file_path)
-        benchmark(count, df=koalas_data, benchmarks=koalas_benchmarks, name='koalas local count')
-        benchmark(count_index_length, df=koalas_data, benchmarks=koalas_benchmarks, name='koalas local count index length')
-        benchmark(mean, df=koalas_data, benchmarks=koalas_benchmarks, name='koalas local mean')
-        benchmark(standard_deviation, df=koalas_data, benchmarks=koalas_benchmarks, name='koalas local standard deviation')
-        benchmark(mean_of_sum, df=koalas_data, benchmarks=koalas_benchmarks, name='koalas local mean of columns addition')
-        benchmark(sum_columns, df=koalas_data, benchmarks=koalas_benchmarks, name='koalas local addition of columns')
-        benchmark(mean_of_product, df=koalas_data, benchmarks=koalas_benchmarks, name='koalas local mean of columns multiplication')
-        benchmark(product_columns, df=koalas_data, benchmarks=koalas_benchmarks, name='koalas local multiplication of columns')
-        benchmark(value_counts, df=koalas_data, benchmarks=koalas_benchmarks, name='koalas local value counts')
-        benchmark(mean_of_complicated_arithmetic_operation, df=koalas_data, benchmarks=koalas_benchmarks, name='koalas local mean of complex arithmetic oks')
-        benchmark(complicated_arithmetic_operation, df=koalas_data, benchmarks=koalas_benchmarks, name='koalas local complex arithmetic oks')
-        benchmark(groupby_statistics, df=koalas_data, benchmarks=koalas_benchmarks, name='koalas local groupby statistics')
+        # Normal local running
+        koalas_benchmarks = self.un_common_benchmarks(koalas_data, 'koalas local', koalas_benchmarks, file_path)
 
-        other = groupby_statistics(koalas_data)
-        other.columns = pd.Index([e[0]+'_' + e[1] for e in other.columns.tolist()])
-        benchmark(join_count, koalas_data, benchmarks=koalas_benchmarks, name='koalas local join count', other=other)
-        benchmark(join_data, koalas_data, benchmarks=koalas_benchmarks, name='koalas local join', other=other)
+        # Filtered local running
+        expr_filter = (koalas_data.Tip_Amt >= 1) & (koalas_data.Tip_Amt <= 5)
+        filtered_koalas_data = koalas_data[expr_filter]
+        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'koalas local filtered', koalas_benchmarks, file_path)
+
+        # Filtered with cache runnning
+        filtered_koalas_data = filtered_koalas_data.spark.cache()
+        print(f'Enforce caching: {len(filtered_koalas_data)} rows of filtered data')
+        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'koalas local filtered cache', koalas_benchmarks, file_path)
 
         self.benchmarks_results = koalas_benchmarks
-        session.stop()
 
+
+    def run_common_benchmarks(self, data: ks.DataFrame, name_prefix: str, koalas_benchmarks: dict, file_path: str) -> dict:
+        benchmark(read_file_parquet, df=None, benchmarks=koalas_benchmarks, name=f'{name_prefix} read file', path=file_path)
+        benchmark(count, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} count')
+        benchmark(count_index_length, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} count index length')
+        benchmark(mean, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean')
+        benchmark(standard_deviation, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} standard deviation')
+        benchmark(mean_of_sum, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean of columns addition')
+        benchmark(sum_columns, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} addition of columns')
+        benchmark(mean_of_product, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean of columns multiplication')
+        benchmark(product_columns, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} multiplication of columns')
+        benchmark(value_counts, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} value counts')
+        benchmark(mean_of_complicated_arithmetic_operation, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean of complex arithmetic ops')
+        benchmark(complicated_arithmetic_operation, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} complex arithmetic ops')
+        benchmark(groupby_statistics, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} groupby statistics')
+
+        other = groupby_statistics(data)
+        other.columns = pd.Index([e[0]+'_' + e[1] for e in other.columns.tolist()])
+        benchmark(join_count, data, benchmarks=koalas_benchmarks, name=f'{name_prefix} join count', other=other)
+        benchmark(join_data, data, benchmarks=koalas_benchmarks, name=f'{name_prefix} join', other=other)
+
+        return koalas_benchmarks

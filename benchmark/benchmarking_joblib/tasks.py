@@ -1,10 +1,9 @@
 import pandas as pd
 import numpy as np
-import dask.dataframe as dd
 from joblib import delayed
 
-def read_file_parquet(df=None):
-    return dd.read_parquet("/home/robert/Desktop/cdle-assignment/datasets/taxis_2009-01.parquet")
+def read_file_parquet(df=None, **kwargs):
+    return pd.read_parquet(kwargs.get("path"))
 
 @delayed
 def count(df=None):
