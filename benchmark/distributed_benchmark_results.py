@@ -35,5 +35,5 @@ if __name__ == "__main__":
               ]
         )
 
-    filename = 'local_benchmark_' + datetime.now().strftime("%H%M%S")
+    filename = 'distributed_benchmark_' + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv"
     df.to_csv(f"logs/{filename}")
