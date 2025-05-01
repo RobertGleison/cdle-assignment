@@ -11,7 +11,7 @@ import pandas as pd
 if __name__ == "__main__":
 
     # https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page to donwload the datasets
-    input_path = "datasets/taxis_2009-01_reduced_with_id.parquet"
+    input_path = "../datasets/taxis_2009-01_reduced.parquet"
 
     local_joblib_benchmarks = get_results(LocalJoblibBenchmark(input_path).benchmarks_results)
     local_koalas_benchmarks = get_results(LocalKoalasBenchmark(input_path).benchmarks_results)
