@@ -2,12 +2,15 @@
 datasets/*.parquet
 datasets/*.csv
 benchmark/poetry.lock
+benchmark/joblib_cache
 terraform_infra/.terraform/
 terraform_infra/.terraform.lock.hcl
 terraform_infra/terraform.tfstate.backup
 terraform_infra/terraform.tfstate
 terraform_infra/terraform.tfvars
 benchmark/logs/*.parquet
+*/__pycache__
+.env
 .idea
 .vscode
 __pycache__/

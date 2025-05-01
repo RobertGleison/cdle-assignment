@@ -1,14 +1,14 @@
-import modin.pandas as mpd  # Importação do Modin
+import modin.pandas as mpd
 import numpy as np
 
 def read_file_parquet(df=None, **kwargs):
     return mpd.read_parquet(kwargs.get("path"))
 
 def count(df=None):
-    return len(df)
+    return df.shape[0] # modin optimized len(df)
 
 def count_index_length(df=None):
-    return len(df.index)
+    return df.index.size # modin optimized len(df.index)
 
 def mean(df):
     return df.Fare_Amt.mean()
@@ -32,23 +32,27 @@ def value_counts(df):
     return df.Fare_Amt.value_counts()
 
 def mean_of_complicated_arithmetic_operation(df):
-    theta_1 = df.Start_Lon
-    phi_1 = df.Start_Lat
-    theta_2 = df.End_Lon
-    phi_2 = df.End_Lat
-    temp = (np.sin((theta_2-theta_1)/2*np.pi/180)**2
-           + np.cos(theta_1*np.pi/180)*np.cos(theta_2*np.pi/180) * np.sin((phi_2-phi_1)/2*np.pi/180)**2)
-    ret = 2 * np.arctan2(np.sqrt(temp), np.sqrt(1-temp))
+    # Convert degrees to radians once
+    theta_1 = df.Start_Lon * np.pi / 180
+    phi_1 = df.Start_Lat * np.pi / 180
+    theta_2 = df.End_Lon * np.pi / 180
+    phi_2 = df.End_Lat * np.pi / 180
+    dtheta = theta_2 - theta_1
+    dphi = phi_2 - phi_1
+    temp = (np.sin(dphi / 2) ** 2 + np.cos(phi_1) * np.cos(phi_2) * np.sin(dtheta / 2) ** 2)
+    ret = 2 * np.arctan2(np.sqrt(temp), np.sqrt(1 - temp))
     return ret.mean()
 
 def complicated_arithmetic_operation(df):
-    theta_1 = df.Start_Lon
-    phi_1 = df.Start_Lat
-    theta_2 = df.End_Lon
-    phi_2 = df.End_Lat
-    temp = (np.sin((theta_2-theta_1)/2*np.pi/180)**2
-           + np.cos(theta_1*np.pi/180)*np.cos(theta_2*np.pi/180) * np.sin((phi_2-phi_1)/2*np.pi/180)**2)
-    ret = 2 * np.arctan2(np.sqrt(temp), np.sqrt(1-temp))
+    # Convert degrees to radians once
+    theta_1 = df.Start_Lon * np.pi / 180
+    phi_1 = df.Start_Lat * np.pi / 180
+    theta_2 = df.End_Lon * np.pi / 180
+    phi_2 = df.End_Lat * np.pi / 180
+    dtheta = theta_2 - theta_1
+    dphi = phi_2 - phi_1
+    temp = (np.sin(dphi / 2) ** 2 + np.cos(phi_1) * np.cos(phi_2) * np.sin(dtheta / 2) ** 2)
+    ret = 2 * np.arctan2(np.sqrt(temp), np.sqrt(1 - temp))
     return ret
 
 def groupby_statistics(df):
@@ -60,7 +64,7 @@ def groupby_statistics(df):
     )
 
 def join_count(df, other):
-    return len(df.merge(other, left_index=True, right_index=True))
+    return df.merge(other, left_index=True, right_index=True).shape[0]
 
 def join_data(df, other):
     return df.merge(other, left_index=True, right_index=True)

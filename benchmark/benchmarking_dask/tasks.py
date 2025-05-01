@@ -31,25 +31,27 @@ def product_columns(df):
 def value_counts(df):
     return df.Fare_Amt.value_counts().compute()
 
-def mean_of_complicated_arithmetic_operation(df):
-    theta_1 = df.Start_Lon
-    phi_1 = df.Start_Lat
-    theta_2 = df.End_Lon
-    phi_2 = df.End_Lat
-    temp = (np.sin((theta_2-theta_1)/2*np.pi/180)**2
-           + np.cos(theta_1*np.pi/180)*np.cos(theta_2*np.pi/180) * np.sin((phi_2-phi_1)/2*np.pi/180)**2)
-    ret = 2 * np.arctan2(np.sqrt(temp), np.sqrt(1-temp))
-    return ret.mean().compute()
-
 def complicated_arithmetic_operation(df):
-    theta_1 = df.Start_Lon
-    phi_1 = df.Start_Lat
-    theta_2 = df.End_Lon
-    phi_2 = df.End_Lat
-    temp = (np.sin((theta_2-theta_1)/2*np.pi/180)**2
-           + np.cos(theta_1*np.pi/180)*np.cos(theta_2*np.pi/180) * np.sin((phi_2-phi_1)/2*np.pi/180)**2)
-    ret = 2 * np.arctan2(np.sqrt(temp), np.sqrt(1-temp))
+    theta_1 = df.Start_Lon * np.pi / 180
+    phi_1 = df.Start_Lat * np.pi / 180
+    theta_2 = df.End_Lon * np.pi / 180
+    phi_2 = df.End_Lat * np.pi / 180
+    dtheta = theta_2 - theta_1
+    dphi = phi_2 - phi_1
+    temp = (np.sin(dphi / 2) ** 2 + np.cos(phi_1) * np.cos(phi_2) * np.sin(dtheta / 2) ** 2)
+    ret = 2 * np.arctan2(np.sqrt(temp), np.sqrt(1 - temp))
     return ret.compute()
+
+def mean_of_complicated_arithmetic_operation(df):
+    theta_1 = df.Start_Lon * np.pi / 180
+    phi_1 = df.Start_Lat * np.pi / 180
+    theta_2 = df.End_Lon * np.pi / 180
+    phi_2 = df.End_Lat * np.pi / 180
+    dtheta = theta_2 - theta_1
+    dphi = phi_2 - phi_1
+    temp = (np.sin(dphi / 2) ** 2 + np.cos(phi_1) * np.cos(phi_2) * np.sin(dtheta / 2) ** 2)
+    ret = 2 * np.arctan2(np.sqrt(temp), np.sqrt(1 - temp))
+    return ret.mean().compute()
 
 def groupby_statistics(df):
     return df.groupby(by='Passenger_Count').agg(
