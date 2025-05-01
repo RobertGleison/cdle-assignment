@@ -22,7 +22,7 @@ from benchmark.koalas.tasks import (
 )
 
 
-class LocalKoalasBenchmark:
+class DistributedKoalasBenchmark:
     def __init__(self, file_path):
         self.benchmarks_results = self.run_benchmark(file_path)
         self.client = SparkSession.builder.getOrCreate()
@@ -37,18 +37,18 @@ class LocalKoalasBenchmark:
             'task': [],
         }
 
-        # Normal local running
-        koalas_benchmarks = self.un_common_benchmarks(koalas_data, 'koalas local', koalas_benchmarks, file_path)
+        # Normal distributed running
+        koalas_benchmarks = self.un_common_benchmarks(koalas_data, 'koalas distributed', koalas_benchmarks, file_path)
 
-        # Filtered local running
+        # Filtered distributed running
         expr_filter = (koalas_data.Tip_Amt >= 1) & (koalas_data.Tip_Amt <= 5)
         filtered_koalas_data = koalas_data[expr_filter]
-        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'koalas local filtered', koalas_benchmarks, file_path)
+        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'koalas distributed filtered', koalas_benchmarks, file_path)
 
         # Filtered with cache runnning
         filtered_koalas_data = filtered_koalas_data.spark.cache()
         print(f'Enforce caching: {len(filtered_koalas_data)} rows of filtered data')
-        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'koalas local filtered cache', koalas_benchmarks, file_path)
+        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'koalas distributed filtered cache', koalas_benchmarks, file_path)
 
         self.benchmarks_results = koalas_benchmarks
 

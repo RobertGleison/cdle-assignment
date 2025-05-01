@@ -28,8 +28,8 @@ from benchmarking_dask.tasks import (
 # })
 
 class LocalDaskBenchmark:
-    def __init__(self):
-        self.benchmarks_results = None
+    def __init__(self, file_path):
+        self.benchmarks_results = self.run_benchmark(file_path)
         self.client = Client(
             n_workers=4,
             threads_per_worker=2,
