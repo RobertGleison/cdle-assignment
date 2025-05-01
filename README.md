@@ -58,3 +58,4 @@ The datasets used in the benchmark can be found on the official New York City TL
 # Infrastructure with Terraform
 
 The `terraform_infra` folder contains the Infrastructure-as-Code (IaC) configuration to create a cluster and a virtual machine in Google Cloud Platform (GCP) using a student voucher. This allows you to run the benchmarking in a cloud environment.
+
