@@ -1,8 +1,6 @@
 from benchmark_setup import benchmark
 from dask.distributed import Client
-import modin.config as modin_cfg
 import modin.pandas as mpd
-import pandas as pd
 from benchmark.benchmarking_modin.tasks import (
     mean_of_complicated_arithmetic_operation,
     complicated_arithmetic_operation,
@@ -21,17 +19,14 @@ from benchmark.benchmarking_modin.tasks import (
     mean,
 )
 
-modin_cfg.Engine.put("dask")
 
 class DistributedModinBenchmark:
     def __init__(self, file_path):
-        self.client = Client('127.0.0.1:8786')
         self.benchmarks_results = self.run_benchmark(file_path)
 
 
     def run_benchmark(self, file_path: str) -> None:
         modin_data = mpd.read_parquet(file_path)
-        client = self.client
 
         modin_benchmarks = {
             'duration': [],
@@ -39,19 +34,19 @@ class DistributedModinBenchmark:
         }
 
         # Normal distributed running
-        modin_benchmarks = self.un_common_benchmarks(modin_data, 'modin distributed', modin_benchmarks, file_path)
+        modin_benchmarks = self.run_common_benchmarks(modin_data, 'modin distributed', modin_benchmarks, file_path)
 
         # Filtered distributed running
         expr_filter = (modin_data.Tip_Amt >= 1) & (modin_data.Tip_Amt <= 5)
         filtered_modin_data = modin_data[expr_filter]
         modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'modin distributed filtered', modin_benchmarks, file_path)
 
-        # Filtered with cache runnning
+        # Filtered with cache running
         filtered_modin_data = filtered_modin_data.copy() # Uses copy instead of persist cause modin is not a dask object
         modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'modin distributed filtered cache', modin_benchmarks, file_path)
 
         self.benchmarks_results = modin_benchmarks
-        client.close()
+
 
 
     def run_common_benchmarks(self, data: mpd.DataFrame, name_prefix: str, modin_benchmarks: dict, file_path: str) -> dict:

@@ -1,11 +1,18 @@
 from benchmarking_koalas.distributed_koalas_benchmark import DistributedKoalasBenchmark
 from benchmarking_rapids.distributed_rapids_benchmark import DistributedRapidsBenchmark
 from benchmarking_modin.distributed_modin_benchmark import DistributedModinBenchmark
+from benchmarking_modin.modin_distributed_config import configure_modin_with_dask
 from benchmarking_spark.distributed_spark_benchmark import DistributedSparkBenchmark
 from benchmarking_dask.distributed_dask_benchmark import DistributedDaskBenchmark
 from benchmark_setup import get_results
 from datetime import datetime
 import pandas as pd
+
+configure_modin_with_dask()
+
+import modin.pandas as mpd
+
+client = Client("127.0.0.1:8786")
 
 if __name__ == "__main__":
 
