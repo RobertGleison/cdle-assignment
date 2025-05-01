@@ -7,6 +7,7 @@ from benchmarking_dask.local_dask_benchmark import LocalDaskBenchmark
 from benchmark_setup import get_results
 from datetime import datetime
 import pandas as pd
+import os
 
 if __name__ == "__main__":
 
@@ -39,5 +40,6 @@ if __name__ == "__main__":
             ]
         )
 
-    filename = 'benchmark/logs/distributed_benchmark_' + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv"
+    os.makedirs('logs', exist_ok=True)
+    filename = 'logs/distributed_benchmark_' + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv"
     df.to_csv(filename)

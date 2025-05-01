@@ -36,26 +36,37 @@ def value_counts(df):
     return val_counts
 
 def complicated_arithmetic_operation(df):
-    # theta_1 = df.Start_Lon
-    # phi_1 = df.Start_Lat
-    # theta_2 = df.End_Lon
-    # phi_2 = df.End_Lat
-    # temp = (np.sin((theta_2 - theta_1) / 2 * np.pi / 180) ** 2
-    #        + np.cos(theta_1 * np.pi / 180) * np.cos(theta_2 * np.pi / 180) * np.sin((phi_2 - phi_1) / 2 * np.pi / 180) ** 2)
-    # ret = np.multiply(np.arctan2(np.sqrt(temp), np.sqrt(1-temp)),2)
-    # return ret
-    pass
+     # Use numpy functions for trigonometric operations
+    theta_1 = np.radians(df['Start_Lon'])  # Convert to radians
+    phi_1 = np.radians(df['Start_Lat'])    # Convert to radians
+    theta_2 = np.radians(df['End_Lon'])    # Convert to radians
+    phi_2 = np.radians(df['End_Lat'])      # Convert to radians
+
+    # Haversine formula to calculate the great-circle distance between two points on the Earth's surface
+    temp = (np.sin((theta_2 - theta_1) / 2) ** 2 +
+            np.cos(theta_1) * np.cos(theta_2) * np.sin((phi_2 - phi_1) / 2) ** 2)
+
+    # Apply arctangent formula to get distance
+    ret = np.arctan2(np.sqrt(temp), np.sqrt(1 - temp)) * 2
+
+    return ret
 
 def mean_of_complicated_arithmetic_operation(df):
-    # theta_1 = df.Start_Lon
-    # phi_1 = df.Start_Lat
-    # theta_2 = df.End_Lon
-    # phi_2 = df.End_Lat
-    # temp = (np.sin((theta_2 - theta_1) / 2 * np.pi / 180) ** 2
-    #        + np.cos(theta_1 * np.pi / 180) * np.cos(theta_2 * np.pi / 180) * np.sin((phi_2 - phi_1) / 2 * np.pi / 180) ** 2)
-    # ret = np.multiply(np.arctan2(np.sqrt(temp), np.sqrt(1-temp)),2)
-    # return ret.mean()
-    pass
+     # Use numpy functions for trigonometric operations
+    theta_1 = np.radians(df['Start_Lon'])  # Convert to radians
+    phi_1 = np.radians(df['Start_Lat'])    # Convert to radians
+    theta_2 = np.radians(df['End_Lon'])    # Convert to radians
+    phi_2 = np.radians(df['End_Lat'])      # Convert to radians
+
+    # Haversine formula to calculate the great-circle distance between two points on the Earth's surface
+    temp = (np.sin((theta_2 - theta_1) / 2) ** 2 +
+            np.cos(theta_1) * np.cos(theta_2) * np.sin((phi_2 - phi_1) / 2) ** 2)
+
+    # Apply arctangent formula to get distance
+    ret = np.arctan2(np.sqrt(temp), np.sqrt(1 - temp)) * 2
+
+    return ret.mean()
+
 
 
 def groupby_statistics(df):
