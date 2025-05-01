@@ -12,6 +12,11 @@ setup:
 	pip install poetry==1.8.2 && \
 	poetry install
 
+install_rapids:
+	- pip install \
+    --extra-index-url=https://pypi.nvidia.com \
+    "cudf-cu11==25.4.*" "dask-cudf-cu11==25.4.*"
+
 clean:
 	- deactivate 2>/dev/null || true
 	rm -rf .venv
