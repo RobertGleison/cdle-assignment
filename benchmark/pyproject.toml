@@ -6,12 +6,14 @@ authors = ["Robert Gleison"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.10"
 pandas = "^2.2.3"
 joblib = "^1.4.2"
 modin = "^0.32.0"
 pyspark = "^3.5.5"
-dask = "^2025.4.1"
+dask = {extras = ["distributed"], version = "^2025.4.1"}
+pyarrow = "^20.0.0"
+numpy = "^1.23"
 
 [build-system]
 requires = ["poetry-core"]

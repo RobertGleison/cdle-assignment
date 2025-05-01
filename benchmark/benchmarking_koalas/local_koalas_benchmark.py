@@ -1,9 +1,9 @@
-from benchmark_setup import benchmark
+from benchmark.benchmark_setup import benchmark
 from pyspark.sql import SparkSession
 import pyspark.pandas as ks
 import pandas as pd
 import numpy as np
-from benchmark.koalas.tasks import (
+from benchmark.benchmarking_koalas.tasks import (
     mean_of_complicated_arithmetic_operation,
     complicated_arithmetic_operation,
     count_index_length,
@@ -24,13 +24,15 @@ from benchmark.koalas.tasks import (
 
 class LocalKoalasBenchmark:
     def __init__(self, file_path):
+        self.client = SparkSession.builder.appName("KoalasBenchmark") \
+        .config("spark.driver.memory", "12g") \
+        .getOrCreate()
+
         self.benchmarks_results = self.run_benchmark(file_path)
-        self.client = SparkSession.builder.getOrCreate()
 
 
     def run_benchmark(self, file_path: str) -> None:
-        koalas_data = ks.read_parquet(file_path)
-        client = self.client
+        koalas_data = ks.read_parquet(file_path, index_col=None)
 
         koalas_benchmarks = {
             'duration': [],
@@ -38,7 +40,7 @@ class LocalKoalasBenchmark:
         }
 
         # Normal local running
-        koalas_benchmarks = self.un_common_benchmarks(koalas_data, 'koalas local', koalas_benchmarks, file_path)
+        koalas_benchmarks = self.run_common_benchmarks(koalas_data, 'koalas local', koalas_benchmarks, file_path)
 
         # Filtered local running
         expr_filter = (koalas_data.Tip_Amt >= 1) & (koalas_data.Tip_Amt <= 5)
@@ -49,8 +51,8 @@ class LocalKoalasBenchmark:
         filtered_koalas_data = filtered_koalas_data.spark.cache()
         print(f'Enforce caching: {len(filtered_koalas_data)} rows of filtered data')
         koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'koalas local filtered cache', koalas_benchmarks, file_path)
+        return koalas_benchmarks
 
-        self.benchmarks_results = koalas_benchmarks
 
 
     def run_common_benchmarks(self, data: ks.DataFrame, name_prefix: str, koalas_benchmarks: dict, file_path: str) -> dict:

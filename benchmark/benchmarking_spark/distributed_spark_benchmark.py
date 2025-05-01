@@ -22,8 +22,8 @@ from benchmark.benchmarking_spark.tasks import (  # assuming you renamed your ta
 
 class DistributedSparkBenchmark:
     def __init__(self, file_path):
-        self.benchmarks_results = self.run_benchmark(file_path)
         self.client = SparkSession.builder.getOrCreate()
+        self.benchmarks_results = self.run_benchmark(file_path)
 
     def run_benchmark(self, file_path: str) -> None:
         spark_data = self.client.read.parquet(file_path)

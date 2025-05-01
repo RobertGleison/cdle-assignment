@@ -22,7 +22,6 @@ def mean_of_sum(df):
 
 def sum_columns(df):
     x = df.Fare_Amt + df.Tip_Amt
-    x.to_pandas()
     return x
 
 def mean_of_product(df):
@@ -30,49 +29,47 @@ def mean_of_product(df):
 
 def product_columns(df):
     x = df.Fare_Amt * df.Tip_Amt
-    x.to_pandas()
     return x
 
 def value_counts(df):
     val_counts = df.Fare_Amt.value_counts()
-    val_counts.to_pandas()
     return val_counts
 
 def complicated_arithmetic_operation(df):
-    theta_1 = df.Start_Lon
-    phi_1 = df.Start_Lat
-    theta_2 = df.End_Lon
-    phi_2 = df.End_Lat
-    temp = (np.sin((theta_2 - theta_1) / 2 * np.pi / 180) ** 2
-           + np.cos(theta_1 * np.pi / 180) * np.cos(theta_2 * np.pi / 180) * np.sin((phi_2 - phi_1) / 2 * np.pi / 180) ** 2)
-    ret = np.multiply(np.arctan2(np.sqrt(temp), np.sqrt(1-temp)),2)
-    ret.to_pandas()
-    return ret
+    # theta_1 = df.Start_Lon
+    # phi_1 = df.Start_Lat
+    # theta_2 = df.End_Lon
+    # phi_2 = df.End_Lat
+    # temp = (np.sin((theta_2 - theta_1) / 2 * np.pi / 180) ** 2
+    #        + np.cos(theta_1 * np.pi / 180) * np.cos(theta_2 * np.pi / 180) * np.sin((phi_2 - phi_1) / 2 * np.pi / 180) ** 2)
+    # ret = np.multiply(np.arctan2(np.sqrt(temp), np.sqrt(1-temp)),2)
+    # return ret
+    pass
 
 def mean_of_complicated_arithmetic_operation(df):
-    theta_1 = df.Start_Lon
-    phi_1 = df.Start_Lat
-    theta_2 = df.End_Lon
-    phi_2 = df.End_Lat
-    temp = (np.sin((theta_2 - theta_1) / 2 * np.pi / 180) ** 2
-           + np.cos(theta_1 * np.pi / 180) * np.cos(theta_2 * np.pi / 180) * np.sin((phi_2 - phi_1) / 2 * np.pi / 180) ** 2)
-    ret = np.multiply(np.arctan2(np.sqrt(temp), np.sqrt(1-temp)),2)
-    return ret.mean()
+    # theta_1 = df.Start_Lon
+    # phi_1 = df.Start_Lat
+    # theta_2 = df.End_Lon
+    # phi_2 = df.End_Lat
+    # temp = (np.sin((theta_2 - theta_1) / 2 * np.pi / 180) ** 2
+    #        + np.cos(theta_1 * np.pi / 180) * np.cos(theta_2 * np.pi / 180) * np.sin((phi_2 - phi_1) / 2 * np.pi / 180) ** 2)
+    # ret = np.multiply(np.arctan2(np.sqrt(temp), np.sqrt(1-temp)),2)
+    # return ret.mean()
+    pass
+
 
 def groupby_statistics(df):
-    gb = df.groupby(by='passenger_count').agg(
+    gb = df.groupby(by='Passenger_Count').agg(
       {
         'Fare_Amt': ['mean', 'std'],
         'Tip_Amt': ['mean', 'std']
       }
     )
-    gb.to_pandas()
     return gb
 
 def join_count(df, other):
-    return len(df.merge(other.spark.hint("broadcast"), left_index=True, right_index=True))
+    joined = df.join(other, on="Passenger_Count")  # Join on the correct column
+    return joined.count()
 
 def join_data(df, other):
-    ret = df.merge(other.spark.hint("broadcast"), left_index=True, right_index=True)
-    ret.to_pandas()
-    return ret
+    return df.join(other, on="Passenger_Count")  # Join on the correct column

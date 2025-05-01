@@ -29,13 +29,13 @@ from benchmarking_dask.tasks import (
 
 class LocalDaskBenchmark:
     def __init__(self, file_path):
-        self.benchmarks_results = self.run_benchmark(file_path)
         self.client = Client(
             n_workers=4,
             threads_per_worker=2,
             memory_limit='2.5GB',
             processes=True
             )
+        self.benchmarks_results = self.run_benchmark(file_path)
 
 
     def run_benchmark(self, file_path: str) -> None:
@@ -48,7 +48,7 @@ class LocalDaskBenchmark:
         }
 
         # Normal local running
-        dask_benchmarks = self.un_common_benchmarks(dask_data, 'Dask local', dask_benchmarks, file_path)
+        dask_benchmarks = self.run_common_benchmarks(dask_data, 'Dask local', dask_benchmarks, file_path)
 
         # Filtered local running
         expr_filter = (dask_data.Tip_Amt >= 1) & (dask_data.Tip_Amt <= 5)
@@ -59,8 +59,7 @@ class LocalDaskBenchmark:
         filtered_dask_data = client.persist(filtered_dask_data)
         wait(filtered_dask_data)
         dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'Dask local filtered cache', dask_benchmarks, file_path)
-
-        self.benchmarks_results = dask_benchmarks
+        return dask_benchmarks
 
 
     def run_common_benchmarks(self, data: dd.DataFrame, name_prefix: str, dask_benchmarks: dict, file_path: str) -> dict:

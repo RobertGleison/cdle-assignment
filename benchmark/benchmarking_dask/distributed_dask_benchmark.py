@@ -29,8 +29,8 @@ from benchmarking_dask.tasks import (
 
 class DistributedDaskBenchmark:
     def __init__(self):
-        self.benchmarks_results = None
         self.client = Client('127.0.0.1:8786')
+        self.benchmarks_results = None
 
 
     def run_benchmark(self, file_path: str) -> None:
