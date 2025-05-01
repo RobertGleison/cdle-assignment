@@ -37,7 +37,7 @@ def product_columns(df):
 def value_counts(df):
     return df.groupBy("Fare_Amt").count()
 
-def optimized_complicated_arithmetic_operation(df):
+def complicated_arithmetic_operation(df):
     theta_1 = col("Start_Lon") * pi / 180
     phi_1 = col("Start_Lat") * pi / 180
     theta_2 = col("End_Lon") * pi / 180

@@ -1,79 +1,78 @@
 import pyspark.pandas as ps
 from math import pi
 import numpy as np
+from pyspark.sql.functions import (
+    col, mean, stddev,sin, cos, sqrt, atan2, lit, avg, pi
+)
 
-def read_file_parquet_pandas(**kwargs):
-    """Read parquet file using Spark pandas"""
+def read_file_parquet(df=None, **kwargs):
     return ps.read_parquet(kwargs.get("path"))
 
-def count_pandas(df):
-    """Count rows using Spark pandas"""
+def count(df):
     return len(df)
 
-def count_index_length_pandas(df):
-    """Count index length (same as count for DataFrame)"""
+def count_index_length(df):
     return len(df)
 
-def mean_pandas(df):
-    """Calculate mean of Fare_Amt column"""
+def mean(df):
     return df["Fare_Amt"].mean()
 
-def standard_deviation_pandas(df):
-    """Calculate standard deviation of Fare_Amt column"""
+def standard_deviation(df):
     return df["Fare_Amt"].std()
 
-def mean_of_sum_pandas(df):
-    """Calculate mean of sum of Fare_Amt and Tip_Amt"""
+def mean_of_sum(df):
     return (df["Fare_Amt"] + df["Tip_Amt"]).mean()
 
-def sum_columns_pandas(df):
-    """Return sum of Fare_Amt and Tip_Amt as a new Series"""
+def sum_columns(df):
     return df["Fare_Amt"] + df["Tip_Amt"]
 
-def mean_of_product_pandas(df):
-    """Calculate mean of product of Fare_Amt and Tip_Amt"""
+def mean_of_product(df):
     return (df["Fare_Amt"] * df["Tip_Amt"]).mean()
 
-def product_columns_pandas(df):
-    """Return product of Fare_Amt and Tip_Amt as a new Series"""
+def product_columns(df):
     return df["Fare_Amt"] * df["Tip_Amt"]
 
-def value_counts_pandas(df):
-    """Count occurrences of each value in Fare_Amt column"""
+def value_counts(df):
     return df["Fare_Amt"].value_counts()
 
-def optimized_complicated_arithmetic_operation_pandas(df):
-    """Calculate haversine distance between start and end coordinates"""
-    theta_1 = df["Start_Lon"] * pi / 180
-    phi_1 = df["Start_Lat"] * pi / 180
-    theta_2 = df["End_Lon"] * pi / 180
-    phi_2 = df["End_Lat"] * pi / 180
+def complicated_arithmetic_operation(df):
+    # Process in smaller chunks if DataFrame is large
+    if len(df) > 1000000:  # Adjust threshold as needed
+        return ps.concat([complicated_arithmetic_operation(df.iloc[i:i+100000])
+                      for i in range(0, len(df), 100000)])
 
-    dtheta = theta_2 - theta_1
-    dphi = phi_2 - phi_1
+    lat1 = df["Start_Lat"].to_numpy() * np.pi/180
+    lon1 = df["Start_Lon"].to_numpy() * np.pi/180
+    lat2 = df["End_Lat"].to_numpy() * np.pi/180
+    lon2 = df["End_Lon"].to_numpy() * np.pi/180
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+    a = np.sin(dlat/2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon/2)**2
+    return 2 * np.arctan2(np.sqrt(a), np.sqrt(1-a))
 
-    temp = (np.sin(dphi / 2) ** 2) + (np.cos(phi_1) * np.cos(phi_2) * (np.sin(dtheta / 2) ** 2))
-    distance = 2 * np.arctan2(np.sqrt(temp), np.sqrt(1 - temp))
-    return distance
+def mean_of_complicated_arithmetic_operation(df):
+    lat1 = df["Start_Lat"] * np.pi/180
+    lon1 = df["Start_Lon"] * np.pi/180
+    lat2 = df["End_Lat"] * np.pi/180
+    lon2 = df["End_Lon"] * np.pi/180
 
-def mean_of_complicated_arithmetic_operation_pandas(df):
-    """Calculate mean haversine distance"""
-    distance = optimized_complicated_arithmetic_operation_pandas(df)
-    return distance.mean()
+    temp = (
+        np.sin((lat2 - lat1)/2)**2 +
+        np.cos(lat1) * np.cos(lat2) * np.sin((lon2 - lon1)/2)**2
+    )
+    return (2 * np.arctan2(np.sqrt(temp), np.sqrt(1 - temp))).mean()
 
-def groupby_statistics_pandas(df):
-    """Calculate statistics grouped by Passenger_Count"""
+
+def groupby_statistics(df):
     grouped = df.groupby("Passenger_Count")
     return grouped.agg({
         "Fare_Amt": ["mean", "std"],
         "Tip_Amt": ["mean", "std"]
     })
 
-def join_count_pandas(df, other):
-    """Join and count rows using Spark pandas"""
+def join_count(df, other):
     joined = df.merge(other, on="Passenger_Count")
     return len(joined)
 
-def join_data_pandas(df, other):
-    """Join dataframes on Passenger_Count"""
+def join_data(df, other):
     return df.merge(other, on="Passenger_Count")

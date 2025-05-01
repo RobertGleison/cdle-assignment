@@ -1,7 +1,7 @@
-from benchmark_setup import benchmark
+from benchmark.benchmark_setup import benchmark
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
-from benchmark.benchmarking_spark.tasks import (  # assuming you renamed your task file from `koalas` to `spark`
+from benchmark.benchmarking_spark.tasks import (
     mean_of_complicated_arithmetic_operation,
     complicated_arithmetic_operation,
     groupby_statistics,
@@ -59,8 +59,8 @@ class LocalSparkBenchmark:
         benchmark(mean_of_product, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} mean of columns multiplication')
         benchmark(product_columns, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} multiplication of columns')
         benchmark(value_counts, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} value counts')
-        benchmark(mean_of_complicated_arithmetic_operation, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} mean of complex arithmetic ops')
         benchmark(complicated_arithmetic_operation, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} complex arithmetic ops')
+        benchmark(mean_of_complicated_arithmetic_operation, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} mean of complex arithmetic ops')
         benchmark(groupby_statistics, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} groupby statistics')
 
         # For join, convert groupby result to Spark DataFrame
