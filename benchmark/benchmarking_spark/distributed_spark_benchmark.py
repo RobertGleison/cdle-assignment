@@ -22,7 +22,14 @@ from benchmark.benchmarking_spark.tasks import (  # assuming you renamed your ta
 
 class DistributedSparkBenchmark:
     def __init__(self, file_path):
-        self.client = SparkSession.builder.getOrCreate()
+        self.client = (
+            SparkSession.builder
+            .appName("DistributedSparkBenchmark")
+            .master("spark://localhost:7077") # ou .master("yarn")
+            .config("spark.executor.memory", "4g")
+            .config("spark.executor.instances", "4")
+            .getOrCreate()
+        )
         self.benchmarks_results = self.run_benchmark(file_path)
 
     def run_benchmark(self, file_path: str) -> None:
@@ -34,19 +41,20 @@ class DistributedSparkBenchmark:
             'task': [],
         }
 
-        # Normal distributed running
-        spark_benchmarks = self.un_common_benchmarks(spark_data, 'spark distributed', spark_benchmarks, file_path)
+        # Normal local running
+        spark_benchmarks = self.run_common_benchmarks(spark_data, 'spark local', spark_benchmarks, file_path)
 
-        # Filtered distributed running
+        # Filtered local running
         filtered_data = spark_data.filter((col("Tip_Amt") >= 1) & (col("Tip_Amt") <= 5))
-        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'spark distributed filtered', spark_benchmarks, file_path)
+        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'spark local filtered', spark_benchmarks, file_path)
 
         # Filtered with cache running
         filtered_data.cache()
         print(f'Enforce caching: {filtered_data.count()} rows of filtered data')
-        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'spark distributed filtered cache', spark_benchmarks, file_path)
+        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'spark local filtered cache', spark_benchmarks, file_path)
+        self.client.stop()
+        return spark_benchmarks
 
-        self.benchmarks_results = spark_benchmarks
 
     def run_common_benchmarks(self, data, name_prefix: str, spark_benchmarks: dict, file_path: str) -> dict:
         benchmark(read_file_parquet, df=None, benchmarks=spark_benchmarks, name=f'{name_prefix} read file', path=file_path)
@@ -69,8 +77,4 @@ class DistributedSparkBenchmark:
         benchmark(join_count, data, benchmarks=spark_benchmarks, name=f'{name_prefix} join count', other=other_df)
         benchmark(join_data, data, benchmarks=spark_benchmarks, name=f'{name_prefix} join', other=other_df)
 
-        return spark_benchmarks
-
-    def un_common_benchmarks(self, data, name_prefix: str, spark_benchmarks: dict, file_path: str) -> dict:
-        # You can fill this in if you had additional one-off benchmarks
         return spark_benchmarks
