@@ -1,9 +1,9 @@
-from benchmark_setup import benchmark
+from benchmark.benchmark_setup import benchmark
 from pyspark.sql import SparkSession
 import pyspark.pandas as ks
 import pandas as pd
 import numpy as np
-from benchmark.koalas.tasks import (
+from benchmark.benchmarking_koalas.tasks import (
     mean_of_complicated_arithmetic_operation,
     complicated_arithmetic_operation,
     count_index_length,
@@ -24,8 +24,8 @@ from benchmark.koalas.tasks import (
 
 class DistributedKoalasBenchmark:
     def __init__(self, file_path):
-        self.benchmarks_results = self.run_benchmark(file_path)
         self.client = SparkSession.builder.getOrCreate()
+        self.benchmarks_results = self.run_benchmark(file_path)
 
 
     def run_benchmark(self, file_path: str) -> None:

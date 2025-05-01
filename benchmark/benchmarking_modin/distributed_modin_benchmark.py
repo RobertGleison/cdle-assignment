@@ -3,7 +3,7 @@ from dask.distributed import Client
 import modin.config as modin_cfg
 import modin.pandas as mpd
 import pandas as pd
-from benchmarking_modin.tasks import (
+from benchmark.benchmarking_modin.tasks import (
     mean_of_complicated_arithmetic_operation,
     complicated_arithmetic_operation,
     groupby_statistics,
@@ -25,8 +25,8 @@ modin_cfg.Engine.put("dask")
 
 class DistributedModinBenchmark:
     def __init__(self, file_path):
-        self.benchmarks_results = self.run_benchmark(file_path)
         self.client = Client('127.0.0.1:8786')
+        self.benchmarks_results = self.run_benchmark(file_path)
 
 
     def run_benchmark(self, file_path: str) -> None:

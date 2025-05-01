@@ -75,8 +75,8 @@ def groupby_statistics(df):
 
 @delayed
 def join_count(df, other):
-    return len(dd.merge(df, other, left_index=True, right_index=True))
+    return len(pd.merge(df, other, left_index=True, right_index=True))
 
 @delayed
 def join_data(df, other):
-    return dd.merge(df, other, left_index=True, right_index=True).compute()
+    return pd.merge(df, other, left_index=True, right_index=True).compute()

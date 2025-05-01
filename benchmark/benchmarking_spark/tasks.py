@@ -75,8 +75,8 @@ def groupby_statistics(df):
     )
 
 def join_count(df, other):
-    joined = df.join(other.hint("broadcast"), on="id")  # Replace "id" with appropriate join key
+    joined = df.join(other, on="passenger_count")  # Join on the correct column
     return joined.count()
 
 def join_data(df, other):
-    return df.join(other.hint("broadcast"), on="id")  # Replace "id" with appropriate join key
+    return df.join(other, on="passenger_count")  # Join on the correct column
