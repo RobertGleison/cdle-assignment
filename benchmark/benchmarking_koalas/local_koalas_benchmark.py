@@ -24,10 +24,7 @@ from benchmark.benchmarking_koalas.tasks import (
 
 class LocalKoalasBenchmark:
     def __init__(self, file_path):
-        self.client = SparkSession.builder.appName("KoalasBenchmark") \
-        .config("spark.driver.memory", "12g") \
-        .getOrCreate()
-
+        self.client = SparkSession.builder.master("local[1]").config("spark.executor.memory", "10g").config("spark.driver.memory", "10g").config("spark.executor.instances", "1").config("spark.task.cpus", "1").getOrCreate()
         self.benchmarks_results = self.run_benchmark(file_path)
 
 
@@ -71,7 +68,12 @@ class LocalKoalasBenchmark:
         benchmark(groupby_statistics, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} groupby statistics')
 
         other = groupby_statistics(data)
-        other.columns = pd.Index([e[0]+'_' + e[1] for e in other.columns.tolist()])
+        other.columns = [
+            col[0] if col[1] == '' else f"{col[0]}_{col[1]}"
+            for col in other.columns
+        ]
+        other = other.rename(columns={"Passenger_Count_": "Passenger_Count"})
+
         benchmark(join_count, data, benchmarks=koalas_benchmarks, name=f'{name_prefix} join count', other=other)
         benchmark(join_data, data, benchmarks=koalas_benchmarks, name=f'{name_prefix} join', other=other)
 

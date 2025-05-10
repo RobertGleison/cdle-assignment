@@ -30,9 +30,8 @@ from benchmarking_dask.tasks import (
 class LocalDaskBenchmark:
     def __init__(self, file_path):
         self.client = Client(
-            n_workers=4,
-            threads_per_worker=2,
-            memory_limit='2.5GB',
+            n_workers=1,
+            memory_limit='10GB',
             processes=True
             )
         self.benchmarks_results = self.run_benchmark(file_path)

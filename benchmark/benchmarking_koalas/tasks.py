@@ -1,5 +1,6 @@
 import pyspark.pandas as ps
-from math import pi
+from pyspark.sql import functions as F
+import math
 import numpy as np
 from pyspark.sql.functions import (
     col, mean, stddev,sin, cos, sqrt, atan2, lit, avg, pi
@@ -36,43 +37,41 @@ def value_counts(df):
     return df["Fare_Amt"].value_counts()
 
 def complicated_arithmetic_operation(df):
-    # Process in smaller chunks if DataFrame is large
-    if len(df) > 1000000:  # Adjust threshold as needed
-        return ps.concat([complicated_arithmetic_operation(df.iloc[i:i+100000])
-                      for i in range(0, len(df), 100000)])
-
-    lat1 = df["Start_Lat"].to_numpy() * np.pi/180
-    lon1 = df["Start_Lon"].to_numpy() * np.pi/180
-    lat2 = df["End_Lat"].to_numpy() * np.pi/180
-    lon2 = df["End_Lon"].to_numpy() * np.pi/180
-    dlat = lat2 - lat1
-    dlon = lon2 - lon1
-    a = np.sin(dlat/2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon/2)**2
-    return 2 * np.arctan2(np.sqrt(a), np.sqrt(1-a))
+    theta_1 = col("Start_Lon") * math.pi / 180
+    phi_1 = col("Start_Lat") * math.pi / 180
+    theta_2 = col("End_Lon") * math.pi / 180
+    phi_2 = col("End_Lat") * math.pi / 180
+    dtheta = theta_2 - theta_1
+    dphi = phi_2 - phi_1
+    temp = (sin(dphi / 2) ** 2) + (cos(phi_1) * cos(phi_2) * (sin(dtheta / 2) ** 2))
+    distance = lit(2) * atan2(sqrt(temp), sqrt(lit(1) - temp))
+    return distance
 
 def mean_of_complicated_arithmetic_operation(df):
-    lat1 = df["Start_Lat"] * np.pi/180
-    lon1 = df["Start_Lon"] * np.pi/180
-    lat2 = df["End_Lat"] * np.pi/180
-    lon2 = df["End_Lon"] * np.pi/180
-
-    temp = (
-        np.sin((lat2 - lat1)/2)**2 +
-        np.cos(lat1) * np.cos(lat2) * np.sin((lon2 - lon1)/2)**2
-    )
-    return (2 * np.arctan2(np.sqrt(temp), np.sqrt(1 - temp))).mean()
-
+    # Convert spark.pandas DataFrame to PySpark DataFrame
+    spark_df = df.to_spark()
+    theta_1 = F.col("Start_Lon") * math.pi / 180
+    phi_1 = F.col("Start_Lat") * math.pi / 180
+    theta_2 = F.col("End_Lon") * math.pi / 180
+    phi_2 = F.col("End_Lat") * math.pi / 180
+    dtheta = theta_2 - theta_1
+    dphi = phi_2 - phi_1
+    temp = (F.sin(dphi/2)**2 + F.cos(phi_1) * F.cos(phi_2) * F.sin(dtheta/2)**2)
+    distance = F.lit(2) * F.atan2(F.sqrt(temp), F.sqrt(F.lit(1) - temp))
+    spark_df_with_distance = spark_df.withColumn("distance", distance)
+    mean_distance = spark_df_with_distance.agg(F.avg("distance")).collect()[0][0]
+    return mean_distance
 
 def groupby_statistics(df):
-    grouped = df.groupby("Passenger_Count")
-    return grouped.agg({
+    grouped = df.groupby("Passenger_Count").agg({
         "Fare_Amt": ["mean", "std"],
         "Tip_Amt": ["mean", "std"]
     })
+    # Reset index while staying in Koalas
+    return grouped.reset_index()
 
 def join_count(df, other):
-    joined = df.merge(other, on="Passenger_Count")
-    return len(joined)
+    return len(df.merge(other.spark.hint("broadcast"), on="Passenger_Count"))
 
 def join_data(df, other):
-    return df.merge(other, on="Passenger_Count")
+    return df.merge(other.spark.hint("broadcast"), on="Passenger_Count")

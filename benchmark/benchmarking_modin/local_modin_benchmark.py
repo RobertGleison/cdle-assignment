@@ -26,8 +26,7 @@ modin_cfg.Engine.put("dask")
 class LocalModinBenchmark:
     def __init__(self, file_path):
         self.client = Client(
-            n_workers=4,
-            threads_per_worker=2,
+            n_workers=1,
             memory_limit='10GB',
             processes=True
             )

@@ -22,7 +22,7 @@ from benchmark.benchmarking_spark.tasks import (
 
 class LocalSparkBenchmark:
     def __init__(self, file_path):
-        self.client = SparkSession.builder.getOrCreate()
+        self.client = SparkSession.builder.master("local[1]").config("spark.executor.memory", "10g").config("spark.driver.memory", "10g").config("spark.executor.instances", "1").config("spark.task.cpus", "1").getOrCreate()
         self.benchmarks_results = self.run_benchmark(file_path)
 
     def run_benchmark(self, file_path: str) -> None:
