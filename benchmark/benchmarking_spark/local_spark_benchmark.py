@@ -35,16 +35,16 @@ class LocalSparkBenchmark:
         }
 
         # Normal local running
-        spark_benchmarks = self.run_common_benchmarks(spark_data, 'spark local', spark_benchmarks, file_path)
+        spark_benchmarks = self.run_common_benchmarks(spark_data, 'local', spark_benchmarks, file_path)
 
         # Filtered local running
         filtered_data = spark_data.filter((col("Tip_Amt") >= 1) & (col("Tip_Amt") <= 5))
-        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'spark local filtered', spark_benchmarks, file_path)
+        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'local filtered', spark_benchmarks, file_path)
 
         # Filtered with cache running
         filtered_data.cache()
         print(f'Enforce caching: {filtered_data.count()} rows of filtered data')
-        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'spark local filtered cache', spark_benchmarks, file_path)
+        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'local filtered cache', spark_benchmarks, file_path)
         return spark_benchmarks
 
 

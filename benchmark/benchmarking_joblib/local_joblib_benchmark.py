@@ -34,15 +34,15 @@ class LocalJoblibBenchmark:
         }
 
         # Normal local running
-        joblib_benchmarks = self.run_common_benchmarks(joblib_data, 'Joblib local', joblib_benchmarks, file_path)
+        joblib_benchmarks = self.run_common_benchmarks(joblib_data, 'local', joblib_benchmarks, file_path)
 
         # Filtered local running
         expr_filter = (joblib_data.Tip_Amt >= 1) & (joblib_data.Tip_Amt <= 5)
         filtered_joblib_data = joblib_data[expr_filter]
-        joblib_benchmarks = self.run_common_benchmarks(filtered_joblib_data, 'Joblib local filtered', joblib_benchmarks, file_path)
+        joblib_benchmarks = self.run_common_benchmarks(filtered_joblib_data, 'local filtered', joblib_benchmarks, file_path)
 
         # Filtered with cache running
-        joblib_benchmarks = self.run_common_benchmarks(filtered_joblib_data, 'Joblib local filtered cache', joblib_benchmarks, file_path)
+        joblib_benchmarks = self.run_common_benchmarks(filtered_joblib_data, 'local filtered cache', joblib_benchmarks, file_path)
 
         return joblib_benchmarks
 

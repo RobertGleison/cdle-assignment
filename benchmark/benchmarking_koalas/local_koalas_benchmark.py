@@ -37,17 +37,17 @@ class LocalKoalasBenchmark:
         }
 
         # Normal local running
-        koalas_benchmarks = self.run_common_benchmarks(koalas_data, 'koalas local', koalas_benchmarks, file_path)
+        koalas_benchmarks = self.run_common_benchmarks(koalas_data, 'local', koalas_benchmarks, file_path)
 
         # Filtered local running
         expr_filter = (koalas_data.Tip_Amt >= 1) & (koalas_data.Tip_Amt <= 5)
         filtered_koalas_data = koalas_data[expr_filter]
-        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'koalas local filtered', koalas_benchmarks, file_path)
+        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'local filtered', koalas_benchmarks, file_path)
 
         # Filtered with cache runnning
         filtered_koalas_data = filtered_koalas_data.spark.cache()
         print(f'Enforce caching: {len(filtered_koalas_data)} rows of filtered data')
-        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'koalas local filtered cache', koalas_benchmarks, file_path)
+        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'local filtered cache', koalas_benchmarks, file_path)
         return koalas_benchmarks
 
 

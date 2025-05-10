@@ -43,16 +43,16 @@ class LocalModinBenchmark:
         }
 
         # Normal local running
-        modin_benchmarks = self.run_common_benchmarks(modin_data, 'modin local', modin_benchmarks, file_path)
+        modin_benchmarks = self.run_common_benchmarks(modin_data, 'local', modin_benchmarks, file_path)
 
         # Filtered local running
         expr_filter = (modin_data.Tip_Amt >= 1) & (modin_data.Tip_Amt <= 5)
         filtered_modin_data = modin_data[expr_filter]
-        modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'modin local filtered', modin_benchmarks, file_path)
+        modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'local filtered', modin_benchmarks, file_path)
 
         # Filtered with cache runnning
         filtered_modin_data = filtered_modin_data.copy() # Uses copy instead of persist cause modin is not a dask object
-        modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'modin local filtered cache', modin_benchmarks, file_path)
+        modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'local filtered cache', modin_benchmarks, file_path)
 
         client.close()
 

@@ -13,19 +13,19 @@ if __name__ == "__main__":
     # https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page to donwload the datasets
     input_path = "../datasets/taxis_2009-01_reduced.parquet"
 
-    local_joblib_benchmarks = get_results(LocalJoblibBenchmark(input_path).benchmarks_results)
-    local_koalas_benchmarks = get_results(LocalKoalasBenchmark(input_path).benchmarks_results)
-    local_modin_benchmarks = get_results(LocalModinBenchmark(input_path).benchmarks_results)
-    local_spark_benchmarks = get_results(LocalSparkBenchmark(input_path).benchmarks_results)
-    local_dask_benchmarks = get_results(LocalDaskBenchmark(input_path).benchmarks_results)
+    local_joblib_benchmarks = get_results(LocalJoblibBenchmark(input_path).benchmarks_results).set_index('task')
+    local_koalas_benchmarks = get_results(LocalKoalasBenchmark(input_path).benchmarks_results).set_index('task')
+    local_modin_benchmarks = get_results(LocalModinBenchmark(input_path).benchmarks_results).set_index('task')
+    local_spark_benchmarks = get_results(LocalSparkBenchmark(input_path).benchmarks_results).set_index('task')
+    local_dask_benchmarks = get_results(LocalDaskBenchmark(input_path).benchmarks_results).set_index('task')
 
     df = pd.concat(
         [
-        local_joblib_benchmarks,
-        local_koalas_benchmarks,
-        local_modin_benchmarks,
-        local_spark_benchmarks,
-        local_dask_benchmarks,
+        local_joblib_benchmarks.duration,
+        local_koalas_benchmarks.duration,
+        local_modin_benchmarks.duration,
+        local_spark_benchmarks.duration,
+        local_dask_benchmarks.duration,
         ],
         axis=1,
         keys=['joblib',

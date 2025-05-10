@@ -47,17 +47,17 @@ class LocalDaskBenchmark:
         }
 
         # Normal local running
-        dask_benchmarks = self.run_common_benchmarks(dask_data, 'Dask local', dask_benchmarks, file_path)
+        dask_benchmarks = self.run_common_benchmarks(dask_data, 'local', dask_benchmarks, file_path)
 
         # Filtered local running
         expr_filter = (dask_data.Tip_Amt >= 1) & (dask_data.Tip_Amt <= 5)
         filtered_dask_data = dask_data[expr_filter]
-        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'Dask local filtered', dask_benchmarks, file_path)
+        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'local filtered', dask_benchmarks, file_path)
 
         # Filtered with cache runnning
         filtered_dask_data = client.persist(filtered_dask_data)
         wait(filtered_dask_data)
-        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'Dask local filtered cache', dask_benchmarks, file_path)
+        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'local filtered cache', dask_benchmarks, file_path)
         return dask_benchmarks
 
 
