@@ -37,5 +37,5 @@ if __name__ == "__main__":
         )
 
     os.makedirs('logs', exist_ok=True)
-    filename = 'logs/distributed_benchmark_' + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv"
+    filename = 'logs/local_benchmark_' + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv"
     df.to_csv(filename)
