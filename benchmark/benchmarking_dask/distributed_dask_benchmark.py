@@ -35,8 +35,8 @@ class DistributedDaskBenchmark:
 
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.fs:
-            with self.fs.open(file_path, 'rb') as gcp_path:
+        if self.filesystem:
+            with self.filesystem.open(file_path, 'rb') as gcp_path:
                 dask_data = dd.read_parquet(gcp_path)
         else: dask_data = pd.read_parquet(file_path)
 

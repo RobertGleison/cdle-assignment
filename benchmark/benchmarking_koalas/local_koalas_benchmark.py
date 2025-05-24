@@ -25,13 +25,13 @@ from benchmark.benchmarking_koalas.tasks import (
 class LocalKoalasBenchmark:
     def __init__(self, file_path, filesystem=None):
         self.filesystem = filesystem
-        self.client = SparkSession.builder.master("local[1]").config("spark.executor.memory", "10g").config("spark.driver.memory", "10g").config("spark.executor.instances", "1").config("spark.task.cpus", "1").getOrCreate()
+        self.client = SparkSession.builder.master("local[*]").config("spark.executor.memory", "40g").config("spark.driver.memory", "10g").config("spark.executor.instances", "1").config("spark.task.cpus", "1").getOrCreate()
         self.benchmarks_results = self.run_benchmark(file_path)
 
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.fs:
-            with self.fs.open(file_path, 'rb') as gcp_path:
+        if self.filesystem:
+            with self.filesystem.open(file_path, 'rb') as gcp_path:
                 koalas_data = ks.read_parquet(gcp_path, index_col=None)
         else: koalas_data = ks.read_parquet(file_path, index_col=None)
 
@@ -58,7 +58,7 @@ class LocalKoalasBenchmark:
         # Filtered local running
         expr_filter = (koalas_data.tip_amount >= 1) & (koalas_data.tip_amount <= 5)
         filtered_koalas_data = koalas_data[expr_filter]
-        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'local filtered', koalas_benchmarks, file_path)
+        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'local filtered', koalas_benchmarks, file_path, filesystem=self.filesystem)
 
         # Filtered with cache runnning
         filtered_koalas_data = filtered_koalas_data.spark.cache()

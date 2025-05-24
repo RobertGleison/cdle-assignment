@@ -3,6 +3,7 @@ from dask.distributed import Client
 import modin.config as modin_cfg
 import modin.pandas as mpd
 import pandas as pd
+import os
 from benchmark.benchmarking_modin.tasks import (
     mean_of_complicated_arithmetic_operation,
     complicated_arithmetic_operation,
@@ -27,16 +28,16 @@ class LocalModinBenchmark:
     def __init__(self, file_path, filesystem=None):
         self.filesystem = filesystem
         self.client = Client(
-            n_workers=1,
-            memory_limit='10GB',
+            n_workers=os.cpu_count(),
+            memory_limit='40GB',
             processes=True
             )
         self.benchmarks_results = self.run_benchmark(file_path)
 
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.fs:
-            with self.fs.open(file_path, 'rb') as gcp_path:
+        if self.filesystem:
+            with self.filesystem.open(file_path, 'rb') as gcp_path:
                 modin_data = mpd.read_parquet(gcp_path)
         else: modin_data = mpd.read_parquet(file_path)
 
@@ -80,7 +81,7 @@ class LocalModinBenchmark:
 
 
     def run_common_benchmarks(self, data: mpd.DataFrame, name_prefix: str, modin_benchmarks: dict, file_path: str) -> dict:
-        benchmark(read_file_parquet, df=None, benchmarks=modin_benchmarks, name=f'{name_prefix} read file', path=file_path)
+        benchmark(read_file_parquet, df=None, benchmarks=modin_benchmarks, name=f'{name_prefix} read file', path=file_path, filesystem=self.filesystem)
         benchmark(count, df=data, benchmarks=modin_benchmarks, name=f'{name_prefix} count')
         benchmark(count_index_length, df=data, benchmarks=modin_benchmarks, name=f'{name_prefix} count index length')
         benchmark(mean, df=data, benchmarks=modin_benchmarks, name=f'{name_prefix} mean')

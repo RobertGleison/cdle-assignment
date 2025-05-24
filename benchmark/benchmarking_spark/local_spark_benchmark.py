@@ -23,12 +23,12 @@ from benchmark.benchmarking_spark.tasks import (
 class LocalSparkBenchmark:
     def __init__(self, file_path, filesystem=None):
         self.filesystem = filesystem
-        self.client = SparkSession.builder.master("local[1]").config("spark.executor.memory", "10g").config("spark.driver.memory", "10g").config("spark.executor.instances", "1").config("spark.task.cpus", "1").getOrCreate()
+        self.client = SparkSession.builder.master("local[*]").config("spark.executor.memory", "40g").config("spark.driver.memory", "10g").config("spark.executor.instances", "1").config("spark.task.cpus", "1").getOrCreate()
         self.benchmarks_results = self.run_benchmark(file_path)
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.fs:
-            with self.fs.open(file_path, 'rb') as gcp_path:
+        if self.filesystem:
+            with self.filesystem.open(file_path, 'rb') as gcp_path:
                 spark_data = self.client.read.parquet(gcp_path)
         else: spark_data = self.client.read.parquet(file_path)
 
@@ -68,7 +68,7 @@ class LocalSparkBenchmark:
 
 
     def run_common_benchmarks(self, data, name_prefix: str, spark_benchmarks: dict, file_path: str) -> dict:
-        benchmark(read_file_parquet, df=None, benchmarks=spark_benchmarks, name=f'{name_prefix} read file', path=file_path)
+        benchmark(read_file_parquet, df=None, benchmarks=spark_benchmarks, name=f'{name_prefix} read file', path=file_path, filesystem=self.filesystem)
         benchmark(count, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} count')
         benchmark(count_index_length, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} count index length')
         benchmark(mean, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} mean')

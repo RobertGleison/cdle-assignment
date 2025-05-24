@@ -14,7 +14,8 @@ pyspark = "^3.5.5"
 dask = {extras = ["distributed"], version = "^2025.4.1"}
 pyarrow = "^20.0.0"
 numpy = "^1.23"
-gcsfs = "^2025.5.0.post1"
+gcsfs = "^2024.5.0"  
+
 
 [build-system]
 requires = ["poetry-core"]

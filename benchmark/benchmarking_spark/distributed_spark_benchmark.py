@@ -34,8 +34,8 @@ class DistributedSparkBenchmark:
         self.benchmarks_results = self.run_benchmark(file_path)
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.fs:
-            with self.fs.open(file_path, 'rb') as gcp_path:
+        if self.filesystem:
+            with self.filesystem.open(file_path, 'rb') as gcp_path:
                 spark_data = self.client.read.parquet(gcp_path)
         else: spark_data = self.client.read.parquet(file_path)
 

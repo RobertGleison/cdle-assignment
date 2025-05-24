@@ -30,8 +30,8 @@ class DistributedKoalasBenchmark:
 
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.fs:
-            with self.fs.open(file_path, 'rb') as gcp_path:
+        if self.filesystem:
+            with self.filesystem.open(file_path, 'rb') as gcp_path:
                 koalas_data = ks.read_parquet(gcp_path, index_col=None)
         else: koalas_data = ks.read_parquet(file_path, index_col=None)
 

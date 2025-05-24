@@ -3,6 +3,7 @@ from benchmark_setup import benchmark
 import dask.dataframe as dd
 import pandas as pd
 import numpy as np
+import os
 from benchmarking_dask.tasks import (
     mean_of_complicated_arithmetic_operation,
     complicated_arithmetic_operation,
@@ -31,16 +32,16 @@ class LocalDaskBenchmark:
     def __init__(self, file_path, filesystem=None):
         self.filesystem = filesystem
         self.client = Client(
-            n_workers=1,
-            memory_limit='10GB',
+            n_workers=os.cpu_count(),
+            memory_limit='40GB',
             processes=True
             )
         self.benchmarks_results = self.run_benchmark(file_path)
 
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.fs:
-            with self.fs.open(file_path, 'rb') as gcp_path:
+        if self.filesystem:
+            with self.filesystem.open(file_path, 'rb') as gcp_path:
                 dask_data = dd.read_parquet(gcp_path)
         else: dask_data = pd.read_parquet(file_path)
 
@@ -79,7 +80,7 @@ class LocalDaskBenchmark:
 
 
     def run_common_benchmarks(self, data: dd.DataFrame, name_prefix: str, dask_benchmarks: dict, file_path: str) -> dict:
-        benchmark(read_file_parquet, df=None, benchmarks=dask_benchmarks, name=f'{name_prefix} read file', path=file_path)
+        benchmark(read_file_parquet, df=None, benchmarks=dask_benchmarks, name=f'{name_prefix} read file', path=file_path, filesystem=self.filesystem)
         benchmark(count, df=data, benchmarks=dask_benchmarks, name=f'{name_prefix} count')
         benchmark(count_index_length, df=data, benchmarks=dask_benchmarks, name=f'{name_prefix} count index length')
         benchmark(mean, df=data, benchmarks=dask_benchmarks, name=f'{name_prefix} mean')

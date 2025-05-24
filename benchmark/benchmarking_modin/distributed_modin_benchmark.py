@@ -27,8 +27,8 @@ class DistributedModinBenchmark:
 
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.fs:
-            with self.fs.open(file_path, 'rb') as gcp_path:
+        if self.filesystem:
+            with self.filesystem.open(file_path, 'rb') as gcp_path:
                 modin_data = mpd.read_parquet(gcp_path)
         else: modin_data = mpd.read_parquet(file_path)
 

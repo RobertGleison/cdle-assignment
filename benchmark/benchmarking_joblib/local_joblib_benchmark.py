@@ -28,8 +28,8 @@ class LocalJoblibBenchmark:
         self.benchmarks_results = self.run_benchmark(input_path)
 
     def run_benchmark(self, file_path: str) -> dict:
-        if self.fs:
-            with self.fs.open(file_path, 'rb') as gcp_path:
+        if self.filesystem:
+            with self.filesystem.open(file_path, 'rb') as gcp_path:
                 joblib_data = pd.read_parquet(gcp_path)
         else: joblib_data = pd.read_parquet(file_path)
 
@@ -78,7 +78,7 @@ class LocalJoblibBenchmark:
 
         # Create a list of tasks, but don't use delayed yet
         tasks = [
-            wrapped_benchmark(read_file_parquet, f'{name_prefix} read file', path=file_path),
+            wrapped_benchmark(read_file_parquet, f'{name_prefix} read file', path=file_path, filesystem=self.filesystem),
             wrapped_benchmark(count, f'{name_prefix} count'),
             wrapped_benchmark(count_index_length, f'{name_prefix} count index length'),
             wrapped_benchmark(mean, f'{name_prefix} mean'),

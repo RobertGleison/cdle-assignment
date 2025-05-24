@@ -2,7 +2,12 @@ import dask.dataframe as dd
 import numpy as np
 
 def read_file_parquet(df=None, **kwargs):
-    return dd.read_parquet(kwargs.get("path"))
+    fs = kwargs.get("filesystem")
+    file_path = kwargs.get("path")
+    if fs:
+        with fs.open(file_path, 'rb') as gcp_path:
+            return dd.read_parquet(gcp_path)
+    else: return dd.read_parquet(file_path)
 
 def count(df=None):
     return len(df)

@@ -7,7 +7,13 @@ from pyspark.sql.functions import (
 )
 
 def read_file_parquet(df=None, **kwargs):
-    return ps.read_parquet(kwargs.get("path"))
+    print("Reading Koalas")
+    fs = kwargs.get("filesystem")
+    file_path = kwargs.get("path")
+    if fs:
+        with fs.open(file_path, 'rb') as gcp_path:
+            return ps.read_parquet(gcp_path)
+    return ps.read_parquet(file_path)
 
 def count(df):
     return len(df)
