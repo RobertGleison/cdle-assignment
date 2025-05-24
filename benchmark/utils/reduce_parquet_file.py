@@ -4,7 +4,7 @@ import pyarrow.parquet as pq
 import os
 import numpy as np
 
-def reduce_and_save_parquet_in_chunks(input_file: str, output_file: str, chunk_size: int = 100000, sample_ratio: float = 1/8):
+def reduce_and_save_parquet_in_chunks(input_file: str, output_file: str, chunk_size: int = 100000, sample_ratio: float = 1/24):
     """
     Reduce the size of a large Parquet file by processing it in chunks and sampling rows.
 
@@ -55,6 +55,6 @@ def reduce_and_save_parquet_in_chunks(input_file: str, output_file: str, chunk_s
 
 
 if __name__ == "__main__":
-    input_file = '../datasets/taxis_2009-01.parquet'
-    output_file = '../datasets/taxis_2009-01_reduced.parquet'
+    input_file = '../datasets/yellow_tripdata_2013-06.parquet'
+    output_file = '../datasets/yellow_tripdata_2013-06_reduced.parquet'
     reduce_and_save_parquet_in_chunks(input_file, output_file)

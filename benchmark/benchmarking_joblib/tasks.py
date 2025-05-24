@@ -15,38 +15,38 @@ def count_index_length(df=None):
 
 @delayed
 def mean(df):
-    return df.Fare_Amt.mean().compute()
+    return df.fare_amount.mean().compute()
 
 @delayed
 def standard_deviation(df):
-    return df.Fare_Amt.std().compute()
+    return df.fare_amount.std().compute()
 
 @delayed
 def mean_of_sum(df):
-    return (df.Fare_Amt + df.Tip_Amt).mean().compute()
+    return (df.fare_amount + df.tip_amount).mean().compute()
 
 @delayed
 def sum_columns(df):
-    return (df.Fare_Amt + df.Tip_Amt).compute()
+    return (df.fare_amount + df.tip_amount).compute()
 
 @delayed
 def mean_of_product(df):
-    return (df.Fare_Amt * df.Tip_Amt).mean().compute()
+    return (df.fare_amount * df.tip_amount).mean().compute()
 
 @delayed
 def product_columns(df):
-    return (df.Fare_Amt * df.Tip_Amt).compute()
+    return (df.fare_amount * df.tip_amount).compute()
 
 @delayed
 def value_counts(df):
-    return df.Fare_Amt.value_counts().compute()
+    return df.fare_amount.value_counts().compute()
 
 @delayed
 def mean_of_complicated_arithmetic_operation(df):
-    theta_1 = df.Start_Lon
-    phi_1 = df.Start_Lat
-    theta_2 = df.End_Lon
-    phi_2 = df.End_Lat
+    theta_1 = df.pickup_longitude
+    phi_1 = df.pickup_latitude
+    theta_2 = df.dropoff_longitude
+    phi_2 = df.dropoff_latitude
     temp = (np.sin((theta_2 - theta_1) / 2 * np.pi / 180) ** 2
            + np.cos(theta_1 * np.pi / 180) * np.cos(theta_2 * np.pi / 180)
            * np.sin((phi_2 - phi_1) / 2 * np.pi / 180) ** 2)
@@ -55,10 +55,10 @@ def mean_of_complicated_arithmetic_operation(df):
 
 @delayed
 def complicated_arithmetic_operation(df):
-    theta_1 = df.Start_Lon
-    phi_1 = df.Start_Lat
-    theta_2 = df.End_Lon
-    phi_2 = df.End_Lat
+    theta_1 = df.pickup_longitude
+    phi_1 = df.pickup_latitude
+    theta_2 = df.dropoff_longitude
+    phi_2 = df.dropoff_latitude
     temp = (np.sin((theta_2 - theta_1) / 2 * np.pi / 180) ** 2
            + np.cos(theta_1 * np.pi / 180) * np.cos(theta_2 * np.pi / 180)
            * np.sin((phi_2 - phi_1) / 2 * np.pi / 180) ** 2)
@@ -66,10 +66,10 @@ def complicated_arithmetic_operation(df):
     return ret.compute()
 
 def groupby_statistics(df):
-    return df.groupby(by='Passenger_Count').agg(
+    return df.groupby(by='passenger_count').agg(
         {
-            'Fare_Amt': ['mean', 'std'],
-            'Tip_Amt': ['mean', 'std']
+            'fare_amount': ['mean', 'std'],
+            'tip_amount': ['mean', 'std']
         }
     )
 

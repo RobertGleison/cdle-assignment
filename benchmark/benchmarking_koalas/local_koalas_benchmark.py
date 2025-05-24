@@ -31,6 +31,18 @@ class LocalKoalasBenchmark:
     def run_benchmark(self, file_path: str) -> None:
         koalas_data = ks.read_parquet(file_path, index_col=None)
 
+        if "2009" in file_path:
+            rename_map = {
+                'Start_Lon': 'pickup_longitude',
+                'Start_Lat': 'pickup_latitude',
+                'End_Lon': 'dropoff_longitude',
+                'End_Lat': 'dropoff_latitude',
+                'Passenger_Count': 'passenger_count',
+                'Tip_Amt': 'tip_amount',
+                'Fare_Amt': 'fare_amount',
+            }
+            koalas_data = koalas_data.rename(columns=rename_map)
+
         koalas_benchmarks = {
             'duration': [],
             'task': [],
@@ -40,7 +52,7 @@ class LocalKoalasBenchmark:
         koalas_benchmarks = self.run_common_benchmarks(koalas_data, 'local', koalas_benchmarks, file_path)
 
         # Filtered local running
-        expr_filter = (koalas_data.Tip_Amt >= 1) & (koalas_data.Tip_Amt <= 5)
+        expr_filter = (koalas_data.tip_amount >= 1) & (koalas_data.tip_amount <= 5)
         filtered_koalas_data = koalas_data[expr_filter]
         koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'local filtered', koalas_benchmarks, file_path)
 
@@ -72,7 +84,7 @@ class LocalKoalasBenchmark:
             col[0] if col[1] == '' else f"{col[0]}_{col[1]}"
             for col in other.columns
         ]
-        other = other.rename(columns={"Passenger_Count_": "Passenger_Count"})
+        other = other.rename(columns={"passenger_count_": "passenger_count"})
 
         benchmark(join_count, data, benchmarks=koalas_benchmarks, name=f'{name_prefix} join count', other=other)
         benchmark(join_data, data, benchmarks=koalas_benchmarks, name=f'{name_prefix} join', other=other)

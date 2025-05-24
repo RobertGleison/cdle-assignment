@@ -16,31 +16,31 @@ def count_index_length(df):
     return len(df)
 
 def mean(df):
-    return df["Fare_Amt"].mean()
+    return df["fare_amount"].mean()
 
 def standard_deviation(df):
-    return df["Fare_Amt"].std()
+    return df["fare_amount"].std()
 
 def mean_of_sum(df):
-    return (df["Fare_Amt"] + df["Tip_Amt"]).mean()
+    return (df["fare_amount"] + df["tip_amount"]).mean()
 
 def sum_columns(df):
-    return df["Fare_Amt"] + df["Tip_Amt"]
+    return df["fare_amount"] + df["tip_amount"]
 
 def mean_of_product(df):
-    return (df["Fare_Amt"] * df["Tip_Amt"]).mean()
+    return (df["fare_amount"] * df["tip_amount"]).mean()
 
 def product_columns(df):
-    return df["Fare_Amt"] * df["Tip_Amt"]
+    return df["fare_amount"] * df["tip_amount"]
 
 def value_counts(df):
-    return df["Fare_Amt"].value_counts()
+    return df["fare_amount"].value_counts()
 
 def complicated_arithmetic_operation(df):
-    theta_1 = col("Start_Lon") * math.pi / 180
-    phi_1 = col("Start_Lat") * math.pi / 180
-    theta_2 = col("End_Lon") * math.pi / 180
-    phi_2 = col("End_Lat") * math.pi / 180
+    theta_1 = col("pickup_longitude") * math.pi / 180
+    phi_1 = col("pickup_latitude") * math.pi / 180
+    theta_2 = col("dropoff_longitude") * math.pi / 180
+    phi_2 = col("dropoff_latitude") * math.pi / 180
     dtheta = theta_2 - theta_1
     dphi = phi_2 - phi_1
     temp = (sin(dphi / 2) ** 2) + (cos(phi_1) * cos(phi_2) * (sin(dtheta / 2) ** 2))
@@ -50,10 +50,10 @@ def complicated_arithmetic_operation(df):
 def mean_of_complicated_arithmetic_operation(df):
     # Convert spark.pandas DataFrame to PySpark DataFrame
     spark_df = df.to_spark()
-    theta_1 = F.col("Start_Lon") * math.pi / 180
-    phi_1 = F.col("Start_Lat") * math.pi / 180
-    theta_2 = F.col("End_Lon") * math.pi / 180
-    phi_2 = F.col("End_Lat") * math.pi / 180
+    theta_1 = F.col("pickup_longitude") * math.pi / 180
+    phi_1 = F.col("pickup_latitude") * math.pi / 180
+    theta_2 = F.col("dropoff_longitude") * math.pi / 180
+    phi_2 = F.col("dropoff_latitude") * math.pi / 180
     dtheta = theta_2 - theta_1
     dphi = phi_2 - phi_1
     temp = (F.sin(dphi/2)**2 + F.cos(phi_1) * F.cos(phi_2) * F.sin(dtheta/2)**2)
@@ -63,15 +63,15 @@ def mean_of_complicated_arithmetic_operation(df):
     return mean_distance
 
 def groupby_statistics(df):
-    grouped = df.groupby("Passenger_Count").agg({
-        "Fare_Amt": ["mean", "std"],
-        "Tip_Amt": ["mean", "std"]
+    grouped = df.groupby("passenger_count").agg({
+        "fare_amount": ["mean", "std"],
+        "tip_amount": ["mean", "std"]
     })
     # Reset index while staying in Koalas
     return grouped.reset_index()
 
 def join_count(df, other):
-    return len(df.merge(other.spark.hint("broadcast"), on="Passenger_Count"))
+    return len(df.merge(other.spark.hint("broadcast"), on="passenger_count"))
 
 def join_data(df, other):
-    return df.merge(other.spark.hint("broadcast"), on="Passenger_Count")
+    return df.merge(other.spark.hint("broadcast"), on="passenger_count")

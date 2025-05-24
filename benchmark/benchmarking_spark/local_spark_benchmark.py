@@ -27,6 +27,21 @@ class LocalSparkBenchmark:
 
     def run_benchmark(self, file_path: str) -> None:
         spark_data = self.client.read.parquet(file_path)
+
+        if "2009" in file_path:
+            rename_map = {
+                'Start_Lon': 'pickup_longitude',
+                'Start_Lat': 'pickup_latitude',
+                'End_Lon': 'dropoff_longitude',
+                'End_Lat': 'dropoff_latitude',
+                'Passenger_Count': 'passenger_count',
+                'Tip_Amt': 'tip_amount',
+                'Fare_Amt': 'fare_amount',
+            }
+
+            for old_col, new_col in rename_map.items():
+                spark_data = spark_data.withColumnRenamed(old_col, new_col)
+
         client = self.client
 
         spark_benchmarks = {
@@ -38,7 +53,7 @@ class LocalSparkBenchmark:
         spark_benchmarks = self.run_common_benchmarks(spark_data, 'local', spark_benchmarks, file_path)
 
         # Filtered local running
-        filtered_data = spark_data.filter((col("Tip_Amt") >= 1) & (col("Tip_Amt") <= 5))
+        filtered_data = spark_data.filter((col("tip_amount") >= 1) & (col("tip_amount") <= 5))
         spark_benchmarks = self.run_common_benchmarks(filtered_data, 'local filtered', spark_benchmarks, file_path)
 
         # Filtered with cache running

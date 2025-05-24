@@ -35,6 +35,19 @@ class DistributedDaskBenchmark:
 
     def run_benchmark(self, file_path: str) -> None:
         dask_data = dd.read_parquet(file_path)
+
+        if "2009" in file_path:
+            dask_data = dask_data.rename(
+                columns={'Start_Lon': 'pickup_longitude',
+                         'Start_Lat': 'pickup_latitude',
+                         'End_Lon': 'dropoff_longitude',
+                         'End_Lat': 'dropoff_latitude',
+                         'Passenger_Count': 'passenger_count',
+                         'Tip_Amt': 'tip_amount',
+                         'Fare_Amt': 'fare_amount',
+                         }
+                )
+            
         client = self.client
 
         client_info_dict = client.scheduler_info()
@@ -51,7 +64,7 @@ class DistributedDaskBenchmark:
         dask_benchmarks = self.un_common_benchmarks(dask_data, 'Dask distributed', dask_benchmarks, file_path)
 
         # Filtered distributed running
-        expr_filter = (dask_data.Tip_Amt >= 1) & (dask_data.Tip_Amt <= 5)
+        expr_filter = (dask_data.tip_amount >= 1) & (dask_data.tip_amount <= 5)
         filtered_dask_data = dask_data[expr_filter]
         dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'Dask distributed filtered', dask_benchmarks, file_path)
 

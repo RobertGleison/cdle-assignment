@@ -39,6 +39,19 @@ class LocalDaskBenchmark:
 
     def run_benchmark(self, file_path: str) -> None:
         dask_data = dd.read_parquet(file_path)
+
+        if "2009" in file_path:
+            dask_data = dask_data.rename(
+                columns={'Start_Lon': 'pickup_longitude',
+                         'Start_Lat': 'pickup_latitude',
+                         'End_Lon': 'dropoff_longitude',
+                         'End_Lat': 'dropoff_latitude',
+                         'Passenger_Count': 'passenger_count',
+                         'Tip_Amt': 'tip_amount',
+                         'Fare_Amt': 'fare_amount',
+                         }
+                )
+
         client = self.client
 
         dask_benchmarks = {
@@ -50,7 +63,7 @@ class LocalDaskBenchmark:
         dask_benchmarks = self.run_common_benchmarks(dask_data, 'local', dask_benchmarks, file_path)
 
         # Filtered local running
-        expr_filter = (dask_data.Tip_Amt >= 1) & (dask_data.Tip_Amt <= 5)
+        expr_filter = (dask_data.tip_amount >= 1) & (dask_data.tip_amount <= 5)
         filtered_dask_data = dask_data[expr_filter]
         dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'local filtered', dask_benchmarks, file_path)
 

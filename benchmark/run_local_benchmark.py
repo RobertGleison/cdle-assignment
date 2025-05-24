@@ -10,32 +10,38 @@ import os
 
 if __name__ == "__main__":
 
-    # https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page to donwload the datasets
-    input_path = "../datasets/taxis_2009-01_reduced.parquet"
+    folder_path = "datasets/"
+    # https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page to download the datasets
 
-    local_joblib_benchmarks = get_results(LocalJoblibBenchmark(input_path).benchmarks_results).set_index('task')
-    local_koalas_benchmarks = get_results(LocalKoalasBenchmark(input_path).benchmarks_results).set_index('task')
-    local_modin_benchmarks = get_results(LocalModinBenchmark(input_path).benchmarks_results).set_index('task')
-    local_spark_benchmarks = get_results(LocalSparkBenchmark(input_path).benchmarks_results).set_index('task')
-    local_dask_benchmarks = get_results(LocalDaskBenchmark(input_path).benchmarks_results).set_index('task')
+    # Loop over all files in the folder
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+        if os.path.isfile(file_path):
+            print(f"Processing file: {file_path}")
 
-    df = pd.concat(
-        [
-        local_joblib_benchmarks.duration,
-        local_koalas_benchmarks.duration,
-        local_modin_benchmarks.duration,
-        local_spark_benchmarks.duration,
-        local_dask_benchmarks.duration,
-        ],
-        axis=1,
-        keys=['joblib',
-              'koalas',
-              'modin',
-              'spark',
-              'dask'
-            ]
-        )
+        local_joblib_benchmarks = get_results(LocalJoblibBenchmark(file_path).benchmarks_results).set_index('task')
+        local_koalas_benchmarks = get_results(LocalKoalasBenchmark(file_path).benchmarks_results).set_index('task')
+        local_modin_benchmarks = get_results(LocalModinBenchmark(file_path).benchmarks_results).set_index('task')
+        local_spark_benchmarks = get_results(LocalSparkBenchmark(file_path).benchmarks_results).set_index('task')
+        local_dask_benchmarks = get_results(LocalDaskBenchmark(file_path).benchmarks_results).set_index('task')
 
-    os.makedirs('logs', exist_ok=True)
-    filename = 'logs/local_benchmark_' + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv"
-    df.to_csv(filename)
+        df = pd.concat(
+            [
+            local_joblib_benchmarks.duration,
+            local_koalas_benchmarks.duration,
+            local_modin_benchmarks.duration,
+            local_spark_benchmarks.duration,
+            local_dask_benchmarks.duration,
+            ],
+            axis=1,
+            keys=['joblib',
+                'koalas',
+                'modin',
+                'spark',
+                'dask'
+                ]
+            )
+
+        os.makedirs('logs', exist_ok=True)
+        filename = 'logs/local_benchmark_' + datetime.now().strftime("%Y%m%d_%H%M%S") + ".csv"
+        df.to_csv(filename)

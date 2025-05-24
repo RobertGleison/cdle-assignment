@@ -35,6 +35,21 @@ class LocalModinBenchmark:
 
     def run_benchmark(self, file_path: str) -> None:
         modin_data = mpd.read_parquet(file_path)
+
+        if "2009" in file_path:
+            modin_data.rename(
+                columns={
+                    'Start_Lon': 'pickup_longitude',
+                    'Start_Lat': 'pickup_latitude',
+                    'End_Lon': 'dropoff_longitude',
+                    'End_Lat': 'dropoff_latitude',
+                    'Passenger_Count': 'passenger_count',
+                    'Tip_Amt': 'tip_amount',
+                    'Fare_Amt': 'fare_amount',
+                },
+                inplace=True
+            )
+
         client = self.client
 
         modin_benchmarks = {
@@ -46,7 +61,7 @@ class LocalModinBenchmark:
         modin_benchmarks = self.run_common_benchmarks(modin_data, 'local', modin_benchmarks, file_path)
 
         # Filtered local running
-        expr_filter = (modin_data.Tip_Amt >= 1) & (modin_data.Tip_Amt <= 5)
+        expr_filter = (modin_data.tip_amount >= 1) & (modin_data.tip_amount <= 5)
         filtered_modin_data = modin_data[expr_filter]
         modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'local filtered', modin_benchmarks, file_path)
 

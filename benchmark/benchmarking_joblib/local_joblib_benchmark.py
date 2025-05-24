@@ -28,6 +28,21 @@ class LocalJoblibBenchmark:
 
     def run_benchmark(self, file_path: str) -> dict:
         joblib_data = pd.read_parquet(file_path)
+
+        if "2009" in file_path:
+            joblib_data.rename(
+                columns={
+                    'Start_Lon': 'pickup_longitude',
+                    'Start_Lat': 'pickup_latitude',
+                    'End_Lon': 'dropoff_longitude',
+                    'End_Lat': 'dropoff_latitude',
+                    'Passenger_Count': 'passenger_count',
+                    'Tip_Amt': 'tip_amount',
+                    'Fare_Amt': 'fare_amount',
+                },
+                inplace=True
+            )
+
         joblib_benchmarks = {
             'duration': [],
             'task': [],
@@ -37,7 +52,7 @@ class LocalJoblibBenchmark:
         joblib_benchmarks = self.run_common_benchmarks(joblib_data, 'local', joblib_benchmarks, file_path)
 
         # Filtered local running
-        expr_filter = (joblib_data.Tip_Amt >= 1) & (joblib_data.Tip_Amt <= 5)
+        expr_filter = (joblib_data.tip_amount >= 1) & (joblib_data.tip_amount <= 5)
         filtered_joblib_data = joblib_data[expr_filter]
         joblib_benchmarks = self.run_common_benchmarks(filtered_joblib_data, 'local filtered', joblib_benchmarks, file_path)
 

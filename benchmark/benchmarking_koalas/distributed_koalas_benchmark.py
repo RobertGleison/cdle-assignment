@@ -30,6 +30,21 @@ class DistributedKoalasBenchmark:
 
     def run_benchmark(self, file_path: str) -> None:
         koalas_data = ks.read_parquet(file_path)
+
+        if "2009" in file_path:
+            rename_map = {
+                'Start_Lon': 'pickup_longitude',
+                'Start_Lat': 'pickup_latitude',
+                'End_Lon': 'dropoff_longitude',
+                'End_Lat': 'dropoff_latitude',
+                'Passenger_Count': 'passenger_count',
+                'Tip_Amt': 'tip_amount',
+                'Fare_Amt': 'fare_amount',
+            }
+
+            for old_col, new_col in rename_map.items():
+                koalas_data = koalas_data.withColumnRenamed(old_col, new_col)
+                
         client = self.client
 
         koalas_benchmarks = {
@@ -41,7 +56,7 @@ class DistributedKoalasBenchmark:
         koalas_benchmarks = self.run_common_benchmarks(koalas_data, 'koalas distributed', koalas_benchmarks, file_path)
 
         # Filtered distributed running
-        expr_filter = (koalas_data.Tip_Amt >= 1) & (koalas_data.Tip_Amt <= 5)
+        expr_filter = (koalas_data.tip_amount >= 1) & (koalas_data.tip_amount <= 5)
         filtered_koalas_data = koalas_data[expr_filter]
         koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'koalas distributed filtered', koalas_benchmarks, file_path)
 
