@@ -21,12 +21,16 @@ from benchmark.benchmarking_spark.tasks import (
 
 
 class LocalSparkBenchmark:
-    def __init__(self, file_path):
+    def __init__(self, file_path, filesystem=None):
+        self.filesystem = filesystem
         self.client = SparkSession.builder.master("local[1]").config("spark.executor.memory", "10g").config("spark.driver.memory", "10g").config("spark.executor.instances", "1").config("spark.task.cpus", "1").getOrCreate()
         self.benchmarks_results = self.run_benchmark(file_path)
 
     def run_benchmark(self, file_path: str) -> None:
-        spark_data = self.client.read.parquet(file_path)
+        if self.fs:
+            with self.fs.open(file_path, 'rb') as gcp_path:
+                spark_data = self.client.read.parquet(gcp_path)
+        else: spark_data = self.client.read.parquet(file_path)
 
         if "2009" in file_path:
             rename_map = {

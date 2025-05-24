@@ -24,7 +24,8 @@ from benchmark.benchmarking_modin.tasks import (
 modin_cfg.Engine.put("dask")
 
 class LocalModinBenchmark:
-    def __init__(self, file_path):
+    def __init__(self, file_path, filesystem=None):
+        self.filesystem = filesystem
         self.client = Client(
             n_workers=1,
             memory_limit='10GB',
@@ -34,7 +35,11 @@ class LocalModinBenchmark:
 
 
     def run_benchmark(self, file_path: str) -> None:
-        modin_data = mpd.read_parquet(file_path)
+        if self.fs:
+            with self.fs.open(file_path, 'rb') as gcp_path:
+                modin_data = mpd.read_parquet(gcp_path)
+        else: modin_data = mpd.read_parquet(file_path)
+
 
         if "2009" in file_path:
             modin_data.rename(

@@ -23,13 +23,17 @@ from benchmark.benchmarking_koalas.tasks import (
 
 
 class LocalKoalasBenchmark:
-    def __init__(self, file_path):
+    def __init__(self, file_path, filesystem=None):
+        self.filesystem = filesystem
         self.client = SparkSession.builder.master("local[1]").config("spark.executor.memory", "10g").config("spark.driver.memory", "10g").config("spark.executor.instances", "1").config("spark.task.cpus", "1").getOrCreate()
         self.benchmarks_results = self.run_benchmark(file_path)
 
 
     def run_benchmark(self, file_path: str) -> None:
-        koalas_data = ks.read_parquet(file_path, index_col=None)
+        if self.fs:
+            with self.fs.open(file_path, 'rb') as gcp_path:
+                koalas_data = ks.read_parquet(gcp_path, index_col=None)
+        else: koalas_data = ks.read_parquet(file_path, index_col=None)
 
         if "2009" in file_path:
             rename_map = {

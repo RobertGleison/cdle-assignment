@@ -21,12 +21,16 @@ from benchmark.benchmarking_modin.tasks import (
 
 
 class DistributedModinBenchmark:
-    def __init__(self, file_path):
+    def __init__(self, file_path, filesystem=None):
+        self.filesystem = filesystem
         self.benchmarks_results = self.run_benchmark(file_path)
 
 
     def run_benchmark(self, file_path: str) -> None:
-        modin_data = mpd.read_parquet(file_path)
+        if self.fs:
+            with self.fs.open(file_path, 'rb') as gcp_path:
+                modin_data = mpd.read_parquet(gcp_path)
+        else: modin_data = mpd.read_parquet(file_path)
 
         if "2009" in file_path:
             modin_data.rename(

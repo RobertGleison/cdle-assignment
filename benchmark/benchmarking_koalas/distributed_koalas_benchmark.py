@@ -23,13 +23,18 @@ from benchmark.koalas.tasks import (
 
 
 class DistributedKoalasBenchmark:
-    def __init__(self, file_path):
+    def __init__(self, file_path, filesystem=None):
+        self.filesystem = filesystem
         self.benchmarks_results = self.run_benchmark(file_path)
         self.client = SparkSession.builder.getOrCreate()
 
 
     def run_benchmark(self, file_path: str) -> None:
-        koalas_data = ks.read_parquet(file_path)
+        if self.fs:
+            with self.fs.open(file_path, 'rb') as gcp_path:
+                koalas_data = ks.read_parquet(gcp_path, index_col=None)
+        else: koalas_data = ks.read_parquet(file_path, index_col=None)
+
 
         if "2009" in file_path:
             rename_map = {
@@ -44,7 +49,7 @@ class DistributedKoalasBenchmark:
 
             for old_col, new_col in rename_map.items():
                 koalas_data = koalas_data.withColumnRenamed(old_col, new_col)
-                
+
         client = self.client
 
         koalas_benchmarks = {

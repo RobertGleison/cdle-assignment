@@ -10,7 +10,7 @@ import os
 
 if __name__ == "__main__":
 
-    folder_path = "datasets/"
+    folder_path = "../datasets/"
     # https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page to download the datasets
 
     # Loop over all files in the folder

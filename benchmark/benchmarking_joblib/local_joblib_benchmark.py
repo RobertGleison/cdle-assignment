@@ -23,11 +23,15 @@ from benchmark.benchmarking_joblib.tasks import (
 memory = Memory('joblib_cache', verbose=0)
 
 class LocalJoblibBenchmark:
-    def __init__(self, input_path):
+    def __init__(self, input_path, filesystem=None):
+        self.filesystem = filesystem
         self.benchmarks_results = self.run_benchmark(input_path)
 
     def run_benchmark(self, file_path: str) -> dict:
-        joblib_data = pd.read_parquet(file_path)
+        if self.fs:
+            with self.fs.open(file_path, 'rb') as gcp_path:
+                joblib_data = pd.read_parquet(gcp_path)
+        else: joblib_data = pd.read_parquet(file_path)
 
         if "2009" in file_path:
             joblib_data.rename(

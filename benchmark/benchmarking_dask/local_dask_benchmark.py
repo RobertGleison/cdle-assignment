@@ -28,7 +28,8 @@ from benchmarking_dask.tasks import (
 # })
 
 class LocalDaskBenchmark:
-    def __init__(self, file_path):
+    def __init__(self, file_path, filesystem=None):
+        self.filesystem = filesystem
         self.client = Client(
             n_workers=1,
             memory_limit='10GB',
@@ -38,7 +39,10 @@ class LocalDaskBenchmark:
 
 
     def run_benchmark(self, file_path: str) -> None:
-        dask_data = dd.read_parquet(file_path)
+        if self.fs:
+            with self.fs.open(file_path, 'rb') as gcp_path:
+                dask_data = dd.read_parquet(gcp_path)
+        else: dask_data = pd.read_parquet(file_path)
 
         if "2009" in file_path:
             dask_data = dask_data.rename(

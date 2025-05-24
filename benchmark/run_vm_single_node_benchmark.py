@@ -26,11 +26,11 @@ if __name__ == "__main__":
         # https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page to donwload the datasets
         #input_path = "../datasets/taxis_2009-01_reduced.parquet"
 
-        local_joblib_benchmarks = get_results(LocalJoblibBenchmark(file).benchmarks_results).set_index('task')
-        local_koalas_benchmarks = get_results(LocalKoalasBenchmark(file).benchmarks_results).set_index('task')
-        local_modin_benchmarks = get_results(LocalModinBenchmark(file).benchmarks_results).set_index('task')
-        local_spark_benchmarks = get_results(LocalSparkBenchmark(file).benchmarks_results).set_index('task')
-        local_dask_benchmarks = get_results(LocalDaskBenchmark(file).benchmarks_results).set_index('task')
+        local_joblib_benchmarks = get_results(LocalJoblibBenchmark(file, fs).benchmarks_results).set_index('task')
+        local_koalas_benchmarks = get_results(LocalKoalasBenchmark(file, fs).benchmarks_results).set_index('task')
+        local_modin_benchmarks = get_results(LocalModinBenchmark(file, fs).benchmarks_results).set_index('task')
+        local_spark_benchmarks = get_results(LocalSparkBenchmark(file, fs).benchmarks_results).set_index('task')
+        local_dask_benchmarks = get_results(LocalDaskBenchmark(file, fs).benchmarks_results).set_index('task')
 
         df = pd.concat(
             [
