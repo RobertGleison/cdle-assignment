@@ -29,21 +29,22 @@ from benchmarking_dask.tasks import (
 # })
 
 class LocalDaskBenchmark:
-    def __init__(self, file_path, filesystem=None):
+    def __init__(self, filesystem=None):
         self.filesystem = filesystem
         self.client = Client(
             n_workers=os.cpu_count(),
             memory_limit='40GB',
             processes=True
             )
-        self.benchmarks_results = self.run_benchmark(file_path)
-
 
     def run_benchmark(self, file_path: str) -> None:
         if self.filesystem:
-            with self.filesystem.open(file_path, 'rb') as gcp_path:
-                dask_data = dd.read_parquet(gcp_path)
-        else: dask_data = pd.read_parquet(file_path)
+            # Convert to proper GCS URI format for Dask
+            gcs_path = f"gs://{file_path}" if not file_path.startswith('gs://') else file_path
+            dask_data = dd.read_parquet(gcs_path)
+        else:
+            gcs_path = file_path
+            dask_data = dd.read_parquet(file_path)
 
         if "2009" in file_path:
             dask_data = dask_data.rename(
@@ -65,17 +66,17 @@ class LocalDaskBenchmark:
         }
 
         # Normal local running
-        dask_benchmarks = self.run_common_benchmarks(dask_data, 'local', dask_benchmarks, file_path)
+        dask_benchmarks = self.run_common_benchmarks(dask_data, 'local', dask_benchmarks, gcs_path)
 
         # Filtered local running
         expr_filter = (dask_data.tip_amount >= 1) & (dask_data.tip_amount <= 5)
         filtered_dask_data = dask_data[expr_filter]
-        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'local filtered', dask_benchmarks, file_path)
+        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'local filtered', dask_benchmarks, gcs_path)
 
         # Filtered with cache runnning
         filtered_dask_data = client.persist(filtered_dask_data)
         wait(filtered_dask_data)
-        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'local filtered cache', dask_benchmarks, file_path)
+        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'local filtered cache', dask_benchmarks, gcs_path)
         return dask_benchmarks
 
 

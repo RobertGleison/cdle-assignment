@@ -24,16 +24,15 @@ from benchmark.benchmarking_modin.tasks import (
 
 modin_cfg.Engine.put("dask")
 
+
 class LocalModinBenchmark:
-    def __init__(self, file_path, filesystem=None):
+    def __init__(self, filesystem=None):
         self.filesystem = filesystem
         self.client = Client(
             n_workers=os.cpu_count(),
             memory_limit='40GB',
             processes=True
             )
-        self.benchmarks_results = self.run_benchmark(file_path)
-
 
     def run_benchmark(self, file_path: str) -> None:
         if self.filesystem:
@@ -56,7 +55,6 @@ class LocalModinBenchmark:
                 inplace=True
             )
 
-        client = self.client
 
         modin_benchmarks = {
             'duration': [],
@@ -74,8 +72,6 @@ class LocalModinBenchmark:
         # Filtered with cache runnning
         filtered_modin_data = filtered_modin_data.copy() # Uses copy instead of persist cause modin is not a dask object
         modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'local filtered cache', modin_benchmarks, file_path)
-
-        client.close()
 
         return modin_benchmarks
 

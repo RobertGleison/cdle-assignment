@@ -12,7 +12,7 @@ def read_file_parquet(df=None, **kwargs):
     #     with fs.open(file_path, 'rb') as gcp_path:
     #         return spark.read_parquet(gcp_path)
     spark = get_spark()
-    return spark.read_parquet(file_path)
+    return spark.read.parquet(file_path)
 
 def count(df=None):
     return df.count()

@@ -21,20 +21,21 @@ from benchmark.benchmarking_koalas.tasks import (
     mean,
 )
 
-
 class LocalKoalasBenchmark:
-    def __init__(self, file_path, filesystem=None):
+    def __init__(self, filesystem=None):
         self.filesystem = filesystem
         self.client = get_spark()
-        self.benchmarks_results = self.run_benchmark(file_path)
 
 
     def run_benchmark(self, file_path: str) -> None:
-        # if self.filesystem:
-        #     with self.filesystem.open(file_path, 'rb') as gcp_path:
-        #         koalas_data = ks.read_parquet(gcp_path, index_col=None)
-        # else:
-        koalas_data = ks.read_parquet(file_path, index_col=None)
+        if self.filesystem:
+            # Use Spark to read from GCS, then convert to PySpark Pandas
+            gcs_path = f"gs://{file_path}"
+            spark_df = self.client.read.parquet(gcs_path)
+            koalas_data = spark_df.pandas_api()
+        else:
+            gcs_path = file_path
+            koalas_data = ks.read_parquet(gcs_path)
 
         if "2009" in file_path:
             rename_map = {
@@ -44,7 +45,7 @@ class LocalKoalasBenchmark:
                 'End_Lat': 'dropoff_latitude',
                 'Passenger_Count': 'passenger_count',
                 'Tip_Amt': 'tip_amount',
-                'Fare_Amt': 'fare_amount',
+                'Fare_Amt': 'fare_amount'
             }
             koalas_data = koalas_data.rename(columns=rename_map)
 
@@ -54,23 +55,23 @@ class LocalKoalasBenchmark:
         }
 
         # Normal local running
-        koalas_benchmarks = self.run_common_benchmarks(koalas_data, 'local', koalas_benchmarks, file_path)
+        koalas_benchmarks = self.run_common_benchmarks(koalas_data, 'local', koalas_benchmarks, gcs_path)
 
         # Filtered local running
         expr_filter = (koalas_data.tip_amount >= 1) & (koalas_data.tip_amount <= 5)
         filtered_koalas_data = koalas_data[expr_filter]
-        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'local filtered', koalas_benchmarks, file_path, filesystem=self.filesystem)
+        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'local filtered', koalas_benchmarks, gcs_path)
 
         # Filtered with cache runnning
         filtered_koalas_data = filtered_koalas_data.spark.cache()
         print(f'Enforce caching: {len(filtered_koalas_data)} rows of filtered data')
-        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'local filtered cache', koalas_benchmarks, file_path)
+        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'local filtered cache', koalas_benchmarks, gcs_path)
         return koalas_benchmarks
 
 
 
     def run_common_benchmarks(self, data: ks.DataFrame, name_prefix: str, koalas_benchmarks: dict, file_path: str) -> dict:
-        benchmark(read_file_parquet, df=None, benchmarks=koalas_benchmarks, name=f'{name_prefix} read file', path=file_path)
+        benchmark(read_file_parquet, df=None, benchmarks=koalas_benchmarks, name=f'{name_prefix} read file', path=file_path, filesystem=self.filesystem)
         benchmark(count, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} count')
         benchmark(count_index_length, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} count index length')
         benchmark(mean, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean')

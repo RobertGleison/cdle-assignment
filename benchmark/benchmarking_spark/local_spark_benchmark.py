@@ -21,17 +21,18 @@ from benchmark.benchmarking_spark.tasks import (
 
 
 class LocalSparkBenchmark:
-    def __init__(self, file_path, filesystem=None):
+    def __init__(self, filesystem=None):
         self.filesystem = filesystem
         self.client = get_spark()
-        self.benchmarks_results = self.run_benchmark(file_path)
 
     def run_benchmark(self, file_path: str) -> None:
-        # if self.filesystem:
-        #     with self.filesystem.open(file_path, 'rb') as gcp_path:
-        #         spark_data = self.client.read.parquet(gcp_path)
-        # else:
-        spark_data = self.client.read.parquet(file_path)
+        if self.filesystem:
+            # For GCS, we need to use the gs:// prefix
+            gcs_path = f"gs://{file_path}"
+            spark_data = self.client.read.parquet(gcs_path)
+        else:
+            gcs_path = file_path
+            spark_data = self.client.read.parquet(file_path)
 
         if "2009" in file_path:
             rename_map = {
@@ -47,7 +48,6 @@ class LocalSparkBenchmark:
             for old_col, new_col in rename_map.items():
                 spark_data = spark_data.withColumnRenamed(old_col, new_col)
 
-        client = self.client
 
         spark_benchmarks = {
             'duration': [],
@@ -55,16 +55,16 @@ class LocalSparkBenchmark:
         }
 
         # Normal local running
-        spark_benchmarks = self.run_common_benchmarks(spark_data, 'local', spark_benchmarks, file_path)
+        spark_benchmarks = self.run_common_benchmarks(spark_data, 'local', spark_benchmarks, gcs_path)
 
         # Filtered local running
         filtered_data = spark_data.filter((col("tip_amount") >= 1) & (col("tip_amount") <= 5))
-        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'local filtered', spark_benchmarks, file_path)
+        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'local filtered', spark_benchmarks, gcs_path)
 
         # Filtered with cache running
         filtered_data.cache()
         print(f'Enforce caching: {filtered_data.count()} rows of filtered data')
-        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'local filtered cache', spark_benchmarks, file_path)
+        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'local filtered cache', spark_benchmarks, gcs_path)
         return spark_benchmarks
 
 

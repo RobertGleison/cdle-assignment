@@ -23,9 +23,8 @@ from benchmark.benchmarking_joblib.tasks import (
 memory = Memory('joblib_cache', verbose=0)
 
 class LocalJoblibBenchmark:
-    def __init__(self, input_path, filesystem=None):
+    def __init__(self, filesystem=None):
         self.filesystem = filesystem
-        self.benchmarks_results = self.run_benchmark(input_path)
 
     def run_benchmark(self, file_path: str) -> dict:
         if self.filesystem:
