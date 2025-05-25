@@ -1,5 +1,5 @@
 from benchmark.benchmark_setup import benchmark
-from pyspark.sql import SparkSession
+from benchmark.benchmarking_spark.spark_session import get_spark
 import pyspark.pandas as ks
 import pandas as pd
 import numpy as np
@@ -25,15 +25,16 @@ from benchmark.benchmarking_koalas.tasks import (
 class LocalKoalasBenchmark:
     def __init__(self, file_path, filesystem=None):
         self.filesystem = filesystem
-        self.client = SparkSession.builder.master("local[*]").config("spark.executor.memory", "40g").config("spark.driver.memory", "10g").config("spark.executor.instances", "1").config("spark.task.cpus", "1").getOrCreate()
+        self.client = get_spark()
         self.benchmarks_results = self.run_benchmark(file_path)
 
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.filesystem:
-            with self.filesystem.open(file_path, 'rb') as gcp_path:
-                koalas_data = ks.read_parquet(gcp_path, index_col=None)
-        else: koalas_data = ks.read_parquet(file_path, index_col=None)
+        # if self.filesystem:
+        #     with self.filesystem.open(file_path, 'rb') as gcp_path:
+        #         koalas_data = ks.read_parquet(gcp_path, index_col=None)
+        # else:
+        koalas_data = ks.read_parquet(file_path, index_col=None)
 
         if "2009" in file_path:
             rename_map = {

@@ -1,5 +1,5 @@
 from benchmark_setup import benchmark
-from pyspark.sql import SparkSession
+from benchmark.benchmarking_spark.spark_session import get_spark
 import pyspark.pandas as ks
 import pandas as pd
 import numpy as np
@@ -26,14 +26,15 @@ class DistributedKoalasBenchmark:
     def __init__(self, file_path, filesystem=None):
         self.filesystem = filesystem
         self.benchmarks_results = self.run_benchmark(file_path)
-        self.client = SparkSession.builder.getOrCreate()
+        self.client = get_spark()
 
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.filesystem:
-            with self.filesystem.open(file_path, 'rb') as gcp_path:
-                koalas_data = ks.read_parquet(gcp_path, index_col=None)
-        else: koalas_data = ks.read_parquet(file_path, index_col=None)
+        # if self.filesystem:
+        #     with self.filesystem.open(file_path, 'rb') as gcp_path:
+        #         koalas_data = ks.read_parquet(gcp_path, index_col=None)
+        # else:
+        koalas_data = ks.read_parquet(file_path, index_col=None)
 
 
         if "2009" in file_path:

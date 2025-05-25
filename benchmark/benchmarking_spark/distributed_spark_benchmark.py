@@ -1,5 +1,5 @@
 from benchmark_setup import benchmark
-from pyspark.sql import SparkSession
+from benchmark.benchmarking_spark.spark_session import get_spark
 from pyspark.sql.functions import col
 from benchmark.benchmarking_spark.tasks import (  # assuming you renamed your task file from `koalas` to `spark`
     mean_of_complicated_arithmetic_operation,
@@ -23,21 +23,15 @@ from benchmark.benchmarking_spark.tasks import (  # assuming you renamed your ta
 class DistributedSparkBenchmark:
     def __init__(self, file_path, filesystem=None):
         self.filesystem = filesystem
-        self.client = (
-            SparkSession.builder
-            .appName("DistributedSparkBenchmark")
-            .master("spark://localhost:7077") # ou .master("yarn")
-            .config("spark.executor.memory", "4g")
-            .config("spark.executor.instances", "4")
-            .getOrCreate()
-        )
+        self.client = get_spark()
         self.benchmarks_results = self.run_benchmark(file_path)
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.filesystem:
-            with self.filesystem.open(file_path, 'rb') as gcp_path:
-                spark_data = self.client.read.parquet(gcp_path)
-        else: spark_data = self.client.read.parquet(file_path)
+        # if self.filesystem:
+        #     with self.filesystem.open(file_path, 'rb') as gcp_path:
+        #         spark_data = self.client.read.parquet(gcp_path)
+        # else:
+        spark_data = self.client.read.parquet(file_path)
 
         if "2009" in file_path:
             rename_map = {

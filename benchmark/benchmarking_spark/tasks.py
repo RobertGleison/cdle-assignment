@@ -1,18 +1,17 @@
-from pyspark.sql import SparkSession
+from benchmark.benchmarking_spark.spark_session import get_spark
 from pyspark.sql.functions import (
     col, mean as _mean, stddev as _stddev,
     sin, cos, sqrt, atan2, lit, avg as _avg
 )
 import math
 
-spark = SparkSession.builder.getOrCreate()
-
 def read_file_parquet(df=None, **kwargs):
-    fs = kwargs.get("filesystem")
     file_path = kwargs.get("path")
-    if fs:
-        with fs.open(file_path, 'rb') as gcp_path:
-            return spark.read_parquet(gcp_path)
+    # fs = kwargs.get("filesystem")
+    # if fs:
+    #     with fs.open(file_path, 'rb') as gcp_path:
+    #         return spark.read_parquet(gcp_path)
+    spark = get_spark()
     return spark.read_parquet(file_path)
 
 def count(df=None):

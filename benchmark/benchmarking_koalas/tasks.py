@@ -1,4 +1,5 @@
 import pyspark.pandas as ps
+from benchmarking_spark.spark_session import get_spark
 from pyspark.sql import functions as F
 import math
 import numpy as np
@@ -7,12 +8,13 @@ from pyspark.sql.functions import (
 )
 
 def read_file_parquet(df=None, **kwargs):
-    print("Reading Koalas")
-    fs = kwargs.get("filesystem")
+    get_spark()
+    # print("Reading Koalas")
+    # fs = kwargs.get("filesystem")
     file_path = kwargs.get("path")
-    if fs:
-        with fs.open(file_path, 'rb') as gcp_path:
-            return ps.read_parquet(gcp_path)
+    # if fs:
+    #     with fs.open(file_path, 'rb') as gcp_path:
+    #         return ps.read_parquet(gcp_path)
     return ps.read_parquet(file_path)
 
 def count(df):
