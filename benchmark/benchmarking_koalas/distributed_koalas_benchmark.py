@@ -1,9 +1,9 @@
-from benchmark_setup import benchmark
-from benchmark.benchmarking_spark.spark_session import get_spark
+from benchmark.benchmark_setup import benchmark
+from benchmark.benchmarking_spark.cluster_spark_session import get_spark
 import pyspark.pandas as ks
 import pandas as pd
 import numpy as np
-from benchmark.koalas.tasks import (
+from benchmark.benchmarking_koalas.tasks import (
     mean_of_complicated_arithmetic_operation,
     complicated_arithmetic_operation,
     count_index_length,
@@ -21,21 +21,21 @@ from benchmark.koalas.tasks import (
     mean,
 )
 
-
 class DistributedKoalasBenchmark:
-    def __init__(self, file_path, filesystem=None):
+    def __init__(self, filesystem=None):
         self.filesystem = filesystem
-        self.benchmarks_results = self.run_benchmark(file_path)
         self.client = get_spark()
 
 
     def run_benchmark(self, file_path: str) -> None:
-        # if self.filesystem:
-        #     with self.filesystem.open(file_path, 'rb') as gcp_path:
-        #         koalas_data = ks.read_parquet(gcp_path, index_col=None)
-        # else:
-        koalas_data = ks.read_parquet(file_path, index_col=None)
-
+        if self.filesystem:
+            # Use Spark to read from GCS, then convert to PySpark Pandas
+            gcs_path = f"gs://{file_path}"
+            spark_df = self.client.read.parquet(gcs_path)
+            koalas_data = spark_df.pandas_api()
+        else:
+            gcs_path = file_path
+            koalas_data = ks.read_parquet(gcs_path)
 
         if "2009" in file_path:
             rename_map = {
@@ -45,37 +45,33 @@ class DistributedKoalasBenchmark:
                 'End_Lat': 'dropoff_latitude',
                 'Passenger_Count': 'passenger_count',
                 'Tip_Amt': 'tip_amount',
-                'Fare_Amt': 'fare_amount',
+                'Fare_Amt': 'fare_amount'
             }
-
-            for old_col, new_col in rename_map.items():
-                koalas_data = koalas_data.withColumnRenamed(old_col, new_col)
-
-        client = self.client
+            koalas_data = koalas_data.rename(columns=rename_map)
 
         koalas_benchmarks = {
             'duration': [],
             'task': [],
         }
 
-        # Normal distributed running
-        koalas_benchmarks = self.run_common_benchmarks(koalas_data, 'koalas distributed', koalas_benchmarks, file_path)
+        # Normal local running
+        koalas_benchmarks = self.run_common_benchmarks(koalas_data, 'local', koalas_benchmarks, gcs_path)
 
-        # Filtered distributed running
+        # Filtered local running
         expr_filter = (koalas_data.tip_amount >= 1) & (koalas_data.tip_amount <= 5)
         filtered_koalas_data = koalas_data[expr_filter]
-        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'koalas distributed filtered', koalas_benchmarks, file_path)
+        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'local filtered', koalas_benchmarks, gcs_path)
 
         # Filtered with cache runnning
         filtered_koalas_data = filtered_koalas_data.spark.cache()
         print(f'Enforce caching: {len(filtered_koalas_data)} rows of filtered data')
-        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'koalas distributed filtered cache', koalas_benchmarks, file_path)
+        koalas_benchmarks = self.run_common_benchmarks(filtered_koalas_data, 'local filtered cache', koalas_benchmarks, gcs_path)
+        return koalas_benchmarks
 
-        self.benchmarks_results = koalas_benchmarks
 
 
     def run_common_benchmarks(self, data: ks.DataFrame, name_prefix: str, koalas_benchmarks: dict, file_path: str) -> dict:
-        benchmark(read_file_parquet, df=None, benchmarks=koalas_benchmarks, name=f'{name_prefix} read file', path=file_path)
+        benchmark(read_file_parquet, df=None, benchmarks=koalas_benchmarks, name=f'{name_prefix} read file', path=file_path, filesystem=self.filesystem)
         benchmark(count, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} count')
         benchmark(count_index_length, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} count index length')
         benchmark(mean, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean')
@@ -85,12 +81,17 @@ class DistributedKoalasBenchmark:
         benchmark(mean_of_product, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean of columns multiplication')
         benchmark(product_columns, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} multiplication of columns')
         benchmark(value_counts, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} value counts')
-        benchmark(mean_of_complicated_arithmetic_operation, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean of complex arithmetic ops')
         benchmark(complicated_arithmetic_operation, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} complex arithmetic ops')
+        benchmark(mean_of_complicated_arithmetic_operation, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean of complex arithmetic ops')
         benchmark(groupby_statistics, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} groupby statistics')
 
         other = groupby_statistics(data)
-        other.columns = pd.Index([e[0]+'_' + e[1] for e in other.columns.tolist()])
+        other.columns = [
+            col[0] if col[1] == '' else f"{col[0]}_{col[1]}"
+            for col in other.columns
+        ]
+        other = other.rename(columns={"passenger_count_": "passenger_count"})
+
         benchmark(join_count, data, benchmarks=koalas_benchmarks, name=f'{name_prefix} join count', other=other)
         benchmark(join_data, data, benchmarks=koalas_benchmarks, name=f'{name_prefix} join', other=other)
 

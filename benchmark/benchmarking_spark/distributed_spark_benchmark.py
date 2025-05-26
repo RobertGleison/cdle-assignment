@@ -1,7 +1,7 @@
-from benchmark_setup import benchmark
-from benchmark.benchmarking_spark.spark_session import get_spark
+from benchmark.benchmark_setup import benchmark
+from benchmark.benchmarking_spark.cluster_spark_session import get_spark
 from pyspark.sql.functions import col
-from benchmark.benchmarking_spark.tasks import (  # assuming you renamed your task file from `koalas` to `spark`
+from benchmark.benchmarking_spark.tasks import (
     mean_of_complicated_arithmetic_operation,
     complicated_arithmetic_operation,
     groupby_statistics,
@@ -19,19 +19,20 @@ from benchmark.benchmarking_spark.tasks import (  # assuming you renamed your ta
     mean,
 )
 
-#test
+
 class DistributedSparkBenchmark:
-    def __init__(self, file_path, filesystem=None):
+    def __init__(self, filesystem=None):
         self.filesystem = filesystem
         self.client = get_spark()
-        self.benchmarks_results = self.run_benchmark(file_path)
 
     def run_benchmark(self, file_path: str) -> None:
-        # if self.filesystem:
-        #     with self.filesystem.open(file_path, 'rb') as gcp_path:
-        #         spark_data = self.client.read.parquet(gcp_path)
-        # else:
-        spark_data = self.client.read.parquet(file_path)
+        if self.filesystem:
+            # For GCS, we need to use the gs:// prefix
+            gcs_path = f"gs://{file_path}"
+            spark_data = self.client.read.parquet(gcs_path)
+        else:
+            gcs_path = file_path
+            spark_data = self.client.read.parquet(file_path)
 
         if "2009" in file_path:
             rename_map = {
@@ -47,7 +48,6 @@ class DistributedSparkBenchmark:
             for old_col, new_col in rename_map.items():
                 spark_data = spark_data.withColumnRenamed(old_col, new_col)
 
-        client = self.client
 
         spark_benchmarks = {
             'duration': [],
@@ -55,22 +55,21 @@ class DistributedSparkBenchmark:
         }
 
         # Normal local running
-        spark_benchmarks = self.run_common_benchmarks(spark_data, 'spark local', spark_benchmarks, file_path)
+        spark_benchmarks = self.run_common_benchmarks(spark_data, 'local', spark_benchmarks, gcs_path)
 
         # Filtered local running
         filtered_data = spark_data.filter((col("tip_amount") >= 1) & (col("tip_amount") <= 5))
-        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'spark local filtered', spark_benchmarks, file_path)
+        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'local filtered', spark_benchmarks, gcs_path)
 
         # Filtered with cache running
         filtered_data.cache()
         print(f'Enforce caching: {filtered_data.count()} rows of filtered data')
-        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'spark local filtered cache', spark_benchmarks, file_path)
-        self.client.stop()
+        spark_benchmarks = self.run_common_benchmarks(filtered_data, 'local filtered cache', spark_benchmarks, gcs_path)
         return spark_benchmarks
 
 
     def run_common_benchmarks(self, data, name_prefix: str, spark_benchmarks: dict, file_path: str) -> dict:
-        benchmark(read_file_parquet, df=None, benchmarks=spark_benchmarks, name=f'{name_prefix} read file', path=file_path)
+        benchmark(read_file_parquet, df=None, benchmarks=spark_benchmarks, name=f'{name_prefix} read file', path=file_path, filesystem=self.filesystem)
         benchmark(count, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} count')
         benchmark(count_index_length, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} count index length')
         benchmark(mean, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} mean')
@@ -80,8 +79,8 @@ class DistributedSparkBenchmark:
         benchmark(mean_of_product, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} mean of columns multiplication')
         benchmark(product_columns, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} multiplication of columns')
         benchmark(value_counts, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} value counts')
-        benchmark(mean_of_complicated_arithmetic_operation, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} mean of complex arithmetic ops')
         benchmark(complicated_arithmetic_operation, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} complex arithmetic ops')
+        benchmark(mean_of_complicated_arithmetic_operation, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} mean of complex arithmetic ops')
         benchmark(groupby_statistics, df=data, benchmarks=spark_benchmarks, name=f'{name_prefix} groupby statistics')
 
         # For join, convert groupby result to Spark DataFrame
