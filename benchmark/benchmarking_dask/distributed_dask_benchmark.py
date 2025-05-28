@@ -3,6 +3,7 @@ from benchmark_setup import benchmark
 import dask.dataframe as dd
 import pandas as pd
 import numpy as np
+import os
 from benchmarking_dask.tasks import (
     mean_of_complicated_arithmetic_operation,
     complicated_arithmetic_operation,
@@ -28,17 +29,22 @@ from benchmarking_dask.tasks import (
 # })
 
 class DistributedDaskBenchmark:
-    def __init__(self, file_path, filesystem=None):
+    def __init__(self, filesystem=None):
         self.filesystem = filesystem
-        self.client = Client('127.0.0.1:8786')
-        self.benchmarks_results = self.run_benchmark(file_path)
-
+        self.client = Client(
+            n_workers=1,
+            memory_limit='40GB',
+            processes=True
+            )
 
     def run_benchmark(self, file_path: str) -> None:
         if self.filesystem:
-            with self.filesystem.open(file_path, 'rb') as gcp_path:
-                dask_data = dd.read_parquet(gcp_path)
-        else: dask_data = pd.read_parquet(file_path)
+            # Convert to proper GCS URI format for Dask
+            gcs_path = f"gs://{file_path}" if not file_path.startswith('gs://') else file_path
+            dask_data = dd.read_parquet(gcs_path)
+        else:
+            gcs_path = file_path
+            dask_data = dd.read_parquet(file_path)
 
         if "2009" in file_path:
             dask_data = dask_data.rename(
@@ -54,34 +60,28 @@ class DistributedDaskBenchmark:
 
         client = self.client
 
-        client_info_dict = client.scheduler_info()
-        worker_hosts = set(
-            [client_info_dict["workers"][worker_id]['host'] for worker_id in client_info_dict["workers"].keys()])
-        print(f'Worker hosts: {worker_hosts}')
-
         dask_benchmarks = {
             'duration': [],
             'task': [],
         }
 
-        # Normal distributed running
-        dask_benchmarks = self.un_common_benchmarks(dask_data, 'Dask distributed', dask_benchmarks, file_path)
+        # Normal local running
+        dask_benchmarks = self.run_common_benchmarks(dask_data, 'local', dask_benchmarks, gcs_path)
 
-        # Filtered distributed running
+        # Filtered local running
         expr_filter = (dask_data.tip_amount >= 1) & (dask_data.tip_amount <= 5)
         filtered_dask_data = dask_data[expr_filter]
-        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'Dask distributed filtered', dask_benchmarks, file_path)
+        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'local filtered', dask_benchmarks, gcs_path)
 
         # Filtered with cache runnning
         filtered_dask_data = client.persist(filtered_dask_data)
         wait(filtered_dask_data)
-        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'Dask distributed filtered cache', dask_benchmarks, file_path)
-
-        self.benchmarks_results = dask_benchmarks
+        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'local filtered cache', dask_benchmarks, gcs_path)
+        return dask_benchmarks
 
 
     def run_common_benchmarks(self, data: dd.DataFrame, name_prefix: str, dask_benchmarks: dict, file_path: str) -> dict:
-        benchmark(read_file_parquet, df=None, benchmarks=dask_benchmarks, name=f'{name_prefix} read file', path=file_path)
+        benchmark(read_file_parquet, df=None, benchmarks=dask_benchmarks, name=f'{name_prefix} read file', path=file_path, filesystem=self.filesystem)
         benchmark(count, df=data, benchmarks=dask_benchmarks, name=f'{name_prefix} count')
         benchmark(count_index_length, df=data, benchmarks=dask_benchmarks, name=f'{name_prefix} count index length')
         benchmark(mean, df=data, benchmarks=dask_benchmarks, name=f'{name_prefix} mean')

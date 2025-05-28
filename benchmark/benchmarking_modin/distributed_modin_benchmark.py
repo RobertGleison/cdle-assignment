@@ -1,6 +1,9 @@
 from benchmark_setup import benchmark
 from dask.distributed import Client
+import modin.config as modin_cfg
 import modin.pandas as mpd
+import pandas as pd
+import os
 from benchmark.benchmarking_modin.tasks import (
     mean_of_complicated_arithmetic_operation,
     complicated_arithmetic_operation,
@@ -19,18 +22,24 @@ from benchmark.benchmarking_modin.tasks import (
     mean,
 )
 
+modin_cfg.Engine.put("dask")
+
 
 class DistributedModinBenchmark:
-    def __init__(self, file_path, filesystem=None):
+    def __init__(self, filesystem=None):
         self.filesystem = filesystem
-        self.benchmarks_results = self.run_benchmark(file_path)
-
+        self.client = Client(
+            n_workers=1,
+            memory_limit='40GB',
+            processes=True
+            )
 
     def run_benchmark(self, file_path: str) -> None:
         if self.filesystem:
             with self.filesystem.open(file_path, 'rb') as gcp_path:
                 modin_data = mpd.read_parquet(gcp_path)
         else: modin_data = mpd.read_parquet(file_path)
+
 
         if "2009" in file_path:
             modin_data.rename(
@@ -46,29 +55,29 @@ class DistributedModinBenchmark:
                 inplace=True
             )
 
+
         modin_benchmarks = {
             'duration': [],
             'task': [],
         }
 
-        # Normal distributed running
-        modin_benchmarks = self.run_common_benchmarks(modin_data, 'modin distributed', modin_benchmarks, file_path)
+        # Normal local running
+        modin_benchmarks = self.run_common_benchmarks(modin_data, 'local', modin_benchmarks, file_path)
 
-        # Filtered distributed running
+        # Filtered local running
         expr_filter = (modin_data.tip_amount >= 1) & (modin_data.tip_amount <= 5)
         filtered_modin_data = modin_data[expr_filter]
-        modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'modin distributed filtered', modin_benchmarks, file_path)
+        modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'local filtered', modin_benchmarks, file_path)
 
-        # Filtered with cache running
+        # Filtered with cache runnning
         filtered_modin_data = filtered_modin_data.copy() # Uses copy instead of persist cause modin is not a dask object
-        modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'modin distributed filtered cache', modin_benchmarks, file_path)
+        modin_benchmarks = self.run_common_benchmarks(filtered_modin_data, 'local filtered cache', modin_benchmarks, file_path)
 
-        self.benchmarks_results = modin_benchmarks
-
+        return modin_benchmarks
 
 
     def run_common_benchmarks(self, data: mpd.DataFrame, name_prefix: str, modin_benchmarks: dict, file_path: str) -> dict:
-        benchmark(read_file_parquet, df=None, benchmarks=modin_benchmarks, name=f'{name_prefix} read file', path=file_path)
+        benchmark(read_file_parquet, df=None, benchmarks=modin_benchmarks, name=f'{name_prefix} read file', path=file_path, filesystem=self.filesystem)
         benchmark(count, df=data, benchmarks=modin_benchmarks, name=f'{name_prefix} count')
         benchmark(count_index_length, df=data, benchmarks=modin_benchmarks, name=f'{name_prefix} count index length')
         benchmark(mean, df=data, benchmarks=modin_benchmarks, name=f'{name_prefix} mean')

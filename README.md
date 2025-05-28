@@ -59,3 +59,17 @@ The datasets used in the benchmark can be found on the official New York City TL
 
 The `terraform_infra` folder contains the Infrastructure-as-Code (IaC) configuration to create a cluster and a virtual machine in Google Cloud Platform (GCP) using a student voucher. This allows you to run the benchmarking in a cloud environment.
 
+
+rsync -avz \
+  --exclude='.git' \
+  --exclude='.gitignore' \
+  -e "ssh -i ~/.ssh/google_compute_engine -o StrictHostKeyChecking=no" \
+  ./cdle-assignment/ \
+  robert@34.57.119.161:~/cdle-assignment
+
+
+
+
+
+
+

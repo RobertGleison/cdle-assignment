@@ -55,6 +55,6 @@ def reduce_and_save_parquet_in_chunks(input_file: str, output_file: str, chunk_s
 
 
 if __name__ == "__main__":
-    input_file = '../../datasets/yellow_tripdata_2009-01.parquet'
+    input_file = '../../datasets/yellow_tripdata_2009-02.parquet'
     output_file = '../../datasets/yellow_tripdata_2009-01_reduced.parquet'
     reduce_and_save_parquet_in_chunks(input_file, output_file)

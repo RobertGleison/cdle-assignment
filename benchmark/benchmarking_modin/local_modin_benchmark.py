@@ -35,11 +35,12 @@ class LocalModinBenchmark:
             )
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.filesystem:
-            with self.filesystem.open(file_path, 'rb') as gcp_path:
-                modin_data = mpd.read_parquet(gcp_path)
-        else: modin_data = mpd.read_parquet(file_path)
-
+        if self.filesystem is None:
+            gcs_path = file_path
+        else:
+            gcs_path = f"gs://{file_path}" if not file_path.startswith('gs://') else file_path
+        modin_data = mpd.read_parquet(gcs_path)
+        modin_data["index"] = modin_data.index
 
         if "2009" in file_path:
             modin_data.rename(

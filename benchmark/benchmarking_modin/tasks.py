@@ -2,11 +2,7 @@ import modin.pandas as mpd
 import numpy as np
 
 def read_file_parquet(df=None, **kwargs):
-    fs = kwargs.get("filesystem")
     file_path = kwargs.get("path")
-    if fs:
-        with fs.open(file_path, 'rb') as gcp_path:
-            return mpd.read_parquet(gcp_path)
     return mpd.read_parquet(file_path)
 
 def count(df=None):
@@ -69,7 +65,15 @@ def groupby_statistics(df):
     )
 
 def join_count(df, other):
-    return df.merge(other, left_index=True, right_index=True).shape[0]
+    # Ensure both indexes have the same name
+    if df.index.name != 'index': df.index.name = 'index'
+    if other.index.name != 'index': other.index.name = 'index'
+    return len(df.merge(other, left_index=True, right_index=True))
 
 def join_data(df, other):
-    return df.merge(other, left_index=True, right_index=True)
+    if df.index.name != 'index': df.index.name = 'index'
+    if other.index.name != 'index': other.index.name = 'index'
+
+    result = df.merge(other, left_index=True, right_index=True)
+    result._to_pandas()  # Force computation like `.compute()` in Dask
+    return result

@@ -9,6 +9,7 @@ def count(df=None):
     return len(df)
 
 def count_index_length(df=None):
+    #
     return len(df.index)
 
 def mean(df):

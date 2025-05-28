@@ -8,14 +8,10 @@ from pyspark.sql.functions import (
 )
 
 def read_file_parquet(df=None, **kwargs):
-    get_spark()
-    # print("Reading Koalas")
-    # fs = kwargs.get("filesystem")
+    spark = get_spark()
     file_path = kwargs.get("path")
-    # if fs:
-    #     with fs.open(file_path, 'rb') as gcp_path:
-    #         return ps.read_parquet(gcp_path)
-    return ps.read_parquet(file_path)
+    spark_df = spark.read.parquet(file_path)
+    return spark_df.pandas_api()
 
 def count(df):
     return len(df)
@@ -45,41 +41,40 @@ def value_counts(df):
     return df["fare_amount"].value_counts()
 
 def complicated_arithmetic_operation(df):
-    theta_1 = col("pickup_longitude") * math.pi / 180
-    phi_1 = col("pickup_latitude") * math.pi / 180
-    theta_2 = col("dropoff_longitude") * math.pi / 180
-    phi_2 = col("dropoff_latitude") * math.pi / 180
-    dtheta = theta_2 - theta_1
-    dphi = phi_2 - phi_1
-    temp = (sin(dphi / 2) ** 2) + (cos(phi_1) * cos(phi_2) * (sin(dtheta / 2) ** 2))
-    distance = lit(2) * atan2(sqrt(temp), sqrt(lit(1) - temp))
-    return distance
+    theta_1 = df.pickup_longitude
+    phi_1 = df.pickup_latitude
+    theta_2 = df.dropoff_longitude
+    phi_2 = df.dropoff_latitude
+    temp = (np.sin((theta_2 - theta_1) / 2 * np.pi / 180) ** 2
+           + np.cos(theta_1 * np.pi / 180) * np.cos(theta_2 * np.pi / 180) * np.sin((phi_2 - phi_1) / 2 * np.pi / 180) ** 2)
+    ret = np.multiply(np.arctan2(np.sqrt(temp), np.sqrt(1-temp)),2)
+    ret.to_pandas()
+    return ret
 
 def mean_of_complicated_arithmetic_operation(df):
-    # Convert spark.pandas DataFrame to PySpark DataFrame
-    spark_df = df.to_spark()
-    theta_1 = F.col("pickup_longitude") * math.pi / 180
-    phi_1 = F.col("pickup_latitude") * math.pi / 180
-    theta_2 = F.col("dropoff_longitude") * math.pi / 180
-    phi_2 = F.col("dropoff_latitude") * math.pi / 180
-    dtheta = theta_2 - theta_1
-    dphi = phi_2 - phi_1
-    temp = (F.sin(dphi/2)**2 + F.cos(phi_1) * F.cos(phi_2) * F.sin(dtheta/2)**2)
-    distance = F.lit(2) * F.atan2(F.sqrt(temp), F.sqrt(F.lit(1) - temp))
-    spark_df_with_distance = spark_df.withColumn("distance", distance)
-    mean_distance = spark_df_with_distance.agg(F.avg("distance")).collect()[0][0]
-    return mean_distance
+    theta_1 = df.pickup_longitude
+    phi_1 = df.pickup_latitude
+    theta_2 = df.dropoff_longitude
+    phi_2 = df.dropoff_latitude
+    temp = (np.sin((theta_2 - theta_1) / 2 * np.pi / 180) ** 2
+           + np.cos(theta_1 * np.pi / 180) * np.cos(theta_2 * np.pi / 180) * np.sin((phi_2 - phi_1) / 2 * np.pi / 180) ** 2)
+    ret = np.multiply(np.arctan2(np.sqrt(temp), np.sqrt(1-temp)),2)
+    return ret.mean()
 
 def groupby_statistics(df):
-    grouped = df.groupby("passenger_count").agg({
-        "fare_amount": ["mean", "std"],
-        "tip_amount": ["mean", "std"]
-    })
-    # Reset index while staying in Koalas
-    return grouped.reset_index()
+    gb = df.groupby(by='passenger_count').agg(
+      {
+        'fare_amount': ['mean', 'std'],
+        'tip_amount': ['mean', 'std']
+      }
+    )
+    gb.to_pandas()
+    return gb
 
 def join_count(df, other):
-    return len(df.merge(other.spark.hint("broadcast"), on="passenger_count"))
+    return len(df.merge(other.spark.hint("broadcast"), left_index=True, right_index=True))
 
 def join_data(df, other):
-    return df.merge(other.spark.hint("broadcast"), on="passenger_count")
+    ret = df.merge(other.spark.hint("broadcast"), left_index=True, right_index=True)
+    ret.to_pandas()
+    return ret

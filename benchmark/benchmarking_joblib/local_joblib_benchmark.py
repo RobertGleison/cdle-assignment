@@ -27,10 +27,11 @@ class LocalJoblibBenchmark:
         self.filesystem = filesystem
 
     def run_benchmark(self, file_path: str) -> dict:
-        if self.filesystem:
-            with self.filesystem.open(file_path, 'rb') as gcp_path:
-                joblib_data = pd.read_parquet(gcp_path)
-        else: joblib_data = pd.read_parquet(file_path)
+        if self.filesystem is None:
+            gcs_path = file_path
+        else:
+            gcs_path = f"gs://{file_path}" if not file_path.startswith('gs://') else file_path
+        joblib_data = pd.read_parquet(gcs_path)
 
         if "2009" in file_path:
             joblib_data.rename(

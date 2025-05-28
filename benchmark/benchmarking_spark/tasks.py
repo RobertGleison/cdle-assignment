@@ -1,4 +1,5 @@
 from benchmark.benchmarking_spark.spark_session import get_spark
+from pyspark.sql.functions import broadcast
 from pyspark.sql.functions import (
     col, mean as _mean, stddev as _stddev,
     sin, cos, sqrt, atan2, lit, avg as _avg
@@ -7,10 +8,6 @@ import math
 
 def read_file_parquet(df=None, **kwargs):
     file_path = kwargs.get("path")
-    # fs = kwargs.get("filesystem")
-    # if fs:
-    #     with fs.open(file_path, 'rb') as gcp_path:
-    #         return spark.read_parquet(gcp_path)
     spark = get_spark()
     return spark.read.parquet(file_path)
 
@@ -75,8 +72,8 @@ def groupby_statistics(df):
     )
 
 def join_count(df, other):
-    joined = df.join(other, on="passenger_count")
+    joined = df.join(broadcast(other), on="index", how="inner")
     return joined.count()
 
 def join_data(df, other):
-    return df.join(other, on="passenger_count")
+    return df.join(broadcast(other), on="index", how="inner")

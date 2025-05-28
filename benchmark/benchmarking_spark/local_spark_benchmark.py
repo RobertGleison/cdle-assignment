@@ -1,5 +1,6 @@
 from benchmark.benchmark_setup import benchmark
 from benchmark.benchmarking_spark.spark_session import get_spark
+from pyspark.sql.functions import monotonically_increasing_id
 from pyspark.sql.functions import col
 from benchmark.benchmarking_spark.tasks import (
     mean_of_complicated_arithmetic_operation,
@@ -26,13 +27,9 @@ class LocalSparkBenchmark:
         self.client = get_spark()
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.filesystem:
-            # For GCS, we need to use the gs:// prefix
-            gcs_path = f"gs://{file_path}"
-            spark_data = self.client.read.parquet(gcs_path)
-        else:
-            gcs_path = file_path
-            spark_data = self.client.read.parquet(file_path)
+        gcs_path = f"gs://{file_path}" if self.filesystem else file_path
+        spark_data = self.client.read.parquet(gcs_path)
+        spark_data = spark_data.withColumn("index", monotonically_increasing_id())
 
         if "2009" in file_path:
             rename_map = {
@@ -85,7 +82,10 @@ class LocalSparkBenchmark:
 
         # For join, convert groupby result to Spark DataFrame
         other_df = groupby_statistics(data)
-        other_df = other_df.toDF(*[f"{c}" for c in other_df.columns])  # ensure flat column names
+        # other_df = other_df.toDF(*[f"{c}" for c in other_df.columns])  # ensure flat column names
+        flattened_cols = [f"{c[0]}_{c[1]}" if isinstance(c, tuple) else c for c in other_df.columns]
+        other_df = other_df.toDF(*flattened_cols)
+        other_df = other_df.withColumn("index", monotonically_increasing_id())
         benchmark(join_count, data, benchmarks=spark_benchmarks, name=f'{name_prefix} join count', other=other_df)
         benchmark(join_data, data, benchmarks=spark_benchmarks, name=f'{name_prefix} join', other=other_df)
 

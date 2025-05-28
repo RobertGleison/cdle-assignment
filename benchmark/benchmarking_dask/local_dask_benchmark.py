@@ -38,13 +38,12 @@ class LocalDaskBenchmark:
             )
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.filesystem:
-            # Convert to proper GCS URI format for Dask
-            gcs_path = f"gs://{file_path}" if not file_path.startswith('gs://') else file_path
-            dask_data = dd.read_parquet(gcs_path)
-        else:
+        if self.filesystem is None:
             gcs_path = file_path
-            dask_data = dd.read_parquet(file_path)
+        else:
+            gcs_path = f"gs://{file_path}" if not file_path.startswith('gs://') else file_path
+        dask_data = dd.read_parquet(gcs_path)
+        dask_data["index"] = dask_data.index
 
         if "2009" in file_path:
             dask_data = dask_data.rename(
