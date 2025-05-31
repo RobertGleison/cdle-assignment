@@ -32,7 +32,7 @@ class LocalDaskBenchmark:
     def __init__(self, filesystem=None):
         self.filesystem = filesystem
         self.client = Client(
-            n_workers=1,
+            n_workers=os.cpu_count(),
             memory_limit='40GB',
             processes=True
             )

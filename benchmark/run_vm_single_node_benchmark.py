@@ -7,14 +7,17 @@ from benchmark_setup import get_results
 
 from datetime import datetime
 import pandas as pd
+from dotenv import load_dotenv
 import gcsfs
 import os
 from io import StringIO
 
+load_dotenv("../.env")
+
 if __name__ == "__main__":
 
-    bucket_path = "cdle-datasets"
-    output_bucket_path = "cdle-benchmark-results"
+    bucket_path = os.getenv("GCP_BUCKET_PATH")
+    output_bucket_path = os.getenv("GCP_OUTPUT_BUCKET_PATH")
 
     filesystem = gcsfs.GCSFileSystem()
     parquet_files = filesystem.glob(f"{bucket_path}/*.parquet")
