@@ -3,11 +3,7 @@ import numpy as np
 from joblib import delayed
 
 def read_file_parquet(df=None, **kwargs):
-    fs = kwargs.get("filesystem")
     file_path = kwargs.get("path")
-    if fs:
-        with fs.open(file_path, 'rb') as gcp_path:
-            return pd.read_parquet(gcp_path)
     return pd.read_parquet(file_path)
 
 
