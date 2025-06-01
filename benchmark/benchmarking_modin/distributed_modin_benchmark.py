@@ -2,6 +2,7 @@ from benchmark_setup import benchmark
 from dask.distributed import Client
 import modin.config as modin_cfg
 import modin.pandas as mpd
+from dask_kubernetes.operator import KubeCluster
 import pandas as pd
 import os
 from benchmark.benchmarking_modin.tasks import (
@@ -28,11 +29,17 @@ modin_cfg.Engine.put("dask")
 class DistributedModinBenchmark:
     def __init__(self, filesystem=None):
         self.filesystem = filesystem
-        self.client = Client(
-            n_workers=1,
-            memory_limit='40GB',
-            processes=True
-            )
+        cluster = KubeCluster(
+            image="daskdev/dask:latest",
+            resources={
+                "requests": {"cpu": "1", "memory": "8Gi"},
+                "limits": {"cpu": "1", "memory": "8Gi"}
+            },
+            n_workers=3,
+            # Kubernetes API server (same as your Spark config)
+            host="https://35.238.214.11:6443"
+        )
+        self.client = Client(cluster)
 
     def run_benchmark(self, file_path: str) -> None:
         if self.filesystem:

@@ -1,6 +1,7 @@
 from benchmark.benchmark_setup import benchmark
 from benchmark.benchmarking_spark.cluster_spark_session import get_spark
 from pyspark.sql.functions import col
+from pyspark.sql.functions import monotonically_increasing_id
 from benchmark.benchmarking_spark.tasks import (
     mean_of_complicated_arithmetic_operation,
     complicated_arithmetic_operation,
@@ -26,13 +27,9 @@ class DistributedSparkBenchmark:
         self.client = get_spark()
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.filesystem:
-            # For GCS, we need to use the gs:// prefix
-            gcs_path = f"gs://{file_path}"
-            spark_data = self.client.read.parquet(gcs_path)
-        else:
-            gcs_path = file_path
-            spark_data = self.client.read.parquet(file_path)
+        gcs_path = f"gs://{file_path}" if self.filesystem else file_path
+        spark_data = self.client.read.parquet(gcs_path)
+        spark_data = spark_data.withColumn("index", monotonically_increasing_id())
 
         if "2009" in file_path:
             rename_map = {

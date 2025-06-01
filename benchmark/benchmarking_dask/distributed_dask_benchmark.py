@@ -1,5 +1,6 @@
 from dask.distributed import Client, wait
 from benchmark_setup import benchmark
+from dask_kubernetes.operator import KubeCluster
 import dask.dataframe as dd
 import pandas as pd
 import numpy as np
@@ -31,20 +32,25 @@ from benchmarking_dask.tasks import (
 class DistributedDaskBenchmark:
     def __init__(self, filesystem=None):
         self.filesystem = filesystem
-        self.client = Client(
-            n_workers=1,
-            memory_limit='40GB',
-            processes=True
-            )
+        cluster = KubeCluster(
+            image="daskdev/dask:latest",
+            resources={
+                "requests": {"cpu": "1", "memory": "8Gi"},
+                "limits": {"cpu": "1", "memory": "8Gi"}
+            },
+            n_workers=3,
+            # Kubernetes API server (same as your Spark config)
+            host="https://35.238.214.11:6443"
+        )
+        self.client = Client(cluster)
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.filesystem:
-            # Convert to proper GCS URI format for Dask
-            gcs_path = f"gs://{file_path}" if not file_path.startswith('gs://') else file_path
-            dask_data = dd.read_parquet(gcs_path)
-        else:
+        if self.filesystem is None:
             gcs_path = file_path
-            dask_data = dd.read_parquet(file_path)
+        else:
+            gcs_path = f"gs://{file_path}" if not file_path.startswith('gs://') else file_path
+        dask_data = dd.read_parquet(gcs_path)
+        dask_data["index"] = dask_data.index
 
         if "2009" in file_path:
             dask_data = dask_data.rename(

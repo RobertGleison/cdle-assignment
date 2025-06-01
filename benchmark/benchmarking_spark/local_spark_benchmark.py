@@ -20,7 +20,6 @@ from benchmark.benchmarking_spark.tasks import (
     mean,
 )
 
-
 class LocalSparkBenchmark:
     def __init__(self, filesystem=None):
         self.filesystem = filesystem

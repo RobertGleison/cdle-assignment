@@ -1,5 +1,6 @@
 from benchmark.benchmark_setup import benchmark
 from benchmark.benchmarking_spark.cluster_spark_session import get_spark
+from pyspark.sql.functions import monotonically_increasing_id
 import pyspark.pandas as ks
 import pandas as pd
 import numpy as np
@@ -28,14 +29,10 @@ class DistributedKoalasBenchmark:
 
 
     def run_benchmark(self, file_path: str) -> None:
-        if self.filesystem:
-            # Use Spark to read from GCS, then convert to PySpark Pandas
-            gcs_path = f"gs://{file_path}"
-            spark_df = self.client.read.parquet(gcs_path)
-            koalas_data = spark_df.pandas_api()
-        else:
-            gcs_path = file_path
-            koalas_data = ks.read_parquet(gcs_path)
+        gcs_path = f"gs://{file_path}" if self.filesystem else file_path
+        spark_df = self.client.read.parquet(gcs_path)
+        spark_df = spark_df.withColumn("index", monotonically_increasing_id())
+        koalas_data = spark_df.pandas_api()
 
         if "2009" in file_path:
             rename_map = {

@@ -10,7 +10,7 @@ import os
 
 if __name__ == "__main__":
 
-    folder_path = "datasets/"
+    folder_path = "../datasets/"
     # https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page to download the datasets
 
     # Loop over all files in the folder
@@ -26,9 +26,9 @@ if __name__ == "__main__":
 
         print(f"\n=== Processing: {file_path} ===")
 
-        # print("Running Koalas...")
-        # koalas_results = koalas_runner.run_benchmark(file_path)
-        # local_koalas_benchmarks = get_results(koalas_results).set_index("task")
+        print("Running Koalas...")
+        koalas_results = koalas_runner.run_benchmark(file_path)
+        local_koalas_benchmarks = get_results(koalas_results).set_index("task")
 
         print("Running Joblib...")
         joblib_results = joblib_runner.run_benchmark(file_path)
@@ -49,14 +49,14 @@ if __name__ == "__main__":
         # Combine all benchmark results
         df = pd.concat(
             [
-                # local_koalas_benchmarks.duration,
+                local_koalas_benchmarks.duration,
                 local_joblib_benchmarks.duration,
                 local_modin_benchmarks.duration,
                 local_spark_benchmarks.duration,
                 local_dask_benchmarks.duration,
             ],
             axis=1,
-            keys=[#"koalas",
+            keys=["koalas",
                   "joblib", "modin",
                   "spark",
                     "dask"
