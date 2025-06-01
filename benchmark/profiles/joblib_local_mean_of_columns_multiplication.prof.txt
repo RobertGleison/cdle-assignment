@@ -1,0 +1,9 @@
+         2 function calls in 0.000 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/joblib/parallel.py:666(delayed_function)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+
+

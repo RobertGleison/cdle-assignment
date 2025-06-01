@@ -1,0 +1,28 @@
+         15798 function calls (14594 primitive calls) in 0.699 seconds
+
+   Ordered by: internal time
+   List reduced from 731 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        4    0.677    0.169    0.677    0.169 {method 'acquire' of '_thread.lock' objects}
+        6    0.001    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/dataframe/dask_expr/io/parquet.py:220(normalize_pa_schema)
+      119    0.001    0.000    0.002    0.000 {built-in method _pickle.dumps}
+   215/44    0.001    0.000    0.007    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:142(_normalize_seq_func)
+  383/133    0.001    0.000    0.007    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/utils.py:767(__call__)
+      388    0.001    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/utils.py:742(dispatch)
+       44    0.001    0.000    0.008    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:33(_tokenize)
+2953/2951    0.001    0.000    0.001    0.000 {built-in method builtins.isinstance}
+   111/55    0.000    0.000    0.015    0.000 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/functools.py:961(__get__)
+       50    0.000    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:233(_normalize_pickle)
+     37/4    0.000    0.000    0.008    0.002 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/_expr.py:343(simplify_once)
+  593/211    0.000    0.000    0.007    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:143(_inner_normalize_token)
+       99    0.000    0.000    0.002    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:194(normalize_object)
+      151    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/_expr.py:36(_unpack_collections)
+       41    0.000    0.000    0.009    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/_expr.py:58(__new__)
+      100    0.000    0.000    0.000    0.000 {built-in method _pickle.loads}
+       78    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/_expr.py:800(__getattr__)
+       44    0.000    0.000    0.008    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:47(tokenize)
+       10    0.000    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/series.py:389(__init__)
+       33    0.000    0.000    0.008    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/_expr.py:841(__new__)
+
+

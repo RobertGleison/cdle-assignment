@@ -1,0 +1,28 @@
+         55 function calls (48 primitive calls) in 0.000 seconds
+
+   Ordered by: cumulative time
+   List reduced from 28 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/benchmarking_modin/tasks.py:8(count)
+      6/1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/pandas/base.py:4300(__getattribute__)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/pandas/dataframe.py:377(shape)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/pandas/base.py:649(_get_index)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/storage_formats/pandas/query_compiler.py:103(<lambda>)
+        4    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/metadata/index.py:145(is_materialized)
+        4    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/metadata/index.py:156(is_materialized_index)
+        2    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/metadata/index.py:177(get)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/dataframe/dataframe.py:699(_get_index)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/pandas/dataframe.py:306(_get_columns)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/storage_formats/pandas/query_compiler.py:105(<lambda>)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/dataframe/dataframe.py:717(_get_columns)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/storage_formats/base/query_compiler.py:217(lazy_shape)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/storage_formats/pandas/query_compiler.py:292(lazy_row_count)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/storage_formats/base/query_compiler.py:4575(frame_has_materialized_index)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/storage_formats/pandas/query_compiler.py:331(lazy_column_count)
+      4/2    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/storage_formats/base/query_compiler.py:4564(frame_has_materialized_columns)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/dataframe/dataframe.py:647(has_materialized_index)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/dataframe/dataframe.py:658(has_materialized_columns)
+
+

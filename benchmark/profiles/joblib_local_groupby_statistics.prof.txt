@@ -1,0 +1,28 @@
+         3246 function calls (3155 primitive calls) in 0.408 seconds
+
+   Ordered by: cumulative time
+   List reduced from 435 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.408    0.408 /home/robert/Desktop/cdle-assignment/benchmark/benchmarking_joblib/tasks.py:70(groupby_statistics)
+        1    0.000    0.000    0.407    0.407 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/generic.py:1420(aggregate)
+        1    0.000    0.000    0.407    0.407 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/apply.py:172(agg)
+        1    0.000    0.000    0.407    0.407 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/apply.py:415(agg_dict_like)
+        1    0.000    0.000    0.407    0.407 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/apply.py:1575(agg_or_apply_dict_like)
+        1    0.000    0.000    0.406    0.406 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/apply.py:425(compute_dict_like)
+        1    0.000    0.000    0.406    0.406 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/apply.py:496(<listcomp>)
+      6/2    0.000    0.000    0.405    0.203 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/generic.py:232(aggregate)
+        2    0.000    0.000    0.405    0.203 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/generic.py:331(_aggregate_multiple_funcs)
+        4    0.000    0.000    0.404    0.101 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/groupby.py:1957(_cython_agg_general)
+        4    0.000    0.000    0.404    0.101 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/internals/base.py:365(grouped_reduce)
+        4    0.000    0.000    0.404    0.101 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/groupby.py:1971(array_func)
+        4    0.000    0.000    0.404    0.101 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/ops.py:812(_cython_operation)
+        2    0.000    0.000    0.276    0.138 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/groupby.py:2365(mean)
+        4    0.000    0.000    0.260    0.065 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/ops.py:523(cython_operation)
+        4    0.000    0.000    0.260    0.065 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/ops.py:310(_cython_op_ndim_compat)
+        4    0.260    0.065    0.260    0.065 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/ops.py:354(_call_cython_op)
+        1    0.011    0.011    0.144    0.144 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/ops.py:735(has_dropped_na)
+        1    0.000    0.000    0.131    0.131 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/ops.py:743(group_info)
+        1    0.000    0.000    0.131    0.131 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/ops.py:758(_get_compressed_codes)
+
+

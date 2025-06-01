@@ -1,0 +1,28 @@
+         11027 function calls (10022 primitive calls) in 0.625 seconds
+
+   Ordered by: internal time
+   List reduced from 632 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        4    0.610    0.152    0.610    0.152 {method 'acquire' of '_thread.lock' objects}
+       71    0.001    0.000    0.002    0.000 {built-in method _pickle.dumps}
+   189/31    0.001    0.000    0.006    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:142(_normalize_seq_func)
+        6    0.001    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/dataframe/dask_expr/io/parquet.py:220(normalize_pa_schema)
+   308/71    0.001    0.000    0.005    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/utils.py:767(__call__)
+      309    0.001    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/utils.py:742(dispatch)
+       31    0.001    0.000    0.001    0.000 {built-in method _hashlib.openssl_md5}
+2010/2008    0.000    0.000    0.001    0.000 {built-in method builtins.isinstance}
+       31    0.000    0.000    0.007    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:33(_tokenize)
+        6    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/arrays/arrow/array.py:688(__getstate__)
+  502/141    0.000    0.000    0.005    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:143(_inner_normalize_token)
+    82/37    0.000    0.000    0.010    0.000 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/functools.py:961(__get__)
+     28/4    0.000    0.000    0.007    0.002 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/_expr.py:343(simplify_once)
+       26    0.000    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:233(_normalize_pickle)
+       94    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/_expr.py:36(_unpack_collections)
+       60    0.000    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:194(normalize_object)
+       28    0.000    0.000    0.006    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/_expr.py:58(__new__)
+     17/1    0.000    0.000    0.003    0.003 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/_expr.py:275(rewrite)
+   137/80    0.000    0.000    0.003    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:159(normalize_seq)
+       31    0.000    0.000    0.007    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:47(tokenize)
+
+

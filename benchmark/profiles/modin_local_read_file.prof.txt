@@ -1,0 +1,28 @@
+         24149 function calls (23069 primitive calls) in 23.090 seconds
+
+   Ordered by: cumulative time
+   List reduced from 902 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000   23.090   23.090 /home/robert/Desktop/cdle-assignment/benchmark/benchmarking_modin/tasks.py:4(read_file_parquet)
+        1    0.000    0.000   23.090   23.090 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/utils.py:605(wrapped)
+    104/1    0.001    0.000   23.090   23.090 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/logging/logger_decorator.py:127(run_and_log)
+        1    0.000    0.000   23.090   23.090 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/pandas/io.py:303(read_parquet)
+        1    0.000    0.000   23.090   23.090 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/execution/dispatching/factories/dispatcher.py:199(read_parquet)
+        1    0.000    0.000   23.090   23.090 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/execution/dispatching/factories/factories.py:254(_read_parquet)
+        1    0.000    0.000   23.090   23.090 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/io/file_dispatcher.py:135(read)
+        4    0.000    0.000   23.028    5.757 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/utils.py:364(sync)
+        4    0.000    0.000   23.027    5.757 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/utils.py:393(sync)
+        6    0.000    0.000   23.027    3.838 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/utils.py:436(wait)
+        6    0.000    0.000   23.027    3.838 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/threading.py:589(wait)
+        6    0.000    0.000   23.027    3.838 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/threading.py:288(wait)
+       24   23.027    0.959   23.027    0.959 {method 'acquire' of '_thread.lock' objects}
+        2    0.000    0.000   23.015   11.508 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/execution/dask/common/engine_wrapper.py:125(materialize)
+        2    0.000    0.000   23.015   11.508 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/client.py:2487(gather)
+        1    0.000    0.000   23.001   23.001 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/io/column_stores/parquet_dispatcher.py:803(_read)
+        1    0.000    0.000   22.999   22.999 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/io/column_stores/parquet_dispatcher.py:738(build_query_compiler)
+        1    0.000    0.000   22.965   22.965 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/io/column_stores/parquet_dispatcher.py:775(<listcomp>)
+        1    0.000    0.000   22.965   22.965 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/execution/dask/implementations/pandas_on_dask/partitioning/partition.py:253(length)
+   223/66    0.000    0.000    0.089    0.001 {built-in method builtins.hasattr}
+
+

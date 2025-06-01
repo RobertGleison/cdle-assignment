@@ -1,0 +1,28 @@
+         20974 function calls (19931 primitive calls) in 0.045 seconds
+
+   Ordered by: cumulative time
+   List reduced from 894 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.045    0.045 /home/robert/Desktop/cdle-assignment/benchmark/benchmarking_modin/tasks.py:23(sum_columns)
+    203/3    0.001    0.000    0.045    0.015 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/logging/logger_decorator.py:127(run_and_log)
+    18/13    0.000    0.000    0.042    0.003 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/storage_formats/pandas/query_compiler_caster.py:137(cast_args)
+        1    0.000    0.000    0.040    0.040 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/pandas/series.py:205(__add__)
+        1    0.000    0.000    0.039    0.039 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/pandas/series.py:554(add)
+        1    0.000    0.000    0.036    0.036 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/pandas/base.py:678(add)
+        1    0.000    0.000    0.036    0.036 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/pandas/base.py:467(_binary_op)
+        1    0.000    0.000    0.036    0.036 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/algebra/binary.py:334(caller)
+        5    0.000    0.000    0.036    0.007 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/dataframe/utils.py:712(run_f_on_minimally_updated_metadata)
+        1    0.000    0.000    0.030    0.030 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/dataframe/dataframe.py:3823(n_ary_op)
+        1    0.000    0.000    0.028    0.028 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/partitioning/partition_manager.py:71(wait)
+        1    0.000    0.000    0.028    0.028 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/partitioning/partition_manager.py:1719(n_ary_operation)
+        1    0.000    0.000    0.018    0.018 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/partitioning/partition_manager.py:1771(<listcomp>)
+        1    0.000    0.000    0.018    0.018 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/partitioning/partition_manager.py:1772(<listcomp>)
+        2    0.000    0.000    0.017    0.008 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/execution/dask/common/engine_wrapper.py:53(deploy)
+        6    0.000    0.000    0.017    0.003 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/client.py:2024(submit)
+        1    0.000    0.000    0.010    0.010 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/partitioning/partition_manager.py:142(preprocess_func)
+        1    0.000    0.000    0.010    0.010 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/execution/dask/implementations/pandas_on_dask/partitioning/partition.py:236(preprocess_func)
+        1    0.000    0.000    0.010    0.010 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/execution/dask/common/engine_wrapper.py:143(put)
+        1    0.000    0.000    0.010    0.010 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/client.py:2655(scatter)
+
+

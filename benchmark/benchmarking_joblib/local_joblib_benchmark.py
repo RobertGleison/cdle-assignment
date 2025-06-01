@@ -23,8 +23,9 @@ from benchmark.benchmarking_joblib.tasks import (
 memory = Memory('joblib_cache', verbose=0)
 
 class LocalJoblibBenchmark:
-    def __init__(self, filesystem=None):
+    def __init__(self, filesystem=None, profile=False):
         self.filesystem = filesystem
+        self.profile = profile
 
     def run_benchmark(self, file_path: str) -> dict:
         if self.filesystem is None:
@@ -55,13 +56,13 @@ class LocalJoblibBenchmark:
         # Normal local running
         joblib_benchmarks = self.run_common_benchmarks(joblib_data, 'local', joblib_benchmarks, gcs_path)
 
-        # Filtered local running
-        expr_filter = (joblib_data.tip_amount >= 1) & (joblib_data.tip_amount <= 5)
-        filtered_joblib_data = joblib_data[expr_filter]
-        joblib_benchmarks = self.run_common_benchmarks(filtered_joblib_data, 'local filtered', joblib_benchmarks, gcs_path)
+        # # Filtered local running
+        # expr_filter = (joblib_data.tip_amount >= 1) & (joblib_data.tip_amount <= 5)
+        # filtered_joblib_data = joblib_data[expr_filter]
+        # joblib_benchmarks = self.run_common_benchmarks(filtered_joblib_data, 'local filtered', joblib_benchmarks, gcs_path)
 
-        # Filtered with cache running
-        joblib_benchmarks = self.run_common_benchmarks(filtered_joblib_data, 'local filtered cache', joblib_benchmarks, gcs_path)
+        # # Filtered with cache running
+        # joblib_benchmarks = self.run_common_benchmarks(filtered_joblib_data, 'local filtered cache', joblib_benchmarks, gcs_path)
 
         return joblib_benchmarks
 
@@ -70,7 +71,7 @@ class LocalJoblibBenchmark:
         def wrapped_benchmark(func, name, **kwargs):
             def inner_func():
                 # Notice we're calling the imported benchmark function here
-                return benchmark(func, data, joblib_benchmarks, name, **kwargs)
+                return benchmark(func, data, joblib_benchmarks, name, profile=self.profile, tool="joblib", **kwargs)
             return inner_func
 
         other = groupby_statistics(data)

@@ -1,0 +1,28 @@
+         1182 function calls (1179 primitive calls) in 0.040 seconds
+
+   Ordered by: cumulative time
+   List reduced from 110 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.040    0.040 /home/robert/Desktop/cdle-assignment/benchmark/benchmarking_spark/tasks.py:30(sum_columns)
+       17    0.000    0.000    0.038    0.002 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1015(send_command)
+       17    0.000    0.000    0.037    0.002 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/clientserver.py:499(send_command)
+      8/7    0.000    0.000    0.032    0.005 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1313(__call__)
+       17    0.000    0.000    0.031    0.002 {method 'readline' of '_io.BufferedReader' objects}
+       17    0.000    0.000    0.031    0.002 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/socket.py:691(readinto)
+       17    0.031    0.002    0.031    0.002 {method 'recv_into' of '_socket.socket' objects}
+        1    0.000    0.000    0.019    0.019 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:5128(withColumn)
+        1    0.000    0.000    0.015    0.015 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:3184(select)
+        2    0.000    0.000    0.006    0.003 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/utils.py:166(wrapped)
+        2    0.000    0.000    0.006    0.003 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/functions.py:196(col)
+        2    0.000    0.000    0.006    0.003 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/functions.py:90(_invoke_function)
+       17    0.006    0.000    0.006    0.000 {method 'sendall' of '_socket.socket' objects}
+        4    0.000    0.000    0.005    0.001 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1708(__getattr__)
+        1    0.000    0.000    0.005    0.005 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:2759(_jcols)
+        1    0.000    0.000    0.005    0.005 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:2747(_jseq)
+        1    0.000    0.000    0.005    0.005 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/column.py:76(_to_seq)
+        2    0.000    0.000    0.004    0.002 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/functions.py:81(_get_jvm_function)
+        1    0.000    0.000    0.003    0.003 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/column.py:88(<listcomp>)
+        1    0.000    0.000    0.003    0.003 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/column.py:59(_to_java_column)
+
+

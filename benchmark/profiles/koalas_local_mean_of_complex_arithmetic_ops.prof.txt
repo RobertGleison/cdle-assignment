@@ -1,0 +1,28 @@
+         224012 function calls (221616 primitive calls) in 13.949 seconds
+
+   Ordered by: cumulative time
+   List reduced from 642 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000   13.949   13.949 /home/robert/Desktop/cdle-assignment/benchmark/benchmarking_koalas/tasks.py:53(mean_of_complicated_arithmetic_operation)
+  571/544    0.021    0.000   13.134    0.024 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1313(__call__)
+      750    0.007    0.000   12.569    0.017 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1015(send_command)
+      750    0.138    0.000   12.557    0.017 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/clientserver.py:499(send_command)
+    21743    0.016    0.000   12.307    0.001 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/socket.py:691(readinto)
+    21743   12.279    0.001   12.279    0.001 {method 'recv_into' of '_socket.socket' objects}
+      750    0.200    0.000   12.179    0.016 {method 'readline' of '_io.BufferedReader' objects}
+        1    0.000    0.000   10.811   10.811 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/generic.py:1174(mean)
+        1    0.006    0.006   10.811   10.811 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/series.py:7109(_reduce_for_stat_function)
+        1    0.006    0.006    9.531    9.531 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/series.py:7381(unpack_scalar)
+        1    0.000    0.000    9.522    9.522 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/pandas/conversion.py:54(toPandas)
+        1    0.000    0.000    8.414    8.414 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:1242(collect)
+       26    0.001    0.000    3.098    0.119 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/base.py:210(wrapper)
+       27    0.000    0.000    2.729    0.101 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:3184(select)
+        8    0.000    0.000    2.391    0.299 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/base.py:447(__array_ufunc__)
+      274    0.012    0.000    2.027    0.007 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:547(schema)
+        7    0.000    0.000    1.361    0.194 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/base.py:324(__mul__)
+        7    0.001    0.000    1.355    0.194 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/data_type_ops/num_ops.py:333(mul)
+        8    0.000    0.000    1.245    0.156 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/numpy_compat.py:140(maybe_dispatch_ufunc_to_dunder_op)
+        7    0.001    0.000    1.146    0.164 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/numpy_compat.py:206(maybe_dispatch_ufunc_to_spark_func)
+
+

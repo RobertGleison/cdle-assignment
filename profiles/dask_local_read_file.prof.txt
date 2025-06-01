@@ -1,0 +1,28 @@
+         10675 function calls (10208 primitive calls) in 0.017 seconds
+
+   Ordered by: internal time
+   List reduced from 497 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+       18    0.001    0.000    0.002    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/sorting.py:369(nargsort)
+        2    0.001    0.001    0.001    0.001 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/dataframe/dask_expr/io/parquet.py:220(normalize_pa_schema)
+        1    0.001    0.001    0.002    0.002 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyarrow/pandas_compat.py:782(table_to_dataframe)
+        1    0.001    0.001    0.009    0.009 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/dataframe/io/parquet/arrow.py:903(_collect_dataset_info)
+2773/2682    0.001    0.000    0.001    0.000 {built-in method builtins.isinstance}
+        2    0.001    0.000    0.001    0.000 {built-in method posix.stat}
+       19    0.000    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/dtypes/base.py:549(find)
+        1    0.000    0.000    0.001    0.001 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyarrow/dataset.py:446(_filesystem_dataset)
+       23    0.000    0.000    0.002    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/indexes/base.py:475(__new__)
+       41    0.000    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/construction.py:517(sanitize_array)
+       18    0.000    0.000    0.003    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/series.py:389(__init__)
+        1    0.000    0.000    0.002    0.002 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/dataframe/io/parquet/arrow.py:1116(_create_dd_meta)
+      328    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/dtypes/generic.py:42(_instancecheck)
+      209    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/dtypes/base.py:238(construct_from_string)
+       18    0.000    0.000    0.003    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/series.py:3687(sort_values)
+     55/2    0.000    0.000    0.002    0.001 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:142(_normalize_seq_func)
+       21    0.000    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/dtypes/common.py:1596(pandas_dtype)
+     84/5    0.000    0.000    0.002    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/utils.py:767(__call__)
+       84    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/utils.py:742(dispatch)
+       19    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/generic.py:6236(__finalize__)
+
+

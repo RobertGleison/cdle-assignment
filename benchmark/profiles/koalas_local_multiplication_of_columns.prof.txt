@@ -1,0 +1,28 @@
+         7356 function calls (7175 primitive calls) in 0.025 seconds
+
+   Ordered by: cumulative time
+   List reduced from 267 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.025    0.025 /home/robert/Desktop/cdle-assignment/benchmark/benchmarking_koalas/tasks.py:37(product_columns)
+        1    0.000    0.000    0.025    0.025 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/base.py:324(__mul__)
+        1    0.000    0.000    0.023    0.023 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/data_type_ops/num_ops.py:333(mul)
+        1    0.000    0.000    0.021    0.021 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/base.py:210(wrapper)
+    29/28    0.000    0.000    0.015    0.001 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1313(__call__)
+       32    0.000    0.000    0.015    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1015(send_command)
+       32    0.000    0.000    0.015    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/clientserver.py:499(send_command)
+       32    0.000    0.000    0.013    0.000 {method 'readline' of '_io.BufferedReader' objects}
+       32    0.000    0.000    0.012    0.000 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/socket.py:691(readinto)
+       32    0.012    0.000    0.012    0.000 {method 'recv_into' of '_socket.socket' objects}
+       19    0.000    0.000    0.012    0.001 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/internal.py:1440(copy)
+       17    0.000    0.000    0.011    0.001 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/series.py:438(_internal)
+       17    0.000    0.000    0.011    0.001 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/internal.py:1424(select_column)
+       19    0.000    0.000    0.011    0.001 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/internal.py:540(__init__)
+        1    0.000    0.000    0.008    0.008 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:3184(select)
+  123/110    0.000    0.000    0.007    0.000 {built-in method builtins.all}
+       19    0.000    0.000    0.005    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:805(isStreaming)
+       56    0.001    0.000    0.003    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/typedef/typehints.py:139(as_spark_type)
+        2    0.000    0.000    0.003    0.002 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/base.py:220(<genexpr>)
+        1    0.000    0.000    0.003    0.003 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/base.py:60(should_alignment_for_column_op)
+
+

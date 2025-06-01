@@ -23,9 +23,10 @@ from benchmark.benchmarking_koalas.tasks import (
 )
 
 class LocalKoalasBenchmark:
-    def __init__(self, filesystem=None):
+    def __init__(self, filesystem=None, profile = False):
         self.filesystem = filesystem
         self.client = get_spark()
+        self.profile = profile
 
 
     def run_benchmark(self, file_path: str) -> None:
@@ -67,24 +68,24 @@ class LocalKoalasBenchmark:
 
 
     def run_common_benchmarks(self, data: ks.DataFrame, name_prefix: str, koalas_benchmarks: dict, file_path: str) -> dict:
-        benchmark(read_file_parquet, df=None, benchmarks=koalas_benchmarks, name=f'{name_prefix} read file', path=file_path, filesystem=self.filesystem)
-        benchmark(count, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} count')
-        benchmark(count_index_length, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} count index length')
-        benchmark(mean, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean')
-        benchmark(standard_deviation, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} standard deviation')
-        benchmark(mean_of_sum, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean of columns addition')
-        benchmark(sum_columns, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} addition of columns')
-        benchmark(mean_of_product, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean of columns multiplication')
-        benchmark(product_columns, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} multiplication of columns')
-        benchmark(value_counts, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} value counts')
-        benchmark(complicated_arithmetic_operation, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} complex arithmetic ops')
-        benchmark(mean_of_complicated_arithmetic_operation, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean of complex arithmetic ops')
-        benchmark(groupby_statistics, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} groupby statistics')
+        benchmark(read_file_parquet, df=None, benchmarks=koalas_benchmarks, name=f'{name_prefix} read file', path=file_path, filesystem=self.filesystem, profile=self.profile, tool="koalas")
+        benchmark(count, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} count', profile=self.profile, tool="koalas")
+        benchmark(count_index_length, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} count index length', profile=self.profile, tool="koalas")
+        benchmark(mean, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean', profile=self.profile, tool="koalas")
+        benchmark(standard_deviation, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} standard deviation', profile=self.profile, tool="koalas")
+        benchmark(mean_of_sum, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean of columns addition', profile=self.profile, tool="koalas")
+        benchmark(sum_columns, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} addition of columns', profile=self.profile, tool="koalas")
+        benchmark(mean_of_product, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean of columns multiplication', profile=self.profile, tool="koalas")
+        benchmark(product_columns, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} multiplication of columns', profile=self.profile, tool="koalas")
+        benchmark(value_counts, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} value counts', profile=self.profile, tool="koalas")
+        benchmark(complicated_arithmetic_operation, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} complex arithmetic ops', profile=self.profile, tool="koalas")
+        benchmark(mean_of_complicated_arithmetic_operation, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} mean of complex arithmetic ops', profile=self.profile, tool="koalas")
+        benchmark(groupby_statistics, df=data, benchmarks=koalas_benchmarks, name=f'{name_prefix} groupby statistics', profile=self.profile, tool="koalas")
 
         other = ks.DataFrame(groupby_statistics(data).to_pandas())
         other.columns = pd.Index([e[0]+'_' + e[1] for e in other.columns.tolist()])
 
-        benchmark(join_count, data, benchmarks=koalas_benchmarks, name=f'{name_prefix} join count', other=other)
-        benchmark(join_data, data, benchmarks=koalas_benchmarks, name=f'{name_prefix} join', other=other)
+        benchmark(join_count, data, benchmarks=koalas_benchmarks, name=f'{name_prefix} join count', other=other, profile=self.profile, tool="koalas")
+        benchmark(join_data, data, benchmarks=koalas_benchmarks, name=f'{name_prefix} join', other=other, profile=self.profile, tool="koalas")
 
         return koalas_benchmarks

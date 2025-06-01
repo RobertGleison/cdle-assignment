@@ -1,0 +1,28 @@
+         24374 function calls (23568 primitive calls) in 0.099 seconds
+
+   Ordered by: cumulative time
+   List reduced from 850 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.099    0.099 /home/robert/Desktop/cdle-assignment/benchmark/benchmarking_modin/tasks.py:73(join_data)
+     80/2    0.000    0.000    0.099    0.049 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/logging/logger_decorator.py:127(run_and_log)
+      3/2    0.000    0.000    0.094    0.047 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/storage_formats/pandas/query_compiler_caster.py:137(cast_args)
+        2    0.000    0.000    0.094    0.047 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/dataframe/utils.py:712(run_f_on_minimally_updated_metadata)
+        1    0.000    0.000    0.068    0.068 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/pandas/dataframe.py:1333(merge)
+        1    0.000    0.000    0.068    0.068 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/pandas/dataframe.py:1197(join)
+        1    0.000    0.000    0.064    0.064 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/storage_formats/pandas/query_compiler.py:431(concat)
+        1    0.000    0.000    0.064    0.064 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/dataframe/dataframe.py:3925(concat)
+        1    0.000    0.000    0.063    0.063 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/dataframe/dataframe.py:3682(_copartition)
+        3    0.000    0.000    0.060    0.020 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/utils.py:364(sync)
+        3    0.000    0.000    0.060    0.020 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/utils.py:393(sync)
+        3    0.000    0.000    0.059    0.020 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/utils.py:436(wait)
+        3    0.000    0.000    0.059    0.020 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/threading.py:589(wait)
+        3    0.000    0.000    0.059    0.020 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/threading.py:288(wait)
+       12    0.059    0.005    0.059    0.005 {method 'acquire' of '_thread.lock' objects}
+        2    0.000    0.000    0.052    0.026 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/execution/dask/common/engine_wrapper.py:125(materialize)
+        2    0.000    0.000    0.052    0.026 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/client.py:2487(gather)
+        1    0.000    0.000    0.031    0.031 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/dataframe/dataframe.py:3781(<listcomp>)
+        1    0.000    0.000    0.031    0.031 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/execution/dask/implementations/pandas_on_dask/partitioning/partition.py:253(length)
+        1    0.000    0.000    0.031    0.031 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/modin/core/dataframe/pandas/partitioning/partition_manager.py:817(map_axis_partitions)
+
+

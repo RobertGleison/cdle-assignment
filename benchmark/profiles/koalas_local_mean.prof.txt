@@ -1,0 +1,28 @@
+         5429 function calls (5179 primitive calls) in 0.967 seconds
+
+   Ordered by: cumulative time
+   List reduced from 726 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.967    0.967 /home/robert/Desktop/cdle-assignment/benchmark/benchmarking_koalas/tasks.py:22(mean)
+        1    0.000    0.000    0.966    0.966 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/generic.py:1174(mean)
+        1    0.000    0.000    0.966    0.966 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/series.py:7109(_reduce_for_stat_function)
+       37    0.008    0.000    0.935    0.025 {method 'readline' of '_io.BufferedReader' objects}
+        1    0.000    0.000    0.933    0.933 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/pandas/series.py:7381(unpack_scalar)
+       30    0.000    0.000    0.933    0.031 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/socket.py:691(readinto)
+       30    0.932    0.031    0.932    0.031 {method 'recv_into' of '_socket.socket' objects}
+       27    0.000    0.000    0.932    0.035 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1015(send_command)
+       27    0.002    0.000    0.931    0.034 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/clientserver.py:499(send_command)
+    18/17    0.000    0.000    0.928    0.055 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1313(__call__)
+        1    0.000    0.000    0.926    0.926 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/pandas/conversion.py:54(toPandas)
+        1    0.000    0.000    0.912    0.912 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:1242(collect)
+        1    0.000    0.000    0.024    0.024 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:3184(select)
+        1    0.000    0.000    0.013    0.013 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/traceback_utils.py:61(__init__)
+        1    0.000    0.000    0.013    0.013 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/traceback_utils.py:26(first_spark_call)
+        1    0.000    0.000    0.012    0.012 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/traceback.py:216(extract_stack)
+        1    0.000    0.000    0.012    0.012 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/traceback.py:338(extract)
+       21    0.000    0.000    0.012    0.001 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/traceback.py:301(line)
+       12    0.000    0.000    0.012    0.001 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/linecache.py:26(getline)
+       12    0.000    0.000    0.012    0.001 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/linecache.py:36(getlines)
+
+

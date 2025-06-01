@@ -1,0 +1,28 @@
+         63973 function calls (61307 primitive calls) in 1.371 seconds
+
+   Ordered by: internal time
+   List reduced from 1260 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        4    1.290    0.323    1.290    0.323 {method 'acquire' of '_thread.lock' objects}
+       21    0.003    0.000    0.003    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/internals/managers.py:2246(_stack_arrays)
+11874/11533    0.003    0.000    0.005    0.000 {built-in method builtins.isinstance}
+        3    0.002    0.001    0.002    0.001 {method 'send' of '_socket.socket' objects}
+       52    0.002    0.000    0.002    0.000 {built-in method _hashlib.openssl_md5}
+      161    0.001    0.000    0.002    0.000 {built-in method _pickle.dumps}
+   325/52    0.001    0.000    0.008    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/tokenize.py:142(_normalize_seq_func)
+      207    0.001    0.000    0.002    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/generic.py:6236(__finalize__)
+  563/556    0.001    0.000    0.002    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/generic.py:6301(__setattr__)
+     1560    0.001    0.000    0.002    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/dtypes/generic.py:42(_instancecheck)
+       32    0.001    0.000    0.002    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/groupby/ops.py:354(_call_cython_op)
+    63/61    0.001    0.000    0.008    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/series.py:389(__init__)
+   465/94    0.001    0.000    0.019    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/utils.py:767(__call__)
+      466    0.001    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/utils.py:742(dispatch)
+       97    0.001    0.000    0.004    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/construction.py:517(sanitize_array)
+3412/2738    0.001    0.000    0.001    0.000 {built-in method builtins.len}
+      100    0.001    0.000    0.005    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/frame.py:4062(__getitem__)
+      246    0.001    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/generic.py:278(__init__)
+       13    0.001    0.000    0.001    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/arrays/arrow/array.py:289(__init__)
+        2    0.001    0.000    0.001    0.001 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/sre_parse.py:494(_parse)
+
+

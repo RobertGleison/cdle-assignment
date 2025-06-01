@@ -1,0 +1,28 @@
+         941 function calls (936 primitive calls) in 7.979 seconds
+
+   Ordered by: cumulative time
+   List reduced from 215 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    7.979    7.979 /home/robert/Desktop/cdle-assignment/benchmark/benchmarking_joblib/tasks.py:5(read_file_parquet)
+        1    0.066    0.066    7.979    7.979 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/io/parquet.py:498(read_parquet)
+        1    0.000    0.000    7.914    7.914 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/io/parquet.py:239(read)
+        1    5.853    5.853    5.854    5.854 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyarrow/pandas_compat.py:782(table_to_dataframe)
+        1    0.000    0.000    2.059    2.059 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyarrow/parquet/core.py:1764(read_table)
+        1    2.059    2.059    2.059    2.059 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyarrow/parquet/core.py:1410(read)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyarrow/pandas_compat.py:941(_deserialize_column_index)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyarrow/parquet/core.py:1273(__init__)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyarrow/pandas_compat.py:1118(_reconstruct_columns_from_metadata)
+        3    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/indexes/base.py:475(__new__)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/indexes/base.py:1045(astype)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/io/parquet.py:51(get_engine)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyarrow/pandas_compat.py:824(<listcomp>)
+        3    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyarrow/pandas_compat.py:706(_reconstruct_block)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/io/parquet.py:162(__init__)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/compat/_optional.py:85(import_optional_dependency)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/io/parquet.py:85(_get_path_or_handle)
+        3    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/construction.py:517(sanitize_array)
+        3    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/internals/api.py:39(make_block)
+        3    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pandas/core/dtypes/common.py:1596(pandas_dtype)
+
+

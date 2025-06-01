@@ -1,0 +1,28 @@
+         46 function calls in 1.662 seconds
+
+   Ordered by: cumulative time
+   List reduced from 39 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    1.662    1.662 /home/robert/Desktop/cdle-assignment/benchmark/benchmarking_spark/tasks.py:14(count)
+        1    0.000    0.000    1.662    1.662 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:1217(count)
+        1    0.000    0.000    1.662    1.662 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1313(__call__)
+        1    0.000    0.000    1.662    1.662 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1015(send_command)
+        1    0.000    0.000    1.662    1.662 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/clientserver.py:499(send_command)
+        1    0.000    0.000    1.662    1.662 {method 'readline' of '_io.BufferedReader' objects}
+        1    0.000    0.000    1.662    1.662 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/socket.py:691(readinto)
+        1    1.662    1.662    1.662    1.662 {method 'recv_into' of '_socket.socket' objects}
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/protocol.py:214(smart_decode)
+        1    0.000    0.000    0.000    0.000 {method 'sendall' of '_socket.socket' objects}
+        2    0.000    0.000    0.000    0.000 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/logging/__init__.py:1455(debug)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1379(__getattr__)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/errors/exceptions/captured.py:177(deco)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+        2    0.000    0.000    0.000    0.000 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/logging/__init__.py:1724(isEnabledFor)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1275(_build_args)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/protocol.py:305(get_return_value)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/clientserver.py:271(_get_connection)
+        1    0.000    0.000    0.000    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:993(_give_back_connection)
+        2    0.000    0.000    0.000    0.000 {method 'format' of 'str' objects}
+
+

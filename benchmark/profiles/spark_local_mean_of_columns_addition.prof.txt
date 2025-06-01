@@ -1,0 +1,28 @@
+         2985 function calls (2974 primitive calls) in 1.144 seconds
+
+   Ordered by: cumulative time
+   List reduced from 258 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    1.144    1.144 /home/robert/Desktop/cdle-assignment/benchmark/benchmarking_spark/tasks.py:26(mean_of_sum)
+       38    0.000    0.000    1.137    0.030 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1015(send_command)
+       38    0.001    0.000    1.136    0.030 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/clientserver.py:499(send_command)
+       41    0.000    0.000    1.133    0.028 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/socket.py:691(readinto)
+       41    1.133    0.028    1.133    0.028 {method 'recv_into' of '_socket.socket' objects}
+       38    0.000    0.000    1.132    0.030 {method 'readline' of '_io.BufferedReader' objects}
+    17/16    0.000    0.000    1.115    0.070 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1313(__call__)
+        1    0.000    0.000    1.066    1.066 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:2977(first)
+      2/1    0.000    0.000    1.066    1.066 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:2940(head)
+        1    0.000    0.000    1.066    1.066 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:1378(take)
+        1    0.000    0.000    1.060    1.060 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:1242(collect)
+        1    0.000    0.000    0.032    0.032 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:3667(agg)
+        1    0.000    0.000    0.026    0.026 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/group.py:89(agg)
+        1    0.000    0.000    0.020    0.020 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/dataframe.py:3184(select)
+        3    0.000    0.000    0.018    0.006 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/utils.py:166(wrapped)
+        7    0.000    0.000    0.017    0.002 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/py4j/java_gateway.py:1708(__getattr__)
+        3    0.000    0.000    0.013    0.004 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/column.py:76(_to_seq)
+        3    0.000    0.000    0.013    0.004 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/functions.py:90(_invoke_function)
+        2    0.000    0.000    0.011    0.005 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/functions.py:196(col)
+        3    0.000    0.000    0.010    0.003 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/pyspark/sql/functions.py:81(_get_jvm_function)
+
+

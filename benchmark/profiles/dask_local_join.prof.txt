@@ -1,0 +1,28 @@
+         32470 function calls (31681 primitive calls) in 8.863 seconds
+
+   Ordered by: cumulative time
+   List reduced from 928 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    8.863    8.863 /home/robert/Desktop/cdle-assignment/benchmark/benchmarking_dask/tasks.py:69(join_data)
+        1    0.000    0.000    8.850    8.850 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/base.py:349(compute)
+        1    0.000    0.000    8.850    8.850 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/base.py:597(compute)
+        1    0.000    0.000    8.832    8.832 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/client.py:3384(get)
+        1    0.000    0.000    8.830    8.830 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/client.py:2487(gather)
+        1    0.000    0.000    8.830    8.830 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/utils.py:364(sync)
+        1    0.000    0.000    8.830    8.830 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/utils.py:393(sync)
+        1    0.000    0.000    8.830    8.830 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/distributed/utils.py:436(wait)
+        1    0.000    0.000    8.830    8.830 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/threading.py:589(wait)
+        1    0.000    0.000    8.830    8.830 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/threading.py:288(wait)
+        4    8.830    2.208    8.830    2.208 {method 'acquire' of '_thread.lock' objects}
+    49/19    0.000    0.000    0.027    0.001 /home/robert/.pyenv/versions/3.10.13/lib/python3.10/functools.py:961(__get__)
+        2    0.000    0.000    0.024    0.012 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/dataframe/dask_expr/_merge.py:195(_meta)
+    62/48    0.000    0.000    0.020    0.000 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/utils.py:767(__call__)
+        4    0.000    0.000    0.016    0.004 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/dataframe/backends.py:340(meta_nonempty_dataframe)
+      8/3    0.000    0.000    0.014    0.005 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/dataframe/dask_expr/_expr.py:441(npartitions)
+      6/2    0.000    0.000    0.014    0.007 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/dataframe/dask_expr/_expr.py:429(divisions)
+        2    0.000    0.000    0.014    0.007 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/dataframe/dask_expr/_expr.py:587(_divisions)
+        2    0.000    0.000    0.014    0.007 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/dataframe/dask_expr/_expr.py:582(_broadcast_dep)
+        1    0.000    0.000    0.014    0.014 /home/robert/Desktop/cdle-assignment/benchmark/.venv/lib/python3.10/site-packages/dask/_expr.py:1173(__dask_keys__)
+
+
