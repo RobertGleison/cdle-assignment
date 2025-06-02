@@ -67,15 +67,15 @@ class LocalDaskBenchmark:
         # Normal local running
         dask_benchmarks = self.run_common_benchmarks(dask_data, 'local', dask_benchmarks, gcs_path)
 
-        # # Filtered local running
-        # expr_filter = (dask_data.tip_amount >= 1) & (dask_data.tip_amount <= 5)
-        # filtered_dask_data = dask_data[expr_filter]
-        # dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'local filtered', dask_benchmarks, gcs_path)
+        # Filtered local running
+        expr_filter = (dask_data.tip_amount >= 1) & (dask_data.tip_amount <= 5)
+        filtered_dask_data = dask_data[expr_filter]
+        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'local filtered', dask_benchmarks, gcs_path)
 
-        # # Filtered with cache runnning
-        # filtered_dask_data = client.persist(filtered_dask_data)
-        # wait(filtered_dask_data)
-        # dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'local filtered cache', dask_benchmarks, gcs_path)
+        # Filtered with cache runnning
+        filtered_dask_data = self.client.persist(filtered_dask_data)
+        wait(filtered_dask_data)
+        dask_benchmarks = self.run_common_benchmarks(filtered_dask_data, 'local filtered cache', dask_benchmarks, gcs_path)
         return dask_benchmarks
 
 
