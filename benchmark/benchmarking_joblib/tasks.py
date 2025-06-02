@@ -7,43 +7,33 @@ def read_file_parquet(df=None, **kwargs):
     return pd.read_parquet(file_path)
 
 
-@delayed
 def count(df=None):
     return len(df)
 
-@delayed
 def count_index_length(df=None):
     return len(df.index)
 
-@delayed
 def mean(df):
-    return df.fare_amount.mean().compute()
+    return df.fare_amount.mean()
 
-@delayed
 def standard_deviation(df):
-    return df.fare_amount.std().compute()
+    return df.fare_amount.std()
 
-@delayed
 def mean_of_sum(df):
-    return (df.fare_amount + df.tip_amount).mean().compute()
+    return (df.fare_amount + df.tip_amount).mean()
 
-@delayed
 def sum_columns(df):
-    return (df.fare_amount + df.tip_amount).compute()
+    return (df.fare_amount + df.tip_amount)
 
-@delayed
 def mean_of_product(df):
-    return (df.fare_amount * df.tip_amount).mean().compute()
+    return (df.fare_amount * df.tip_amount).mean()
 
-@delayed
 def product_columns(df):
-    return (df.fare_amount * df.tip_amount).compute()
+    return (df.fare_amount * df.tip_amount)
 
-@delayed
 def value_counts(df):
-    return df.fare_amount.value_counts().compute()
+    return df.fare_amount.value_counts()
 
-@delayed
 def mean_of_complicated_arithmetic_operation(df):
     theta_1 = df.pickup_longitude
     phi_1 = df.pickup_latitude
@@ -53,9 +43,8 @@ def mean_of_complicated_arithmetic_operation(df):
            + np.cos(theta_1 * np.pi / 180) * np.cos(theta_2 * np.pi / 180)
            * np.sin((phi_2 - phi_1) / 2 * np.pi / 180) ** 2)
     ret = 2 * np.arctan2(np.sqrt(temp), np.sqrt(1 - temp))
-    return ret.mean().compute()
+    return ret.mean()
 
-@delayed
 def complicated_arithmetic_operation(df):
     theta_1 = df.pickup_longitude
     phi_1 = df.pickup_latitude
@@ -65,7 +54,7 @@ def complicated_arithmetic_operation(df):
            + np.cos(theta_1 * np.pi / 180) * np.cos(theta_2 * np.pi / 180)
            * np.sin((phi_2 - phi_1) / 2 * np.pi / 180) ** 2)
     ret = 2 * np.arctan2(np.sqrt(temp), np.sqrt(1 - temp))
-    return ret.compute()
+    return ret
 
 def groupby_statistics(df):
     return df.groupby(by='passenger_count').agg(
@@ -75,10 +64,8 @@ def groupby_statistics(df):
         }
     )
 
-@delayed
 def join_count(df, other):
     return len(pd.merge(df, other, left_index=True, right_index=True))
 
-@delayed
 def join_data(df, other):
-    return pd.merge(df, other, left_index=True, right_index=True).compute()
+    return pd.merge(df, other, left_index=True, right_index=True)

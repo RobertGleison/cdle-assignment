@@ -49,7 +49,7 @@ def complicated_arithmetic_operation(df):
     dphi = phi_2 - phi_1
     temp = (sin(dphi / 2) ** 2) + (cos(phi_1) * cos(phi_2) * (sin(dtheta / 2) ** 2))
     distance = lit(2) * atan2(sqrt(temp), sqrt(lit(1) - temp))
-    return distance
+    return df.withColumn("distance", distance).select("distance")
 
 def mean_of_complicated_arithmetic_operation(df):
     theta_1 = col("pickup_longitude") * math.pi / 180
