@@ -17,6 +17,10 @@ numpy = "^1.23"
 gcsfs = "^2024.5.0"  
 dask-kubernetes = "^2025.4.3"
 snakeviz = "^2.2.2"
+python-dotenv = "^1.1.0"
+scikit-learn = "^1.6.1"
+matplotlib = "^3.10.3"
+xgboost = "^3.0.2"
 
 
 [build-system]
