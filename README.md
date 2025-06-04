@@ -42,7 +42,7 @@ This project provides a benchmarking suite for comparing the performance of vari
 
 ---
 
-## Running Benchmarks
+## Running Benchmarks and ML pipeline
 
 All commands below should be run from the `benchmark` directory (ensure your virtual env is activated).
 
@@ -60,6 +60,10 @@ All commands below should be run from the `benchmark` directory (ensure your vir
   ```sh
   PYTHONPATH=.. poetry run python run_cluster_distributed_benchmark.py
   ```
+- **ML Pipeline**:
+  ```sh
+  PYTHONPATH=.. poetry run python ml_pipeline.py
+  ```
 
 - **Note**: For GCS integration, set up your `.env` file with `GCP_BUCKET_PATH` and `GCP_OUTPUT_BUCKET_PATH`. If you want to run the benchmarking localy in your computed, you can write the files path inside run_local_benchmark and run it.
 
@@ -71,6 +75,7 @@ All commands below should be run from the `benchmark` directory (ensure your vir
   - `run_local_benchmark.py`: Runs benchmarks on local datasets.
   - `run_vm_single_node_benchmark.py`: Runs benchmarks on a single VM, reading/writing from GCS.
   - `run_cluster_distributed_benchmark.py`: Runs distributed benchmarks, reading/writing from GCS.
+  - `ml_pipeline.py`: Runs the ML pipeline, reading from GCS.
   - `benchmark_setup.py`: Common setup and result utilities.
   - `utils/reduce_parquet_file.py`: Utility to reduce large Parquet files by sampling rows.
   - `jars/gcs-connector-hadoop3-2.2.11-shaded.jar`: GCS connector for Spark/Hadoop.
